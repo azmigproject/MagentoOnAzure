@@ -138,7 +138,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "installScriptName": "InstallMagento.sh",
-    "installScriptUri": "[concat('https://gcdatastorage.blob.core.windows.net/templatefilecontainer/', variables('installScriptName'))]",
+    "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/InstallScripts/', variables('installScriptName'))]",
     "installCommand": "[concat('sh ', variables('installScriptName'), ' ', parameters('uniqueNamePrefix'), ' ', parameters('magentoFolder'), ' ', parameters('magentoUsername'), ' ',  parameters('magentoUserPassword'), ' ', parameters('mySqlPassword'), ' ', parameters('magentoUsername'), ' ', parameters('magentoAdminFirstname'), ' ', parameters('magentoAdminLastname'), ' ',  parameters('magentoAdminEmail'), ' ', parameters('magentoAdminUsername'), ' ', parameters('magentoAdminPassword'), ' ', parameters('magentoConnectPublicKey'), ' ', parameters('magentoConnectPrivateKey'))]",
     "apiVersion": "2015-06-15"
   },
