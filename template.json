@@ -56,12 +56,6 @@
         "description": "Last name for the Magento admin. Do not use simple names such as 'admin'."
       }
     },
-    "magentoAdminSurname": {
-      "type": "string",
-      "metadata": {
-        "description": "Sur name for the Magento admin. Do not use simple names such as 'admin'."
-      }
-    },
     "magentoAdminEmail": {
       "type": "string",
       "metadata": {
@@ -94,7 +88,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D1",
+      "defaultValue": "Standard_D1_v2",
       "allowedValues": [
         "Standard_A2",
         "Standard_A3",
@@ -129,7 +123,7 @@
     "newStorageAccountName": "[concat(uniquestring(resourceGroup().id), 'mds')]",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
-    "ubuntuOSVersion": "14.04.2-LTS",
+    "ubuntuOSVersion": "16.10",
     "OSDiskName": "[concat(parameters('uniqueNamePrefix'),'Disk')]",
     "nicName": "[concat(parameters('uniqueNamePrefix'),'Nic')]",
     "addressPrefix": "10.0.0.0/16",
@@ -145,7 +139,7 @@
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "installScriptName": "InstallMagento.sh",
     "installScriptUri": "[concat('https://gcdatastorage.blob.core.windows.net/templatefilecontainer/', variables('installScriptName'))]",
-    "installCommand": "[concat('sh ', variables('installScriptName'), ' ', parameters('uniqueNamePrefix'), ' ', parameters('magentoFolder'), ' ', parameters('magentoUsername'), ' ',  parameters('magentoUserPassword'), ' ', parameters('mySqlPassword'), ' ', parameters('magentoUsername'), ' ', parameters('magentoAdminFirstname'), ' ', parameters('magentoAdminLastname'), ' ', parameters('magentoAdminSurname'), ' ', parameters('magentoAdminEmail'), ' ', parameters('magentoAdminUsername'), ' ', parameters('magentoAdminPassword'), ' ', parameters('magentoConnectPublicKey'), ' ', parameters('magentoConnectPrivateKey'))]",
+    "installCommand": "[concat('sh ', variables('installScriptName'), ' ', parameters('uniqueNamePrefix'), ' ', parameters('magentoFolder'), ' ', parameters('magentoUsername'), ' ',  parameters('magentoUserPassword'), ' ', parameters('mySqlPassword'), ' ', parameters('magentoUsername'), ' ', parameters('magentoAdminFirstname'), ' ', parameters('magentoAdminLastname'), ' ',  parameters('magentoAdminEmail'), ' ', parameters('magentoAdminUsername'), ' ', parameters('magentoAdminPassword'), ' ', parameters('magentoConnectPublicKey'), ' ', parameters('magentoConnectPrivateKey'))]",
     "apiVersion": "2015-06-15"
   },
   "resources": [

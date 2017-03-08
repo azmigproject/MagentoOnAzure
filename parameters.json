@@ -56,11 +56,6 @@
       "value": "GEN-MAGENTOADMIN-LASTNAME"
 
     },
-    "magentoAdminSurname": {
-
-      "value": "GEN-MAGENTOADMIN-SURNAME"
-
-    },
     "magentoAdminEmail": {
 
       "value": "GEN-EMAIL"
