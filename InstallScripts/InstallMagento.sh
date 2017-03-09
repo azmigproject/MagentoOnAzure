@@ -119,6 +119,7 @@ cd /var/www/html/$2/bin
 cd /var/www/html/$2
  chown -R www-data .
 
+
 # to run cron job
  php magento setup:cron:run
 
