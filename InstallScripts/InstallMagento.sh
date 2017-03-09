@@ -141,7 +141,7 @@ cd /var/www/html/$2/bin
  php magento setup:install --base-url=http://$1.eastus.cloudapp.azure.com/$2/ \
 --db-host=localhost --db-name=$2 --db-user=root --db-password=$5 \
 --admin-firstname=$6 --admin-lastname=$7 --admin-email=$8 \
---admin-user=$9 --admin-password=$10 --language=en_US \
+--admin-user=$9 --admin-password=${10} --language=en_US \
 --currency=USD --timezone=America/Chicago --use-rewrites=1
 
 # give permission to web user  in apache2 www-data
