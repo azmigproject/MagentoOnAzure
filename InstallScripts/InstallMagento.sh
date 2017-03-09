@@ -103,7 +103,7 @@ echo "$3:$4" |  chpasswd
  mkdir /var/www/html/$2
 
 #set rep.magento.com authendication options in order to get the details
- composer config -g http-basic.repo.magento.com $11 $12
+ composer config -g http-basic.repo.magento.com ${11} ${12}
  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2
 
 # Create a new site configuration and add in apache for magento
