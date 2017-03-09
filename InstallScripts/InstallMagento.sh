@@ -14,9 +14,36 @@
 #$11 - magento connect public key
 #$12 -magento connect private key
 #steps to install apache2
-if [ $1 ] && [ $2 ] && [ $3 ] && [ $4 ] && [ $5 ] && [ $6 ] && [ $7 ] && [ $8 ] && [ $9 ] && [ $10 ] && [ $11 ] && [ $12 ] ;
-then
-  #Installbasic
+
+set -x
+#set -xeuo pipefail to check if root user 
+
+if [[ $(id -u) -ne 0 ]] ; then
+    echo "Must be run as root"
+    exit 1
+fi
+
+if [ $# < 12 ]; then
+     echo ""
+        echo "Missing parameters.";
+        echo "1st parameter is domain name";
+        echo "2nd parameter is magento folder name in which magento will installed";
+        echo "3rd parameter is magento linux user (it will create it)";
+        echo "4th parameter is magento linux password (it will create it)";
+		echo "5th parameter is  mysql SQL Password";
+		echo "6th parameter is magento admin first name";
+		echo "7th parameter is magento admin last name";
+		echo "8th parameter is admin email";
+		echo "9th parameter is magento admin usrname";
+		echo "10th parameter is magento admin pwd";
+		echo "11th parameter is magento connect public key";
+		echo "12th parameter is magento connect private key";
+        #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
+        echo "";
+    exit 1
+fi
+
+#Installbasic
    apt-get install \
     git \
     curl \
@@ -32,6 +59,9 @@ then
  debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $5"
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;"
+
+# Update apt-get 
+apt-get update
 
 #Install PHP
  apt-get install \
@@ -123,22 +153,6 @@ cd /var/www/html/$2
 # to run cron job
  php magento setup:cron:run
 
-else
-        echo ""
-        echo "Missing parameters.";
-        echo "1st parameter is domain name";
-        echo "2nd parameter is magento folder name in which magento will installed";
-        echo "3rd parameter is magento linux user (it will create it)";
-        echo "4th parameter is magento linux password (it will create it)";
-		echo "5th parameter is  mysql SQL Password";
-		echo "6th parameter is magento admin first name";
-		echo "7th parameter is magento admin last name";
-		echo "8th parameter is admin email";
-		echo "9th parameter is magento admin usrname";
-		echo "10th parameter is magento admin pwd";
-		echo "11th parameter is magento connect public key";
-		echo "12th parameter is magento connect private key";
-        #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
-        echo "";
-fi;
+shutdown -r +1 &
+exit 0
 
