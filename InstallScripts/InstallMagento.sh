@@ -13,6 +13,7 @@
 #$10 - magento admin pwd
 #$11 - magento connect public key
 #$12 -magento connect private key
+#$12 -HOSTNAME
 #steps to install apache2
 
 set -x
@@ -23,7 +24,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# < 12 ]; then
+if [ $# < 13 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -38,6 +39,7 @@ if [ $# < 12 ]; then
 		echo "10th parameter is magento admin pwd";
 		echo "11th parameter is magento connect public key";
 		echo "12th parameter is magento connect private key";
+		echo "13th parameter is HOSTNAME";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -53,10 +55,10 @@ fi
 #Install Apache
  apt-get -y install apache2
 
-#install MYSQL
+#install MYSQL 
+ debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $5"
+ debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password $5"
  apt-get -y install mysql-server-5.7 mysql-client-5.7
- debconf-set-selections <<< "mysql-server mysql-server/root_password password $5"
- debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $5"
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;"
 
@@ -83,14 +85,8 @@ apt-get update
     --yes
 
  service php7.0-fpm restart
-
-#Install PHP
-# apt-get -y install php7
-# apt-get -y install php7.0 libapache2-mod-php7.0 php7.0-mcrypt phpmyadmin
-# apt-get -y update
-# add-apt-repository ppa:ondrej/php
-# apt-get -y update
-# apt-get install -y php7.0 libapache2-mod-php7.0 php7.0 php7.0-common php7.0-gd php7.0-mysql php7.0-mcrypt php7.0-curl php7.0-intl php7.0-xsl php7.0-mbstring php7.0-zip php7.0-bcmath php7.0-iconv
+ apt-get install apache2 php7.0 libapache2-mod-php7.0
+  service apache2 restart
 
 #download composer and set
 curl -sS https://getcomposer.org/installer |  php
@@ -138,7 +134,7 @@ cd /var/www/html/$2 && find var vendor pub/static pub/media app/etc -type f -exe
 #after this go to /bin directory of magento installation
 cd /var/www/html/$2/bin
 #give install command 
- php magento setup:install --base-url=http://$1.eastus.cloudapp.azure.com/$2/ \
+ php magento setup:install --base-url=http://$1.${13}/$2/ \
 --db-host=localhost --db-name=$2 --db-user=root --db-password=$5 \
 --admin-firstname=$6 --admin-lastname=$7 --admin-email=$8 \
 --admin-user=$9 --admin-password=${10} --language=en_US \
