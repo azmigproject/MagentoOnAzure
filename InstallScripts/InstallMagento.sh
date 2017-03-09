@@ -108,7 +108,6 @@ DocumentRoot /var/www/html
 <Directory /var/www/html/>
 Options Indexes FollowSymLinks MultiViews
 AllowOverride All
-Require ALL Granted
 </Directory>
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf
 #enable the new site and 
