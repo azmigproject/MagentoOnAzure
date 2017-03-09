@@ -17,24 +17,24 @@
 if [ $1 ] && [ $2 ] && [ $3 ] && [ $4 ] && [ $5 ] && [ $6 ] && [ $7 ] && [ $8 ] && [ $9 ] && [ $10 ] && [ $11 ] && [ $12 ] ;
 then
   #Installbasic
-  sudo apt-get install \
+   apt-get install \
     git \
     curl \
     unzip \
     --yes
 
 #Install Apache
-sudo apt-get -y install apache2
+ apt-get -y install apache2
 
 #install MYSQL
-sudo apt-get -y install mysql-server-5.7 mysql-client-5.7
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $5"
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $5"
-#sudo apt-get install mysql-server-5.6 --yes
+ apt-get -y install mysql-server-5.7 mysql-client-5.7
+ debconf-set-selections <<< "mysql-server mysql-server/root_password password $5"
+ debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $5"
+# apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;"
 
 #Install PHP
-sudo apt-get install \
+ apt-get install \
     php-fpm \
     php-mysql \
     php-mcrypt \
@@ -52,32 +52,32 @@ sudo apt-get install \
     php-zip \
     --yes
 
-sudo service php7.0-fpm restart
+ service php7.0-fpm restart
 
 #Install PHP
-#sudo apt-get -y install php7
-#sudo apt-get -y install php7.0 libapache2-mod-php7.0 php7.0-mcrypt phpmyadmin
-#sudo apt-get -y update
-#sudo add-apt-repository ppa:ondrej/php
-#sudo apt-get -y update
-#sudo apt-get install -y php7.0 libapache2-mod-php7.0 php7.0 php7.0-common php7.0-gd php7.0-mysql php7.0-mcrypt php7.0-curl php7.0-intl php7.0-xsl php7.0-mbstring php7.0-zip php7.0-bcmath php7.0-iconv
+# apt-get -y install php7
+# apt-get -y install php7.0 libapache2-mod-php7.0 php7.0-mcrypt phpmyadmin
+# apt-get -y update
+# add-apt-repository ppa:ondrej/php
+# apt-get -y update
+# apt-get install -y php7.0 libapache2-mod-php7.0 php7.0 php7.0-common php7.0-gd php7.0-mysql php7.0-mcrypt php7.0-curl php7.0-intl php7.0-xsl php7.0-mbstring php7.0-zip php7.0-bcmath php7.0-iconv
 
 #download composer and set
-curl -sS https://getcomposer.org/installer | sudo php
-sudo mv composer.phar /usr/local/bin/composer
+curl -sS https://getcomposer.org/installer |  php
+ mv composer.phar /usr/local/bin/composer
 
  # Create a new user for magento
-sudo adduser $3 --gecos "Magento System,0,0,0" --disabled-password
-echo "$3:$4" | sudo chpasswd
-sudo usermod -g www-data $3
-sudo mkdir /var/www/html/$2
+ adduser $3 --gecos "Magento System,0,0,0" --disabled-password
+echo "$3:$4" |  chpasswd
+ usermod -g www-data $3
+ mkdir /var/www/html/$2
 
 #set rep.magento.com authendication options in order to get the details
-sudo composer config -g http-basic.repo.magento.com $11 $12
-sudo composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2
+ composer config -g http-basic.repo.magento.com $11 $12
+ composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2
 
 # Create a new site configuration and add in apache for magento
-sudo bash -c 'echo "<VirtualHost *:80>
+ bash -c 'echo "<VirtualHost *:80>
 DocumentRoot /var/www/html
 <Directory /var/www/html/>
 Options Indexes FollowSymLinks MultiViews
@@ -85,30 +85,30 @@ AllowOverride All
 </Directory>
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf'
 #enable the new site and 
-sudo a2ensite $2.conf
-sudo service apache2 reload
+ a2ensite $2.conf
+ service apache2 reload
 
 #disable the default site
-sudo  a2dissite default
-sudo service apache2 reload
+  a2dissite default
+ service apache2 reload
 #Go to installed php version apache2 php.ini file and update memory_limit to 2GB
 
 #change to add allow url rewite and handle phpencryption in apache
-sudo a2enmod rewrite
-sudo service apache2 restart
-sudo phpenmod  mcrypt
-sudo service apache2 restart
-sudo a2enconf php7.0-fpm
-sudo service apache2 restart
+ a2enmod rewrite
+ service apache2 restart
+ phpenmod  mcrypt
+ service apache2 restart
+ a2enconf php7.0-fpm
+ service apache2 restart
 
 
 #install all files in  magento dir 
-cd /var/www/html/$2 && find var vendor pub/static pub/media app/etc -type f -exec sudo chmod u+w {} \; && find var vendor pub/static pub/media app/etc -type d -exec sudo chmod u+w {} \; && sudo chmod u+x bin/magento
+cd /var/www/html/$2 && find var vendor pub/static pub/media app/etc -type f -exec  chmod u+w {} \; && find var vendor pub/static pub/media app/etc -type d -exec  chmod u+w {} \; &&  chmod u+x bin/magento
 
 #after this go to /bin directory of magento installation
 cd /var/www/html/$2/bin
 #give install command 
-sudo php magento setup:install --base-url=http://$1.eastus.cloudapp.azure.com/$2/ \
+ php magento setup:install --base-url=http://$1.eastus.cloudapp.azure.com/$2/ \
 --db-host=localhost --db-name=$2 --db-user=root --db-password=$5 \
 --admin-firstname=$6 --admin-lastname=$7 --admin-email=$8 \
 --admin-user=$9 --admin-password=$10 --language=en_US \
@@ -117,10 +117,10 @@ sudo php magento setup:install --base-url=http://$1.eastus.cloudapp.azure.com/$2
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
 cd /var/www/html/$2
-sudo chown -R www-data .
+ chown -R www-data .
 
 # to run cron job
-sudo php magento setup:cron:run
+ php magento setup:cron:run
 
 else
         echo ""
