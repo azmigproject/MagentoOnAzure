@@ -97,6 +97,8 @@ curl -sS https://getcomposer.org/installer |  php
 echo "$3:$4" |  chpasswd
  usermod -g www-data $3
 
+
+
 #set rep.magento.com authendication options in order to get the details
  composer config -g http-basic.repo.magento.com ${11} ${12}
  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2
