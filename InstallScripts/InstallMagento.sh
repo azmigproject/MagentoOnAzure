@@ -103,13 +103,14 @@ echo "$3:$4" |  chpasswd
  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2
 
 # Create a new site configuration and add in apache for magento
- bash -c 'echo "<VirtualHost *:80>
+echo "<VirtualHost *:80>
 DocumentRoot /var/www/html
 <Directory /var/www/html/>
 Options Indexes FollowSymLinks MultiViews
 AllowOverride All
+Require ALL Granted
 </Directory>
-</VirtualHost>" >> /etc/apache2/sites-available/$2.conf'
+</VirtualHost>" >> /etc/apache2/sites-available/$2.conf
 #enable the new site and 
  a2ensite $2.conf
  service apache2 reload
@@ -144,9 +145,7 @@ cd /var/www/html/$2/bin
 # go to magento installation directory
 cd /var/www/html/$2
  chown -R www-data .
-
-
-
+ 
 # to run cron job
  php magento setup:cron:run
 
