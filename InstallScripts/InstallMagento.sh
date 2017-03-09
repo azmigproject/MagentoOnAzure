@@ -96,7 +96,6 @@ curl -sS https://getcomposer.org/installer |  php
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
 echo "$3:$4" |  chpasswd
  usermod -g www-data $3
- mkdir /var/www/html/$2
 
 #set rep.magento.com authendication options in order to get the details
  composer config -g http-basic.repo.magento.com ${11} ${12}
