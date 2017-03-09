@@ -85,7 +85,7 @@ apt-get update
     --yes
 
  service php7.0-fpm restart
- apt-get install apache2 php7.0 libapache2-mod-php7.0
+ apt-get -y install apache2 php7.0 libapache2-mod-php7.0
   service apache2 restart
 
 #download composer and set
