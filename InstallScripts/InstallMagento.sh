@@ -47,7 +47,7 @@ if [ $# < 13 ]; then
 fi
 
 echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} ">> /mylogs/text.txt
-
+apt-get update >> /mylogs/text.txt
 #Installbasic
    apt-get install \
     git \
@@ -90,6 +90,9 @@ apt-get update >> /mylogs/text.txt
     php-mbstring \
     php-zip \
     --yes >> /mylogs/text.txt
+apt-get update >> /mylogs/text.txt
+a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
+ a2enconf php7.0-fpm >> /mylogs/text.txt
 
  service php7.0-fpm restart >> /mylogs/text.txt
  apt-get -y install apache2 php7.0 libapache2-mod-php7.0 >> /mylogs/text.txt
@@ -99,8 +102,11 @@ apt-get update >> /mylogs/text.txt
  apt-get -y install curl php7.0-cli git
  echo "installed curl php7.0-cli git">> /mylogs/text.txt
 #download composer and set
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >> /mylogs/text.txt
+#curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >> /mylogs/text.txt
 #curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
+wget https://getcomposer.org/composer.phar -O composer.phar >> /mylogs/text.txt
+mv composer.phar /usr/local/bin/composer >> /mylogs/text.txt
+chmod 777  /usr/local/bin/composer >> /mylogs/text.txt
  echo "downloaded composer ">> /mylogs/text.txt
 
  #mv composer.phar /usr/local/bin/composer
