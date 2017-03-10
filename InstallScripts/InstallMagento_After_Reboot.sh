@@ -4,7 +4,8 @@ set -x
 #set -xeuo pipefail to check if root user 
 
 if [[ $(id -u) -ne 0 ]] ; then
-    echo "Must be run as root"
+    echo "Must be run as root" 
+	 echo "Must be run as root" >> /mylogs/text.txt
     exit 1
 fi
 
@@ -23,6 +24,24 @@ if [ $# < 13 ]; then
 		echo "10th parameter is magento admin pwd";
 		echo "11th parameter is magento connect public key";
 		echo "12th parameter is magento connect private key";
+		echo "13th parameter is HOSTNAME";
+        #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
+        echo "";
+
+		echo "" >> /mylogs/text.txt
+        echo "Missing parameters.">> /mylogs/text.txt
+        echo "1st parameter is domain name" >> /mylogs/text.txt
+        echo "2nd parameter is magento folder name in which magento will installed">> /mylogs/text.txt
+        echo "3rd parameter is server linux user (it will create it)">> /mylogs/text.txt
+        echo "4th parameter is server linux password (it will create it)">> /mylogs/text.txt
+		echo "5th parameter is  mysql SQL Password">> /mylogs/text.txt
+		echo "6th parameter is magento admin first name">> /mylogs/text.txt
+		echo "7th parameter is magento admin last name">> /mylogs/text.txt
+		echo "8th parameter is admin email">> /mylogs/text.txt
+		echo "9th parameter is magento admin usrname">> /mylogs/text.txt
+		echo "10th parameter is magento admin pwd">> /mylogs/text.txt
+		echo "11th parameter is magento connect public key">> /mylogs/text.txt
+		echo "12th parameter is magento connect private key">> /mylogs/text.txt
 		echo "13th parameter is HOSTNAME";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
