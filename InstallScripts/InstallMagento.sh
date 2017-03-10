@@ -111,8 +111,9 @@ chmod 777  /usr/local/bin/composer >> /mylogs/text.txt
 
  wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/InstallScripts/InstallMagento_After_Reboot.sh
  chmod 777 InstallMagento_After_Reboot.sh
- echo "InstallMagento_After_Reboot.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}" >> After_Script.sh
- chmod 777 After_Script.sh
+ echo "PATH=/sbin:/bin:/usr/sbin:/usr/bin" >> /etc/init.d/After_Script.sh
+ echo "InstallMagento_After_Reboot.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}" >> /etc/init.d/After_Script.sh
+ chmod 777 /etc/init.d/After_Script.sh
  update-rc.d  After_Script.sh defaults
  reboot
  #mv composer.phar /usr/local/bin/composer

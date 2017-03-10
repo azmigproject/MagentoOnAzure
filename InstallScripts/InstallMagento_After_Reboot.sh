@@ -94,7 +94,7 @@ cd /var/www/html/$2
 # to run cron job
  php magento setup:cron:run
 
- update-rc.d -f After_Script.sh remove
+ update-rc.d  After_Script.sh remove
  echo "Install successfull">> /mylogs/text.txt
 shutdown -r +1 &
 exit 0
