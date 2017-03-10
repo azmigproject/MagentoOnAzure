@@ -98,7 +98,9 @@ apt-get update
   echo "installed PHP">> /mylogs/text.txt
 
 #download composer and set
-curl -sS https://getcomposer.org/installer |  php
+curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
+ echo "downloaded composer ">> /mylogs/text.txt
+
  mv composer.phar /usr/local/bin/composer
 
  # Create a new user for magento
