@@ -1,22 +1,5 @@
 #!/bin/bash
 #
-#Parms info 
-# $1 -domain name 
-# $2 - Folder name && DatabaseName
-# $3 - magento user name
-# $4 - magento user password
-# $5 - magento SQL Password
-# $6 - magento admin first name
-# $7 -magento admin last name
-# $8 -magneto admin email
-# $9 - magento admin usrname
-#$10 - magento admin pwd
-#$11 - magento connect public key
-#$12 -magento connect private key
-#$13 -HOSTNAME
-#steps to install apache2
-mkdir /mylogs
-echo "testing">> /mylogs/text.txt
 set -x
 #set -xeuo pipefail to check if root user 
 
@@ -46,76 +29,11 @@ if [ $# < 13 ]; then
     exit 1
 fi
 
+echo "IN After Execute File">>/mylogs/text.txt
+
 echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} ">> /mylogs/text.txt
-apt-get update >> /mylogs/text.txt
-#Installbasic
-   apt-get install \
-    git \
-    curl \
-    unzip \
-    --yes
-	
-echo "installed basic">> /mylogs/text.txt
-#Install Apache
- apt-get -y install apache2
 
- echo "installed Apache">> /mylogs/text.txt
-
-#install MYSQL 
- debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $5"
- debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.7 mysql-client-5.7 >> /mylogs/text.txt
-# apt-get install mysql-server-5.6 --yes
-mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
-
-echo "installed MYSQL">> /mylogs/text.txt
-# Update apt-get 
-apt-get update >> /mylogs/text.txt
-
-#Install PHP
- apt-get install \
-    php-fpm \
-    php-mysql \
-    php-mcrypt \
-    php-curl \
-    php-cli \
-    php-gd \
-    php7.0-xsl \
-    php-json \
-    php-intl \
-    php-pear \
-    php-dev \
-    php-common \
-    php-soap \
-    php-mbstring \
-    php-zip \
-    --yes >> /mylogs/text.txt
-apt-get update >> /mylogs/text.txt
-a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
- a2enconf php7.0-fpm >> /mylogs/text.txt
-
- service php7.0-fpm restart >> /mylogs/text.txt
- apt-get -y install apache2 php7.0 libapache2-mod-php7.0 >> /mylogs/text.txt
-  service apache2 restart >> /mylogs/text.txt
-  echo "installed PHP">> /mylogs/text.txt
-  
- apt-get -y install curl php7.0-cli git
- echo "installed curl php7.0-cli git">> /mylogs/text.txt
-#download composer and set
-#curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >> /mylogs/text.txt
-#curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
-wget https://getcomposer.org/composer.phar -O composer.phar >> /mylogs/text.txt
-mv composer.phar /usr/local/bin/composer >> /mylogs/text.txt
-chmod 777  /usr/local/bin/composer >> /mylogs/text.txt
- echo "downloaded composer ">> /mylogs/text.txt
-
- wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/InstallScripts/InstallMagento_After_Reboot.sh
- chmod 777 InstallMagento_After_Reboot.sh
- update-rc.d -f InstallMagento_After_Reboot.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
- reboot
- #mv composer.phar /usr/local/bin/composer
-
- # Create a new user for magento
+# Create a new user for magento
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
 echo "$3:$4" |  chpasswd
  usermod -g www-data $3
