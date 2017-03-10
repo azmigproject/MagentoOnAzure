@@ -13,7 +13,7 @@
 #$10 - magento admin pwd
 #$11 - magento connect public key
 #$12 -magento connect private key
-#$12 -HOSTNAME
+#$13 -HOSTNAME
 #steps to install apache2
 
 set -x
@@ -44,6 +44,8 @@ if [ $# < 13 ]; then
         echo "";
     exit 1
 fi
+
+echo "domain name=$1 |Folder name && DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} "> /var/www/text.txt
 
 #Installbasic
    apt-get install \
@@ -116,7 +118,7 @@ AllowOverride All
  service apache2 reload
 
 #disable the default site
-  a2dissite default
+  a2dissite 000-default
  service apache2 reload
 #Go to installed php version apache2 php.ini file and update memory_limit to 2GB
 
