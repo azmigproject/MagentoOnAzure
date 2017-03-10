@@ -47,7 +47,7 @@ if [ $# < 13 ]; then
     exit 1
 fi
 
-echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} ">> /var/www/text.txt
+echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} ">> /mylogs/text.txt
 
 #Installbasic
    apt-get install \
