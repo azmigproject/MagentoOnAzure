@@ -64,13 +64,13 @@ echo "installed basic">> /mylogs/text.txt
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $5"
  debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.7 mysql-client-5.7
+ apt-get -y install mysql-server-5.7 mysql-client-5.7 >> /mylogs/text.txt
 # apt-get install mysql-server-5.6 --yes
-mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;"
+mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
 echo "installed MYSQL">> /mylogs/text.txt
 # Update apt-get 
-apt-get update
+apt-get update >> /mylogs/text.txt
 
 #Install PHP
  apt-get install \
@@ -89,12 +89,11 @@ apt-get update
     php-soap \
     php-mbstring \
     php-zip \
-    --yes
+    --yes >> /mylogs/text.txt
 
- service php7.0-fpm restart
- apt-get -y install apache2 php7.0 libapache2-mod-php7.0
-  service apache2 restart
-
+ service php7.0-fpm restart >> /mylogs/text.txt
+ apt-get -y install apache2 php7.0 libapache2-mod-php7.0 >> /mylogs/text.txt
+  service apache2 restart >> /mylogs/text.txt
   echo "installed PHP">> /mylogs/text.txt
   
  apt-get -y install curl php7.0-cli git
