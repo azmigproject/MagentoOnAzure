@@ -97,6 +97,8 @@ apt-get update
 
   echo "installed PHP">> /mylogs/text.txt
   
+ apt-get -y install curl php7.0-cli git
+ echo "installed curl php7.0-cli git">> /mylogs/text.txt
 #download composer and set
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >> /mylogs/text.txt
 #curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
