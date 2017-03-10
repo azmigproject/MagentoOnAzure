@@ -15,7 +15,8 @@
 #$12 -magento connect private key
 #$13 -HOSTNAME
 #steps to install apache2
-
+mkdr /mylogs
+echo "testing">> /mylogs/text.txt
 set -x
 #set -xeuo pipefail to check if root user 
 
@@ -45,7 +46,7 @@ if [ $# < 13 ]; then
     exit 1
 fi
 
-echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} "> /var/www/text.txt
+echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13} ">> /var/www/text.txt
 
 #Installbasic
    apt-get install \
@@ -53,9 +54,12 @@ echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento 
     curl \
     unzip \
     --yes
-
+	
+echo "installed basic">> /mylogs/text.txt
 #Install Apache
  apt-get -y install apache2
+
+ echo "installed Apache">> /mylogs/text.txt
 
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $5"
@@ -64,6 +68,7 @@ echo "domain name=$1 |Folder name DatabaseName=$2| magento user name=$3|magento 
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $2; FLUSH PRIVILEGES; SHOW DATABASES;"
 
+echo "installed MYSQL">> /mylogs/text.txt
 # Update apt-get 
 apt-get update
 
@@ -90,6 +95,8 @@ apt-get update
  apt-get -y install apache2 php7.0 libapache2-mod-php7.0
   service apache2 restart
 
+  echo "installed PHP">> /mylogs/text.txt
+
 #download composer and set
 curl -sS https://getcomposer.org/installer |  php
  mv composer.phar /usr/local/bin/composer
@@ -99,11 +106,13 @@ curl -sS https://getcomposer.org/installer |  php
 echo "$3:$4" |  chpasswd
  usermod -g www-data $3
 
-
+echo "create user">> /mylogs/text.txt
 
 #set rep.magento.com authendication options in order to get the details
  composer config -g http-basic.repo.magento.com ${11} ${12}
  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2
+
+ echo "Get magento code">> /mylogs/text.txt
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
@@ -130,7 +139,7 @@ AllowOverride All
  a2enconf php7.0-fpm
  service apache2 restart
 
-
+ echo "Install Code">> /mylogs/text.txt
 #install all files in  magento dir 
 cd /var/www/html/$2 && find var vendor pub/static pub/media app/etc -type f -exec  chmod u+w {} \; && find var vendor pub/static pub/media app/etc -type d -exec  chmod u+w {} \; &&  chmod u+x bin/magento
 
@@ -151,6 +160,8 @@ cd /var/www/html/$2
 # to run cron job
  php magento setup:cron:run
 
+ 
+ echo "Install successfull">> /mylogs/text.txt
 shutdown -r +1 &
 exit 0
 
