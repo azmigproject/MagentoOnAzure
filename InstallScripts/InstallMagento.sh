@@ -15,7 +15,7 @@
 #$12 -magento connect private key
 #$13 -HOSTNAME
 #steps to install apache2
-mkdr /mylogs
+mkdir /mylogs
 echo "testing">> /mylogs/text.txt
 set -x
 #set -xeuo pipefail to check if root user 
