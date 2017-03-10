@@ -30,8 +30,8 @@ if [ $# < 13 ]; then
         echo "Missing parameters.";
         echo "1st parameter is domain name";
         echo "2nd parameter is magento folder name in which magento will installed";
-        echo "3rd parameter is magento linux user (it will create it)";
-        echo "4th parameter is magento linux password (it will create it)";
+        echo "3rd parameter is server linux user (it will create it)";
+        echo "4th parameter is server linux password (it will create it)";
 		echo "5th parameter is  mysql SQL Password";
 		echo "6th parameter is magento admin first name";
 		echo "7th parameter is magento admin last name";
@@ -96,7 +96,7 @@ apt-get update
   service apache2 restart
 
   echo "installed PHP">> /mylogs/text.txt
-
+  export COMPOSER_HOME= "/home/$3"
 #download composer and set
 curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
  echo "downloaded composer ">> /mylogs/text.txt
