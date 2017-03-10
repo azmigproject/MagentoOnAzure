@@ -110,6 +110,8 @@ echo "create user">> /mylogs/text.txt
 
 #set rep.magento.com authendication options in order to get the details
  composer config -g http-basic.repo.magento.com ${11} ${12}
+ echo "composer config -g http-basic.repo.magento.com ${11} ${12}">> /mylogs/text.txt
+ echo "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2">> /mylogs/text.txt
  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2 >> /mylogs/text.txt
 
  echo "Get magento code">> /mylogs/text.txt
