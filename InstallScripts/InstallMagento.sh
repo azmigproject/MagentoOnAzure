@@ -96,12 +96,13 @@ apt-get update
   service apache2 restart
 
   echo "installed PHP">> /mylogs/text.txt
-  export COMPOSER_HOME= "/home/$3"
+  
 #download composer and set
-curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer >> /mylogs/text.txt
+#curl -sS https://getcomposer.org/installer |  php >> /mylogs/text.txt
  echo "downloaded composer ">> /mylogs/text.txt
 
- mv composer.phar /usr/local/bin/composer
+ #mv composer.phar /usr/local/bin/composer
 
  # Create a new user for magento
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
