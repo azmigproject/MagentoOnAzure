@@ -109,11 +109,18 @@ mv composer.phar /usr/local/bin/composer >> /mylogs/text.txt
 chmod 777  /usr/local/bin/composer >> /mylogs/text.txt
  echo "downloaded composer ">> /mylogs/text.txt
 
- wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/InstallScripts/InstallMagento_After_Reboot.sh
+ wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/InstallScripts/InstallMagento_After_Reboot
  chmod 777 InstallMagento_After_Reboot.sh
- echo "PATH=/sbin:/bin:/usr/sbin:/usr/bin" >> /etc/init.d/After_Script.sh
- echo "InstallMagento_After_Reboot.sh $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}" >> /etc/init.d/After_Script.sh
- chmod 777 /etc/init.d/After_Script.sh
+ echo "PATH=/sbin:/bin:/usr/sbin:/usr/bin" >> /etc/init.d/After_Script
+ chmod 777 /etc/init.d/After_Script
+ echo " case '$1' in" >> /etc/init.d/After_Script
+ echo " start)" >> /etc/init.d/After_Scrip
+ echo "bash /InstallMagento_After_Reboot.sh '$1' '$2' '$3' '$4' '$5' '$6' '$7' '$8' '$9' '${10}' '${11}' '${12}' '${13}'" >> /etc/init.d/After_Script
+ echo ";;" >> /etc/init.d/After_Script
+ echo " stop|restart|reload)" >> /etc/init.d/After_Script
+ echo " ;;">> /etc/init.d/After_Script
+ echo "esac">> /etc/init.d/After_Script
+ chmod 777 /etc/init.d/After_Script
  update-rc.d  After_Script.sh defaults
  reboot
  #mv composer.phar /usr/local/bin/composer
