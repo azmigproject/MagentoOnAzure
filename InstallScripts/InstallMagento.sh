@@ -172,30 +172,31 @@ sudo  service apache2 restart
 
  sudo  echo "Install Code">> /mylogs/text.txt
 #install all files in  magento dir 
-cd /var/www/html/$2 && find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod u+w {} \; && find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod u+w {} \; &&  sudo  chmod u+x bin/magento
+#cd /var/www/html/$2 && find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod u+w {} \; && find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod u+w {} \; &&  sudo  chmod u+x bin/magento
 
 #after this go to /bin directory of magento installation
 cd /var/www/html/$2/bin
 #give install command 
+ sudo  echo "Running Install magento command">> /mylogs/text.txt
 sudo  php magento setup:install --base-url=http://$1.${13}/$2/ \
 --db-host=localhost --db-name=$2 --db-user=root --db-password=$5 \
 --admin-firstname=$6 --admin-lastname=$7 --admin-email=$8 \
 --admin-user=$9 --admin-password=${10} --language=en_US \
 --currency=USD --timezone=America/Chicago --use-rewrites=1
-
+sudo  echo "magento installation complete">> /mylogs/text.txt
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
 cd /var/www/html/$2
- 
+ sudo  echo "start giving permissions">> /mylogs/text.txt
  find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod g+w {} \;
  find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod g+ws {} \;
  sudo  chown -R magento:www-data .
 sudo  chmod u+x bin/magento
- 
+ sudo  echo "end giving permissions">> /mylogs/text.txt
 # to run cron job
 cd /var/www/html/$2/bin
  sudo  php magento setup:cron:run
-
+  sudo  echo "started cron">> /mylogs/text.txt
  
  sudo  echo "Install successfull">> /mylogs/text.txt
  sudo su
