@@ -108,6 +108,8 @@ wget https://getcomposer.org/composer.phar -O composer.phar >> /mylogs/text.txt
 mv composer.phar /usr/local/bin/composer >> /mylogs/text.txt
 chmod 777  /usr/local/bin/composer >> /mylogs/text.txt
  echo "downloaded composer ">> /mylogs/text.txt
+ composer>> /mylogs/text.txt
+systemctl restart apache2
 
 # wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/InstallScripts/InstallMagento_After_Reboot
 # chmod 777 InstallMagento_After_Reboot.sh
@@ -128,10 +130,11 @@ chmod 777  /usr/local/bin/composer >> /mylogs/text.txt
  # Create a new user for magento
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
 echo "$3:$4" |  chpasswd
+
  usermod -g www-data $3
 
 echo "create user">> /mylogs/text.txt
-
+systemctl restart apache2
 #set rep.magento.com authendication options in order to get the details
  composer config -g http-basic.repo.magento.com ${11} ${12}
  echo "composer config -g http-basic.repo.magento.com ${11} ${12}">> /mylogs/text.txt
@@ -181,9 +184,14 @@ cd /var/www/html/$2/bin
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
 cd /var/www/html/$2
+ 
+ find var vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
+ find var vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \;
  chown -R magento:www-data .
+chmod u+x bin/magento
  
 # to run cron job
+cd /var/www/html/$2/bin
  php magento setup:cron:run
 
  
