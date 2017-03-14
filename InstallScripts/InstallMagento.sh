@@ -178,7 +178,7 @@ sudo  echo "end giving permissions">> /mylogs/text.txt
 # to run cron job
 cd /var/www/html/$2/bin
 sudo  php magento setup:cron:run
-sudo chmod -R 777 /var/www/html/$3
+sudo chmod -R 777 /var/www/html/$2
 sudo  echo "started cron">> /mylogs/text.txt
 sudo  echo "Install successfull">> /mylogs/text.txt
 sudo su
