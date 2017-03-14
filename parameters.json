@@ -6,12 +6,23 @@
 
   "parameters": {
 
-    "uniqueNamePrefix": {
+    "domainName": {
 
       "value": "GEN-UNIQUE-8"
 
     },
-
+    "customerName": {
+      "value": "GEN-UNIQUE-8"
+    },
+    "customerTier": {
+      "value": "GEN-UNIQUE-8"
+    },
+    "magentoFolder": {
+      "value": "Magento"
+    },
+    "mysqlDBName": {
+      "value": "Magento"
+    },
     "vmadminUsername": {
 
       "value": "GEN-UNIQUE-8"
@@ -24,22 +35,6 @@
 
     },
 
-    "magentoUsername": {
-
-      "value": "magento"
-
-    },
-
-    "magentoUserPassword": {
-
-      "value": "magento"
-
-    },
-    "magentoFolder": {
-
-      "value": "magento"
-
-    },
     "mySqlPassword": {
 
       "value": "GEN-PASSWORD"
@@ -81,7 +76,7 @@
 
       "value": "GEN-MAGENTOCONNECT-PRIVATEKEY"
 
-    }    
+    }
 
   }
 
