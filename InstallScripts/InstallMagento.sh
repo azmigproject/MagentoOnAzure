@@ -47,7 +47,7 @@ if [ $# < 14 ]; then
     exit 1
 fi
 
-echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13}| magento DB Name={14} ">> /mylogs/text.txt
+echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|magento admin first name=$6|magento admin last name=$7| magneto admin email=$8|magento admin usrname=$9|magento admin pwd=${10}|magento connect public key=${11}| magento connect private key=${12}|HOSTNAME=${13}| magento DB Name=${14} ">> /mylogs/text.txt
 apt-get update >> /mylogs/text.txt
 #Installbasic
    apt-get install \
@@ -171,13 +171,14 @@ cd /var/www/html/$2
 sudo  echo "start giving permissions">> /mylogs/text.txt
 find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod g+w {} \;
 find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod g+ws {} \;
-sudo  chown -R magento:www-data .
+sudo  chown -R $3:www-data .
 sudo  chmod u+x bin/magento
 sudo  echo "end giving permissions">> /mylogs/text.txt
 
 # to run cron job
 cd /var/www/html/$2/bin
 sudo  php magento setup:cron:run
+#sudo chmod -R 777 /var/www/html/$3
 sudo  echo "started cron">> /mylogs/text.txt
 sudo  echo "Install successfull">> /mylogs/text.txt
 sudo su
