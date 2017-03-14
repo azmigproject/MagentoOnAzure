@@ -14,6 +14,7 @@
 #$11 - magento connect public key
 #$12 -magento connect private key
 #$13 -HOSTNAME
+#14 - MYSQL DB NAME
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
