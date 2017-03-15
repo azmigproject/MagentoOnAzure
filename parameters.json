@@ -17,9 +17,7 @@
     "customerTier": {
       "value": "GEN-UNIQUE-8"
     },
-    "magentoFolder": {
-      "value": "Magento"
-    },
+    
     "mysqlDBName": {
       "value": "Magento"
     },
