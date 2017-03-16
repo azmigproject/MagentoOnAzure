@@ -117,6 +117,7 @@ echo "$3:$4" |  chpasswd
  chmod 777 /mylogs/text.txt
  usermod -g www-data $3
  usermod -aG root $3
+ chmod 755 /var/www
  su $3
 echo '$4'|sudo -S echo "create user">> /mylogs/text.txt
 sudo echo "create user">> /mylogs/text.txt
@@ -134,7 +135,7 @@ sudo  echo "<VirtualHost *:80>
 	ServerName $1.{$13}
         ServerAlias $1.{$13}
         ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/test
+        DocumentRoot /var/www/$2
         ErrorLog ${APACHE_LOG_DIR}/error.log
        CustomLog ${APACHE_LOG_DIR}/access.log combined
 	DocumentRoot /var/www/$2
