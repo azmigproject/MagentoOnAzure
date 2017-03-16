@@ -168,7 +168,7 @@ sudo  echo "Install Code">> /mylogs/text.txt
 cd /var/www/$2/bin
 #give install command 
 sudo  echo "Running Install magento command">> /mylogs/text.txt
-sudo  php magento setup:install --base-url=http://$1.${13}/$2/ \
+sudo  php magento setup:install --base-url=http://$1.${13}/ \
 --db-host=localhost --db-name=${14} --db-user=root --db-password=$5 \
 --admin-firstname=$6 --admin-lastname=$7 --admin-email=$8 \
 --admin-user=$9 --admin-password=${10} --language=en_US \
