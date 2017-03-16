@@ -18,6 +18,7 @@
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
+chmod 777 /mylogs/text.txt
 set -x
 #set -xeuo pipefail to check if root user 
 
@@ -114,13 +115,14 @@ systemctl restart apache2
  # Create a new user for magento
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
 echo "$3:$4" |  chpasswd
- chmod 777 /mylogs/text.txt
+ 
  usermod -g www-data $3
  usermod -aG root $3
- chmod 755 /var/www
+
  su $3
 echo '$4'|sudo -S echo "create user">> /mylogs/text.txt
 sudo echo "create user">> /mylogs/text.txt
+sudo chmod -R 755 /var/www
 sudo  systemctl restart apache2
 #set rep.magento.com authendication options in order to get the details
 sudo  composer config -g http-basic.repo.magento.com ${11} ${12}
@@ -132,8 +134,8 @@ sudo  composer create-project --repository-url=https://repo.magento.com/ magento
 
 # Create a new site configuration and add in apache for magento
 sudo  echo "<VirtualHost *:80>
-	ServerName $1.{$13}
-        ServerAlias $1.{$13}
+	ServerName $1.${13}
+        ServerAlias $1.${13}
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/$2
         ErrorLog ${APACHE_LOG_DIR}/error.log
