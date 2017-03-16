@@ -124,18 +124,24 @@ sudo  systemctl restart apache2
 #set rep.magento.com authendication options in order to get the details
 sudo  composer config -g http-basic.repo.magento.com ${11} ${12}
 sudo  echo "composer config -g http-basic.repo.magento.com ${11} ${12}">> /mylogs/text.txt
-sudo  echo "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2">> /mylogs/text.txt
-sudo  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/html/$2 >> /mylogs/text.txt
+sudo  echo "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/$2">> /mylogs/text.txt
+sudo  composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition  /var/www/$2 >> /mylogs/text.txt
 
  sudo  echo "Get magento code">> /mylogs/text.txt
 
 # Create a new site configuration and add in apache for magento
 sudo  echo "<VirtualHost *:80>
-DocumentRoot /var/www/html
-<Directory /var/www/html/>
-Options Indexes FollowSymLinks MultiViews
-AllowOverride All
-</Directory>
+	ServerName $1.{$13}
+        ServerAlias $1.{$13}
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/test
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+       CustomLog ${APACHE_LOG_DIR}/access.log combined
+	DocumentRoot /var/www/$2
+#<Directory /var/www/$2/>
+#	Options Indexes FollowSymLinks MultiViews
+#	AllowOverride All
+#</Directory>
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf
 #enable the new site and 
 sudo  a2ensite $2.conf
@@ -156,7 +162,7 @@ sudo  service apache2 restart
 sudo  echo "Install Code">> /mylogs/text.txt
 #install all files in  magento dir 
 #after this go to /bin directory of magento installation
-cd /var/www/html/$2/bin
+cd /var/www/$2/bin
 #give install command 
 sudo  echo "Running Install magento command">> /mylogs/text.txt
 sudo  php magento setup:install --base-url=http://$1.${13}/$2/ \
@@ -168,7 +174,7 @@ sudo  echo "magento installation complete">> /mylogs/text.txt
 
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
-cd /var/www/html/$2
+cd /var/www/$2
 sudo  echo "start giving permissions">> /mylogs/text.txt
 find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod g+w {} \;
 find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod g+ws {} \;
@@ -177,9 +183,9 @@ sudo  chmod u+x bin/magento
 sudo  echo "end giving permissions">> /mylogs/text.txt
 
 # to run cron job
-cd /var/www/html/$2/bin
+cd /var/www/$2/bin
 sudo  php magento setup:cron:run
-sudo chmod -R 777 /var/www/html/$2
+sudo chmod -R 777 /var/www/$2
 sudo  echo "started cron">> /mylogs/text.txt
 sudo  echo "Install successfull">> /mylogs/text.txt
 sudo su
