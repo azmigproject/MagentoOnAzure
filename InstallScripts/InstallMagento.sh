@@ -141,10 +141,10 @@ sudo  echo "<VirtualHost *:80>
         ErrorLog ${APACHE_LOG_DIR}/error.log
        CustomLog ${APACHE_LOG_DIR}/access.log combined
 	DocumentRoot /var/www/$2
-#<Directory /var/www/$2/>
-#	Options Indexes FollowSymLinks MultiViews
-#	AllowOverride All
-#</Directory>
+<Directory /var/www/$2/>
+	Options Indexes FollowSymLinks MultiViews
+	AllowOverride All
+</Directory>
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf
 #enable the new site and 
 sudo  a2ensite $2.conf
