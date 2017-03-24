@@ -14,4 +14,4 @@ this will install an existing magento package in a VM whose backup paths are pro
 
 
 ### Check your deployment
-Once the deployment succeed,lgo to the URL  given in the variable to access the installed magento
+Once the deployment succeed,go to the installedUrl given as output when ARM template installed magento successfully
