@@ -1,0 +1,81 @@
+{
+
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+
+    "domainName": {
+
+      "value": "GEN-UNIQUE-8"
+
+    },
+    "customerName": {
+      "value": "GEN-UNIQUE-8"
+    },
+    "customerTier": {
+      "value": "GEN-UNIQUE-8"
+    },
+    
+    "mysqlDBName": {
+      "value": "Magento"
+    },
+    "vmadminUsername": {
+
+      "value": "GEN-UNIQUE-8"
+
+    },
+
+    "vmadminPassword": {
+
+      "value": "GEN-PASSWORD"
+
+    },
+
+    "mySqlPassword": {
+
+      "value": "GEN-PASSWORD"
+
+    },
+
+    "magentoAdminFirstname": {
+
+      "value": "GEN-MAGENTOADMIN-FIRSTNAME"
+
+    },
+    "magentoAdminLastname": {
+
+      "value": "GEN-MAGENTOADMIN-LASTNAME"
+
+    },
+    "magentoAdminEmail": {
+
+      "value": "GEN-EMAIL"
+
+    },
+    "magentoAdminUsername": {
+
+      "value": "GEN--MAGENTOADMIN-UNIQUE-8"
+
+    },
+    "magentoAdminPassword": {
+
+      "value": "GEN-MAGENTOADMIN-PASSWORD"
+
+    },
+
+    "magentoConnectPublicKey": {
+
+      "value": "GEN-MAGENTOCONNECT-PUBLICKEY"
+
+    },
+    "magentoConnectPrivateKey": {
+
+      "value": "GEN-MAGENTOCONNECT-PRIVATEKEY"
+
+    }
+
+  }
+
+}
