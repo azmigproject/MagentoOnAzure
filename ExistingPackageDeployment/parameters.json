@@ -38,9 +38,28 @@
       "value": "GEN-PASSWORD"
 
     },
+
+    "magentoFileBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/MagentoPOC_2017-03-22.tar"
+
+    },
+    "magentoDBBackup": {
+
+      "value": "https: //gdc.blob.core.windows.net/autosoez/DeploymentPackages/2017_03_23_DB_Backups.zip"
+
+    },
+
+    "magentoDBToRestore": {
+
+      "value": "2017_03_23_att01_www.sql"
+
+    },
+
     "vmSize": {
 
       "value": "Standard_D1_v2"
     }
+  }
 
 }
