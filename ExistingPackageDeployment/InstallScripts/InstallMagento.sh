@@ -57,14 +57,13 @@ echo "installed basic">> /mylogs/text.txt
 echo "installed Apache">> /mylogs/text.txt
 
 apt-get -y install software-properties-common
-add-apt-repository -y ppa:ondrej/mysql-5.5
 apt-get update
 
 
 #install MYSQL 
- debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
- debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
+ debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password password $5"
+ debconf-set-selections <<< "mysql-server-5.6 mysql-server/root_password_again password $5"
+ apt-get -y install mysql-server-5.5 mysql-client-5.6 >> /mylogs/text.txt
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
@@ -130,8 +129,8 @@ apt-get -y install apache2 php5.6 libapache2-mod-php5.6 >> /mylogs/text.txt
 service apache2 restart >> /mylogs/text.txt
 echo "installed PHP">> /mylogs/text.txt
   
-apt-get -y install curl php7.0-cli git
-echo "installed curl php7.0-cli git">> /mylogs/text.txt
+#apt-get -y install curl php7.0-cli git
+#echo "installed curl php7.0-cli git">> /mylogs/text.txt
 
 systemctl restart apache2
 
