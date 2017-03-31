@@ -124,7 +124,7 @@
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "installScriptName": "InstallMagento.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
-    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), variables('vmHOSTURL'),'  ', parameters('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'))]",
+    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', parameters('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',parameters('magentoDBToRestore'))]",
     "apiVersion": "2015-06-15"
   },
   "resources": [

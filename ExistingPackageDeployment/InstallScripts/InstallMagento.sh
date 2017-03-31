@@ -56,9 +56,9 @@ echo "installed basic">> /mylogs/text.txt
 
 echo "installed Apache">> /mylogs/text.txt
 
-apt-get install software-properties-common
-sudo add-apt-repository -y ppa:ondrej/mysql-5.5
-sudo apt-get update
+apt-get -y install software-properties-common
+add-apt-repository -y ppa:ondrej/mysql-5.5
+apt-get update
 
 
 #install MYSQL 
@@ -72,11 +72,11 @@ mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATA
 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 
-apt-get install software-properties-common
+apt-get -y install software-properties-common
 add-apt-repository -y ppa:ondrej/php
 apt-get update
-apt-get install php5.6 >> /mylogs/text.txt
-apt-get install php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml >> /mylogs/text.txt
+apt-get -y install php5.6 >> /mylogs/text.txt
+apt-get -y install php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml >> /mylogs/text.txt
 
 # Update apt-get 
 apt-get update >> /mylogs/text.txt
