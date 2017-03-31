@@ -54,44 +54,79 @@ echo "installed basic">> /mylogs/text.txt
 #Install Apache
  apt-get -y install apache2
 
- echo "installed Apache">> /mylogs/text.txt
+echo "installed Apache">> /mylogs/text.txt
+
+apt-get install software-properties-common
+sudo add-apt-repository -y ppa:ondrej/mysql-5.5
+sudo apt-get update
+
 
 #install MYSQL 
- debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $5"
- debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.7 mysql-client-5.7 >> /mylogs/text.txt
+ debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
+ debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
+ apt-get -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
 
 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
+
+apt-get install software-properties-common
+add-apt-repository -y ppa:ondrej/php
+apt-get update
+apt-get install php5.6 >> /mylogs/text.txt
+apt-get install php5.6-mbstring php5.6-mcrypt php5.6-mysql php5.6-xml >> /mylogs/text.txt
+
 # Update apt-get 
 apt-get update >> /mylogs/text.txt
 
 #Install PHP
- apt-get install \
-    php-fpm \
-    php-mysql \
-    php-mcrypt \
-    php-curl \
-    php-cli \
-    php-gd \
-    php7.0-xsl \
-    php-json \
-    php-intl \
-    php-pear \
-    php-dev \
-    php-common \
-    php-soap \
-    php-mbstring \
-    php-zip \
+
+apt-get install \
+    php5.6-fpm \
+    php5.6-mysql \
+    php5.6-mcrypt \
+    php5.6-curl \
+   php5.6-cli \
+    php5.6-gd \
+    php5.6-xsl \
+    php5.6-json \
+   php5.6-intl \
+    php5.6-dev \
+    php5.6-common \
+    php5.6-soap \
+    php5.6-mbstring \
+    php5.6-zip \
     --yes >> /mylogs/text.txt
+
+
+ #apt-get install \
+  #  php-fpm \
+   # php-mysql \
+    #php-mcrypt \
+    #php-curl \
+    #php-cli \
+   # php-gd \
+   # php7.0-xsl \
+    #php-json \
+    #php-intl \
+    #php-pear \
+    #php-dev \
+    #php-common \
+    #php-soap \
+    #php-mbstring \
+    #php-zip \
+    #--yes >> /mylogs/text.txt
 apt-get update >> /mylogs/text.txt
 a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
-a2enconf php7.0-fpm >> /mylogs/text.txt
-service php7.0-fpm restart >> /mylogs/text.txt
-apt-get -y install apache2 php7.0 libapache2-mod-php7.0 >> /mylogs/text.txt
+a2enconf php5.6-fpm >> /mylogs/text.txt
+service php5.6-fpm restart >> /mylogs/text.txt
+apt-get -y install apache2 php5.6 libapache2-mod-php5.6 >> /mylogs/text.txt
+#a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
+#a2enconf php7.0-fpm >> /mylogs/text.txt
+#service php7.0-fpm restart >> /mylogs/text.txt
+#apt-get -y install apache2 php7.0 libapache2-mod-php7.0 >> /mylogs/text.txt
 service apache2 restart >> /mylogs/text.txt
 echo "installed PHP">> /mylogs/text.txt
   
@@ -133,7 +168,8 @@ rm -rf /MagentoBK/DB
 #update DB with new website root path
 unsecurePath="http://$1.$6/"
 securePath="https://$1.$6/"
-mysql -u root --password="$5" -e " use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';" >> /mylogs/text.txt
+mysql -u root --password="$5" -e "
+ use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';" >> /mylogs/text.txt
 
 #Remove folder having zip files
 echo "Removing downloaded zip files">> /mylogs/text.txt
@@ -147,14 +183,7 @@ echo "<VirtualHost *:80>
         DocumentRoot /var/www/$2/2016080806
         ErrorLog ${APACHE_LOG_DIR}/error.log
        CustomLog ${APACHE_LOG_DIR}/access.log combined
-	
-#<Directory /var/www/$2/2016080806>
-#	Options Indexes FollowSymLinks MultiViews
-#	AllowOverride All
-#</Directory>
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf
-
-
 
  # Create a new user for magento
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
@@ -190,7 +219,7 @@ sudo  a2enmod rewrite
 sudo  service apache2 restart
 sudo  phpenmod  mcrypt
 sudo  service apache2 restart
-sudo  a2enconf php7.0-fpm
+sudo  a2enconf php5.6-fpm
 sudo  service apache2 restart
 sudo  echo "Install Code">> /mylogs/text.txt
 
@@ -205,7 +234,7 @@ sudo  echo "Install Code">> /mylogs/text.txt
 
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
-cd /var/www/$2
+cd /var/www/$2/
 sudo  echo "start giving permissions">> /mylogs/text.txt
 find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod g+w {} \;
 find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod g+ws {} \;
@@ -215,11 +244,10 @@ sudo  echo "end giving permissions">> /mylogs/text.txt
 
 # to run cron job
 cd /var/www/$2/bin
-sudo  php magento setup:cron:run
+#sudo  php magento setup:cron:run
 sudo chmod -R 777 /var/www/$2
 sudo  echo "started cron">> /mylogs/text.txt
 sudo  echo "Install successfull">> /mylogs/text.txt
 sudo su
 shutdown -r +1 &
 exit 0
-
