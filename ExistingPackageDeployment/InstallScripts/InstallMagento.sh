@@ -234,12 +234,12 @@ sudo  echo "Install Code">> /mylogs/text.txt
 
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
-cd /var/www/$2/
-sudo  echo "start giving permissions">> /mylogs/text.txt
-find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod g+w {} \;
-find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod g+ws {} \;
-sudo  chown -R $3:www-data .
-sudo  chmod u+x bin/magento
+cd /var/www/$2/ 
+sudo  echo "start giving permissions">> /mylogs/text.txt 
+find var vendor pub/static pub/media app/etc -type f -exec sudo  chmod g+w {} \; >> /mylogs/text.txt
+find var vendor pub/static pub/media app/etc -type d -exec sudo  chmod g+ws {} \; >> /mylogs/text.txt
+sudo  chown -R $3:www-data . >> /mylogs/text.txt
+sudo  chmod u+x bin/magento >> /mylogs/text.txt
 sudo  echo "end giving permissions">> /mylogs/text.txt
 
 # to run cron job
