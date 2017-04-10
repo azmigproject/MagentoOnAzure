@@ -48,8 +48,37 @@
     "magentoFileBackup": {
       "type": "string",
       "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/MagentoPOC_2017-03-22.tar",
+
+
       "metadata": {
         "description": "File backup for Magento Code"
+      }
+    },
+    "magentoMediaBackup": {
+      "type": "string",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.media_2017_03_30.tar",
+
+
+      "metadata": {
+        "description": "Media folder backup for Magento Code"
+      }
+    },
+    "magentoInitBackup": {
+      "type": "string",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.init.tar",
+
+
+      "metadata": {
+        "description": "Init folder backup for Magento Code"
+      }
+    },
+    "magentoVarBackup": {
+      "type": "string",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/var.tar",
+
+
+      "metadata": {
+        "description": "Var folder backup for Magento Code"
       }
     },
     "magentoDBBackup": {
@@ -70,7 +99,7 @@
 
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2_v2",
+      "defaultValue": "Standard_D4_v2",
       "allowedValues": [
         "Standard_A3",
         "Standard_A4",
@@ -102,7 +131,7 @@
     "newStorageAccountName": "[concat(uniquestring(resourceGroup().id), 'mds')]",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
-    "ubuntuOSVersion": "16.10",
+    "ubuntuOSVersion": "14.04.5-LTS",
     "uniqueNamePrefix": "[concat(parameters('customerName'),parameters('customerTier'))]",
     "OSDiskName": "[concat(variables('uniqueNamePrefix'),'Disk')]",
     "nicName": "[concat(variables('uniqueNamePrefix'),'Nic')]",
@@ -124,7 +153,7 @@
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "installScriptName": "InstallMagento.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
-    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', parameters('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',parameters('magentoDBToRestore'))]",
+    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', parameters('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',parameters('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup'))]",
     "apiVersion": "2015-06-15"
   },
   "resources": [
@@ -239,7 +268,6 @@
         }
       }
     },
-
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
@@ -272,7 +300,7 @@
             },
             "caching": "ReadWrite",
             "createOption": "FromImage",
-            "diskSizeGB": 65
+            "diskSizeGB": 360
           }
         },
         "networkProfile": {

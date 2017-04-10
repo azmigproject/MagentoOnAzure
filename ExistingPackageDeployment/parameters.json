@@ -44,6 +44,26 @@
       "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/MagentoPOC_2017-03-22.tar"
 
     },
+
+    "magentoMediaBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.media_2017_03_30.tar"
+
+    },
+
+    "magentoInitBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.init.tar"
+
+    },
+
+    "magentoVarBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/var.tar"
+
+    },
+
+
     "magentoDBBackup": {
 
       "value": "https: //gdc.blob.core.windows.net/autosoez/DeploymentPackages/2017_03_23_DB_Backups.zip"
