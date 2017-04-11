@@ -99,7 +99,7 @@
 
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D4_v2",
+      "defaultValue": "Standard_L4s",
       "allowedValues": [
         "Standard_A3",
         "Standard_A4",
@@ -119,7 +119,8 @@
         "Standard_D14",
         "Standard_D2_v2",
         "Standard_D3_v2",
-        "Standard_D4_v2"
+        "Standard_D4_v2",
+        "Standard_L4s"
 
       ],
       "metadata": {

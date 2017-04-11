@@ -83,8 +83,8 @@ wget $8 -P /MagentoBK  >> /mylogs/text.txt
 MagentoBKFile=${8##*/}
 echo "Downloaded magento backup files. MagentoBKFile=$MagentoBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/$MagentoInitBKFile -C /var/www/$2
-rm -rf /MagentoBK/$MagentoInitBKFilee >> /mylogs/text.txt
+tar -xvf /MagentoBK/$MagentoBKFile -C /var/www/$2
+rm -rf /MagentoBK/$MagentoBKFile >> /mylogs/text.txt
 echo "unzip magento backup files">> /mylogs/text.txt
 
 #download magento init folder backup
@@ -94,7 +94,7 @@ MagentoInitBKFile=${12##*/}
 echo "Downloaded magento init folder backup files. MagentoInitBKFile=$MagentoInitBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
 tar -xvf /MagentoBK/$MagentoInitBKFile -C /var/www/$2
-rm -rf /MagentoBK/$MagentoInitBKFilee >> /mylogs/text.txt
+rm -rf /MagentoBK/$MagentoInitBKFile >> /mylogs/text.txt
 echo "unzip magento init folder">> /mylogs/text.txt
 
 #download magento var folder backup
@@ -126,7 +126,7 @@ echo "installed Apache">> /mylogs/text.txt
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
  apt-get -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
 # apt-get install mysql-server-5.6 --yes
-mysql -u root --password="$5" -e"DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
+mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
 
 
@@ -176,13 +176,12 @@ mkdir /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
 tar -xvf /MagentoBK/$MagentoDBBKFile -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
-mysql -u root --password="$5" -e" use $7; source /MagentoBK/DB/${10};" >> /mylogs/text.txt
+mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" >> /mylogs/text.txt
 rm -rf /MagentoBK/DB
 #update DB with new website root path
 unsecurePath="http://$1.$6/"
 securePath="https://$1.$6/"
-mysql -u root --password="$5" -e "
- use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';" >> /mylogs/text.txt
+mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';">> /mylogs/text.txt
 
 #Remove folder having zip files
 echo "Removing downloaded zip files">> /mylogs/text.txt
