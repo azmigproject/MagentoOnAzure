@@ -14,6 +14,7 @@
 #$11 - Magento Media Folder backup
 #$12 - Magento Init Folder backup
 #$13 - Magento Var Folder backup
+#$14- Magento htaccess file
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
@@ -26,7 +27,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# < 13 ]; then
+if [ $# < 14 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -42,12 +43,13 @@ if [ $# < 13 ]; then
 		echo "11th parameter is Magento Media folder backup";
 		echo "12th parameter is Magento Init folder backup";
 		echo "13th parameter is Magento Var folder backup";
+		echo "14th parameter is default htaccess file path";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
 fi
 
-echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}">> /mylogs/text.txt
+echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
 apt-get update >> /mylogs/text.txt
 #Installbasic
    apt-get install \
@@ -205,6 +207,18 @@ echo "<VirtualHost *:80>
        CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf
 
+# Check if .htaccess file is Missing than add it from default location
+
+cd /var/www/$2/2016080806 
+
+if [ ! -f ".htaccess" ]; then
+
+ echo "copying ht access file";
+
+ wget ${14}
+
+ fi
+ cd /
  # Create a new user for magento
  adduser $3 --gecos "Magento System,0,0,0" --disabled-password
 echo "$3:$4" |  chpasswd
@@ -237,7 +251,7 @@ sudo  service apache2 reload
 #change to add allow url rewite and handle phpencryption in apache
 sudo  a2enmod rewrite
 sudo  service apache2 restart
-sudo  phpenmod  mcrypt
+sudo  php5enmod  mcrypt
 sudo  service apache2 restart
 sudo  a2enconf php5-fpm
 sudo  service apache2 restart
