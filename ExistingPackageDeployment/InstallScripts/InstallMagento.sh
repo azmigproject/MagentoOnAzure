@@ -190,10 +190,10 @@ echo "Removing downloaded zip files">> /mylogs/text.txt
 rm -rf /MagentoBK >> /mylogs/text.txt
 
 #Replace the deatabase details in local.xml file
-sed -i 's/74.208.174.2/localhost/g' /var/www/$2/.init/local.xml >> /mylogs/text.txt
-sed -i 's/aat01_www/$7/g' /var/www/$2/.init/local.xml >> /mylogs/text.txt
-sed -i 's/aat01/root/g' /var/www/$2/.init/local.xml >> /mylogs/text.txt
-sed -i 's/DiplVYtpSM0XeuKU/$5/g' /var/www/$2/.init/local.xml >> /mylogs/text.txt
+sed -i "s/74.208.174.2/localhost/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
+sed -i "s/aat01_www/$7/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
+sed -i "s/aat01/root/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
+sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
 
 echo "updated local.xml file">> /mylogs/text.txt
 
@@ -205,6 +205,13 @@ echo "<VirtualHost *:80>
         DocumentRoot /var/www/$2/2016080806
         ErrorLog ${APACHE_LOG_DIR}/error.log
        CustomLog ${APACHE_LOG_DIR}/access.log combined
+	   <Directory /var/www/$2/2016080806/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
 </VirtualHost>" >> /etc/apache2/sites-available/$2.conf
 
 # Check if .htaccess file is Missing than add it from default location
@@ -284,6 +291,8 @@ sudo chmod -R 777 .media >> /mylogs/text.txt
 cd /var/www/$2
 sudo chmod -R 777 .var >> /mylogs/text.txt
 sudo chmod -R 777 .media >> /mylogs/text.txt
+cd /var/www/$2/
+sudo rm -rf .var/cache/*>> /mylogs/text.txt
 sudo  echo "started cron">> /mylogs/text.txt
 sudo  echo "Install successfull">> /mylogs/text.txt
 sudo su
