@@ -321,35 +321,20 @@
           ]
         }
       }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'),'/newuserscript')]",
-      "apiVersion": "[variables('apiVersion')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.Azure.Extensions",
-        "type": "CustomScript",
-        "typeHandlerVersion": "2.0",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "fileUris": [
-            "[variables('installScriptUri')]"
-          ]
-        },
-        "protectedSettings": {
-          "commandToExecute": "[variables('installCommand')]"
-        }
-      }
     }
   ],
   "outputs": {
     "installedUrl": {
       "type": "string",
       "value": "[concat('http://',parameters('domainName'),'.',variables('vmHOSTURL'))]"
+    },
+    "installedUrlAdmin": {
+      "type": "string",
+      "value": "[concat('http://',parameters('domainName'),'.',variables('vmHOSTURL'),'/zpanel')]"
+    },
+    "preInstallerString": {
+      "type": "string",
+      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagento.sh"
     },
     "commandString": {
       "type": "string",
