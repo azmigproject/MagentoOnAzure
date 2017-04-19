@@ -75,12 +75,7 @@
 
     },
 
-    "magentoDBToRestore": {
-
-      "value": "magento_init.sql"
-
-    },
-
+    
     "vmSize": {
 
       "value": "Standard_L4s"
