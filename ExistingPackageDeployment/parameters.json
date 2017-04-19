@@ -62,7 +62,7 @@
       "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/var.tar"
 
     },
-	"magentoDefaultHTaccess": {
+    "magentoDefaultHTaccess": {
 
       "value": "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/.htaccess"
 

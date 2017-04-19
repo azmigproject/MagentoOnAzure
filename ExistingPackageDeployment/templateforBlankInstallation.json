@@ -56,7 +56,7 @@
     },
     "magentoMediaBackup": {
       "type": "string",
-      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.media_2017_03_30.tar",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.media.zip",
 
 
       "metadata": {
@@ -81,7 +81,7 @@
         "description": "Var folder backup for Magento Code"
       }
     },
-    "magentoDefaultHTaccess": {
+	 "magentoDefaultHTaccess": {
       "type": "string",
       "defaultValue": "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/.htaccess",
 
@@ -92,7 +92,7 @@
     },
     "magentoDBBackup": {
       "type": "string",
-      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/2017_03_23_DB_Backups.tar",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.rar",
       "metadata": {
         "description": "Magento DB backup"
       }
@@ -100,7 +100,7 @@
 
     "magentoDBToRestore": {
       "type": "string",
-      "defaultValue": "2017_03_23_aat01_www.sql",
+      "defaultValue": "magento_init.sql",
       "metadata": {
         "description": "Magento DB that need to be restore  from the given list of DBs"
       }
@@ -161,7 +161,7 @@
     "vmNSGName": "[concat(variables('uniqueNamePrefix'),'Nsg')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "installScriptName": "InstallMagento.sh",
+    "installScriptName": "InstallMagentoBlank.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
     "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', parameters('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',parameters('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'))]",
     "apiVersion": "2015-06-15"
@@ -321,6 +321,29 @@
           ]
         }
       }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'),'/newuserscript')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[variables('installScriptUri')]"
+          ]
+        },
+        "protectedSettings": {
+          "commandToExecute": "[variables('installCommand')]"
+        }
+      }
     }
   ],
   "outputs": {
@@ -331,14 +354,6 @@
     "installedUrlAdmin": {
       "type": "string",
       "value": "[concat('http://',parameters('domainName'),'.',variables('vmHOSTURL'),'/zpanel')]"
-    },
-    "preInstallerString": {
-      "type": "string",
-      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagento.sh"
-    },
-    "commandString": {
-      "type": "string",
-      "value": "[variables('installCommand')]"
     }
   }
 }
