@@ -56,8 +56,7 @@ apt-get update >> /mylogs/text.txt
     git \
     curl \
     unzip \
-	unrar \
-    --yes
+	--yes
 
 #Install Apache
  apt-get -y install apache2
@@ -176,10 +175,7 @@ echo "End unziping magento files and removed corresponding tar files">> /mylogs/
 #Uninstall DB backup
 service  apache2 restart
 mkdir /MagentoBK/DB
-chmod -R 777 /MagentoBK/DB
-cd /MagentoBK/DB
-unrar  e /MagentoBK/$MagentoDBBKFile
-cd /
+tar -xvf /MagentoBK/$MagentoDBBKFile -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
 mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" >> /mylogs/text.txt
 rm -rf /MagentoBK/DB

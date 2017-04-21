@@ -71,7 +71,7 @@
 
     "magentoDBBackup": {
 
-      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.rar"
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.tar"
 
     },
 
