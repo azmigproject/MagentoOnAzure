@@ -20,13 +20,7 @@
         "description": " CustomerTier used to create uniquename along with CustomerName that will be used to generate various other names including the name of the Public IP used to access the Virtual Machine."
       }
     },
-    "mysqlDBName": {
-      "type": "string",
-      "metadata": {
-        "description": "Magento DB Name."
-      }
-    },
-    "mySqlPassword": {
+   "mySqlPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Password for the MySQL 'root' admin user."
@@ -163,9 +157,10 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "magentoDBToRestore": "magento_init.sql",
+    "mysqlDBName": "magento_init",
     "installScriptName": "InstallMagentoBlank.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
-    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', parameters('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'))]",
+    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'))]",
     "apiVersion": "2015-06-15"
   },
   "resources": [
