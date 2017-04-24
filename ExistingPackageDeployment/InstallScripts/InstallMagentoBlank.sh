@@ -177,6 +177,8 @@ service  apache2 restart
 mkdir /MagentoBK/DB
 tar -xvf /MagentoBK/$MagentoDBBKFile -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
+#Replace the template1 name to the name of domain in magento_init.sql file
+sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql >> /mylogs/text.txt
 mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" >> /mylogs/text.txt
 rm -rf /MagentoBK/DB
 #update DB with new website root path
@@ -188,7 +190,7 @@ mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set val
 echo "Removing downloaded zip files">> /mylogs/text.txt
 rm -rf /MagentoBK >> /mylogs/text.txt
 
-#Replace the deatabase details in local.xml file
+#Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
 sed -i "s/aat01_www/$7/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
 sed -i "s/aat01/root/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
