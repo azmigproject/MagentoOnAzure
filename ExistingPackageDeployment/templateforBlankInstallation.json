@@ -41,7 +41,7 @@
 
     "magentoFileBackup": {
       "type": "string",
-      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/MagentoPOC_2017-03-22.tar",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_vamap_va_selector_04-21-2017.tar",
 
 
       "metadata": {
@@ -63,7 +63,7 @@
 
 
       "metadata": {
-        "description": "Init folder backup for Magento Code"
+        "description": "Init folder backup for Magento Code"  
       }
     },
     "magentoVarBackup": {
@@ -157,7 +157,7 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "magentoDBToRestore": "magento_init.sql",
-    "mysqlDBName": "magento_init",
+    "mysqlDBName": "magento",
     "installScriptName": "InstallMagentoBlank.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
     "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'))]",
