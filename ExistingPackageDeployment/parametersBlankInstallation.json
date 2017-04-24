@@ -8,31 +8,31 @@
 
     "domainName": {
 
-      "value": "GEN-UNIQUE-8"
+      "value": "testdemo"
 
     },
     "customerName": {
-      "value": "GEN-UNIQUE-8"
+      "value": "GCCustomer"
     },
     "customerTier": {
-      "value": "GEN-UNIQUE-8"
+      "value": "T1"
     },
 
-   "vmadminUsername": {
+    "vmadminUsername": {
 
-      "value": "GEN-UNIQUE-8"
+      "value": "serveradmin"
 
     },
 
     "vmadminPassword": {
 
-      "value": "GEN-PASSWORD"
+      "value": "testAdmin@2016"
 
     },
 
     "mySqlPassword": {
 
-      "value": "GEN-PASSWORD"
+      "value": "testAdminroot@2016"
 
     },
 
@@ -72,7 +72,7 @@
 
     },
 
-    
+
     "vmSize": {
 
       "value": "Standard_L4s"
