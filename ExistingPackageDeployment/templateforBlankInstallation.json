@@ -160,7 +160,7 @@
     "mysqlDBName": "magento",
     "installScriptName": "InstallMagentoBlank.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
-    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'))]",
+    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'),' ', parameters('vmadminUsername'),' ', parameters('vmadminPassword'),' ',parameters('customerName'),' ',parameters('customerTier'),' ',resourceGroup().name)]",
     "apiVersion": "2015-06-15"
   },
   "resources": [
@@ -216,6 +216,19 @@
               "direction": "Inbound",
               "sourcePortRange": "*",
               "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "AllowTCPPOSRTFORMAIL",
+            "properties": {
+              "protocol": "TCP",
+              "sourcePortRange": "*", 
+              "destinationPortRange": "587",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Outbound"
             }
           }
         ]

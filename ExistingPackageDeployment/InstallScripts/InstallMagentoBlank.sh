@@ -7,7 +7,7 @@
 # $4 - magento user password
 # $5 - magento SQL Password
 #$6 -HOSTNAME
-#7 - MYSQL DB NAME
+#$7 - MYSQL DB NAME
 #$8 - MagentoFileBackup
 #$9 - MagentoDBBackup
 #$10 - Magento DB that need to be backup
@@ -15,6 +15,12 @@
 #$12 - Magento Init Folder backup
 #$13 - Magento Var Folder backup
 #$14- Magento htaccess file
+#$15- VM USERName
+#$16- VM PAssword
+#$17- customername
+#$18- customertier
+#$19- resourcegroup
+
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
@@ -27,7 +33,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# < 14 ]; then
+if [ $# < 19 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -44,11 +50,16 @@ if [ $# < 14 ]; then
 		echo "12th parameter is Magento Init folder backup";
 		echo "13th parameter is Magento Var folder backup";
 		echo "14th parameter is default htaccess file path";
+		echo "15th parameter is VM UserName";
+		echo "16th parameter is VM Password";
+		echo "17th parameter is customerName";
+		echo "18th parameter is customerTier";
+		echo "19th parameter is resourcegroup name";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
 fi
-
+STARTTime=$(date +%s)
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
 apt-get update >> /mylogs/text.txt
 #Installbasic
@@ -295,7 +306,81 @@ sudo chmod -R 777 .media >> /mylogs/text.txt
 cd /var/www/$2/
 sudo rm -rf .var/cache/*>> /mylogs/text.txt
 sudo  echo "started cron">> /mylogs/text.txt
-sudo  echo "Install successfull">> /mylogs/text.txt
+
+IP=$(curl ipinfo.io/ip)
 sudo su
+echo "Installing python3.5 with PIP functionality">> /mylogs/text.txt
+add-apt-repository -y  ppa:jonathonf/python-3.6
+apt-get -y update >> /mylogs/text.txt
+apt-get -y install python3.6 >> /mylogs/text.txt
+apt-get -y install python3-pip >> /mylogs/text.txt
+echo "Installed python3.5 with PIP functionality">> /mylogs/text.txt
+echo "Installing email functionality">> /mylogs/text.txt
+# section to install email service
+apt-get -y install mailutils
+apt-get -y install ssmtp
+configfileText="# Config file for sSMTP sendmail
+#
+# The person who gets all mail for userids < 1000
+# Make this empty to disable rewriting.
+#root=postmaster
+root=rupesh.nagar@maarglabs.com
+
+# The place where the mail goes. The actual machine name is required no
+# MX records are consulted. Commonly mailhosts are named mail.domain.com
+# mailhub=mail
+mailhub=smtp.office365.com:587
+AuthUser=rupesh.nagar@maarglabs.com
+AuthPass=R123@maarglabs
+UseTLS=YES
+UseSTARTTLS=YES
+TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
+# Where will the mail seem to come from?
+#rewriteDomain=
+rewriteDomain=maarglabs.com
+# The full hostname
+hostname=GCCustomerT1VM.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
+#hostname=vicdonotreply@gcommerceinc.com
+# Are users allowed to set their own From: address?
+# YES - Allow the user to specify their own From: address
+# NO - Use the system generated From: address
+#FromLineOverride=YES"
+
+smtprevaliasesFileText="
+# sSMTP aliases
+#
+# Format:       local_account:outgoing_address:mailhub
+#
+# Example: root:your_login@your.domain:mailhub.your.domain[:port]
+# where [:port] is an optional port number that defaults to 25.
+root:rupesh.nagar@maarglabs.com:smtp.office365.com:587
+noreply:rupesh.nagar@maarglabs.com:smtp.office365.com:587
+"
+
+
+mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
+mv
+echo  $configfileText> /etc/ssmtp/ssmtp.conf
+END=$(date +%s)
+DIFF=$(((( $END - $START )/60)+5))
+
+MailBody="
+Magento Installation Complete. Details given below
+
+FrontEnd:http://$1.$6/
+AdminEnd:http://$1.$6/zpanel
+IP for SSH admin: $IP
+
+$DIFF minutes to deploy
+Resource Group:  ${19}
+Domain Name:  $1
+Customer Name:  ${17}
+Customer Tier:  ${18}
+MySQL Password:   $7
+VM Admin User:  ${15}
+VM Admin Pass:  ${16}!"
+echo $MailBody | mail -s "Attention-Magento Installation complete for customer $3" rupesh.nagar@maarglabs.com >> /mylogs/text.txt
+
+sudo  echo "Install successfull">> /mylogs/text.txt
 shutdown -r +1 &
 exit 0
