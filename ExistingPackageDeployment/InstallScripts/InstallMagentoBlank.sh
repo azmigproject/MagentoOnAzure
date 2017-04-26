@@ -381,7 +381,15 @@ MySQL Password:   $7
 VM Admin User:  ${15}
 VM Admin Pass:  ${16}!"
 echo $MailBody >> /mylogs/text.txt
-echo $MailBody | mail -s "Attention-Magento Installation complete for customer $3" rupesh.nagar@maarglabs.com >> /mylogs/text.txt
+
+{
+    echo To: rupesh.nagar@maarglabs.com
+    echo From: rupesh.nagar@maarglabs.com
+    echo Subject: "Attention-Magento Installation complete for customer $3"
+    echo
+    echo $MailBody
+} | ssmtp rupesh.nagar@maarglabs.com >> /mylogs/text.txt
+
 
 sudo  echo "Install successfull">> /mylogs/text.txt
 shutdown -r +1 &
