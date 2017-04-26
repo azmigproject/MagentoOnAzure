@@ -319,7 +319,10 @@ echo "Installing email functionality">> /mylogs/text.txt
 # section to install email service
 apt-get -y install mailutils
 apt-get -y install ssmtp
-configfileText="# Config file for sSMTP sendmail
+
+mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
+
+echo  "# Config file for sSMTP sendmail
 #
 # The person who gets all mail for userids < 1000
 # Make this empty to disable rewriting.
@@ -338,15 +341,18 @@ TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
 # Where will the mail seem to come from?
 #rewriteDomain=
 rewriteDomain=maarglabs.com
+
 # The full hostname
 hostname=GCCustomerT1VM.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 #hostname=vicdonotreply@gcommerceinc.com
 # Are users allowed to set their own From: address?
 # YES - Allow the user to specify their own From: address
 # NO - Use the system generated From: address
-#FromLineOverride=YES"
+#FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
-smtprevaliasesFileText="
+mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
+
+echo  "
 # sSMTP aliases
 #
 # Format:       local_account:outgoing_address:mailhub
@@ -355,12 +361,7 @@ smtprevaliasesFileText="
 # where [:port] is an optional port number that defaults to 25.
 root:rupesh.nagar@maarglabs.com:smtp.office365.com:587
 noreply:rupesh.nagar@maarglabs.com:smtp.office365.com:587
-"
-
-
-mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-mv
-echo  $configfileText> /etc/ssmtp/ssmtp.conf
+" > /etc/ssmtp/revaliases
 END=$(date +%s)
 DIFF=$(((( $END - $START )/60)+5))
 
@@ -379,6 +380,7 @@ Customer Tier:  ${18}
 MySQL Password:   $7
 VM Admin User:  ${15}
 VM Admin Pass:  ${16}!"
+echo $MailBody >> /mylogs/text.txt
 echo $MailBody | mail -s "Attention-Magento Installation complete for customer $3" rupesh.nagar@maarglabs.com >> /mylogs/text.txt
 
 sudo  echo "Install successfull">> /mylogs/text.txt
