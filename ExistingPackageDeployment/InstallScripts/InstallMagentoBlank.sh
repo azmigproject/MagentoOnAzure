@@ -20,6 +20,7 @@
 #$17- customername
 #$18- customertier
 #$19- resourcegroup
+#$20 -starttimestamp
 
 #steps to install apache2
 mkdir /mylogs
@@ -33,7 +34,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# < 19 ]; then
+if [ $# < 20 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -55,11 +56,14 @@ if [ $# < 19 ]; then
 		echo "17th parameter is customerName";
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
+		echo "20th parameter is deployment start timestamp";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
 fi
-STARTTime=$(date +%s)
+echo ${20} >> /mylogs/text.txt
+START=$(date --date=${20} +"%s") >> /mylogs/text.txt
+echo Start >> /mylogs/text.txt
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
 apt-get update >> /mylogs/text.txt
 #Installbasic
@@ -306,15 +310,18 @@ sudo chmod -R 777 .media >> /mylogs/text.txt
 cd /var/www/$2/
 sudo rm -rf .var/cache/*>> /mylogs/text.txt
 sudo  echo "started cron">> /mylogs/text.txt
+sudo su
 
 IP=$(curl ipinfo.io/ip)
-sudo su
-echo "Installing python3.5 with PIP functionality">> /mylogs/text.txt
-add-apt-repository -y  ppa:jonathonf/python-3.6
+echo "Installing Python-Pip functionality">> /mylogs/text.txt
+
+apt-get -y install epel-release >> /mylogs/text.txt
 apt-get -y update >> /mylogs/text.txt
-apt-get -y install python3.6 >> /mylogs/text.txt
-apt-get -y install python3-pip >> /mylogs/text.txt
-echo "Installed python3.5 with PIP functionality">> /mylogs/text.txt
+apt-get -y install python-pip >> /mylogs/text.txt
+
+
+
+echo "Installed Python-Pip functionality">> /mylogs/text.txt
 echo "Installing email functionality">> /mylogs/text.txt
 # section to install email service
 apt-get -y install mailutils
@@ -348,7 +355,7 @@ hostname=GCCustomerT1VM.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 # Are users allowed to set their own From: address?
 # YES - Allow the user to specify their own From: address
 # NO - Use the system generated From: address
-#FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
@@ -363,29 +370,33 @@ root:rupesh.nagar@maarglabs.com:smtp.office365.com:587
 noreply:rupesh.nagar@maarglabs.com:smtp.office365.com:587
 " > /etc/ssmtp/revaliases
 END=$(date +%s)
-DIFF=$(((( $END - $START )/60)+5))
+DIFFMin=$(((( $END - $START )/60)))
+DIFFSec=$(((( $END - $START )%60)))
 
 MailBody="
-Magento Installation Complete. Details given below
-
-FrontEnd:http://$1.$6/
-AdminEnd:http://$1.$6/zpanel
-IP for SSH admin: $IP
-
-$DIFF minutes to deploy
-Resource Group:  ${19}
-Domain Name:  $1
-Customer Name:  ${17}
-Customer Tier:  ${18}
-MySQL Password:   $7
-VM Admin User:  ${15}
+Magento Installation Complete. Details given below<BR>
+<BR>
+FrontEnd:http://$1.$6/<BR>
+AdminEnd:http://$1.$6/zpanel<BR>
+IP for SSH admin: $IP<BR>
+<BR>
+$DIFFMin minutes and $DIFFSec seconds to deploy<BR>
+Resource Group:  ${19}<BR>
+Domain Name:  $1<BR>
+Customer Name:  ${17}<BR>
+Customer Tier:  ${18}<BR>
+MySQL Password:   $5<BR>
+VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}!"
 echo $MailBody >> /mylogs/text.txt
 
 {
-    echo To: rupesh.nagar@maarglabs.com
-    echo From: rupesh.nagar@maarglabs.com
-    echo Subject: "Attention-Magento Installation complete for customer $3"
+    echo "To: rupesh.nagar@maarglabs.com"
+    echo "From: noreply <rupesh.nagar@maarglabs.com>"
+    echo "Subject: Magento Installation complete for customer $3"
+	echo "Mime-Version: 1.0;"
+    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
+	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo $MailBody
 } | ssmtp rupesh.nagar@maarglabs.com >> /mylogs/text.txt
