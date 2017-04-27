@@ -358,8 +358,8 @@
         "displayName": "AzureDiagnostics"
       },
       "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "LinuxDiagnostic",
+        "publisher": "Microsoft.Azure.Diagnostics",
+        "type": "IaaSDiagnostics",
         "typeHandlerVersion": "2.3",
         "autoUpgradeMinorVersion": true,
         "settings": {
