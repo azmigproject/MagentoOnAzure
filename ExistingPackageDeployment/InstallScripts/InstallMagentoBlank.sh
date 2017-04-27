@@ -20,7 +20,7 @@
 #$17- customername
 #$18- customertier
 #$19- resourcegroup
-#$20 -starttimestamp
+
 
 #steps to install apache2
 mkdir /mylogs
@@ -34,7 +34,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# < 20 ]; then
+if [ $# < 19]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -56,13 +56,13 @@ if [ $# < 20 ]; then
 		echo "17th parameter is customerName";
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
-		echo "20th parameter is deployment start timestamp";
+		
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
 fi
-echo ${20} >> /mylogs/text.txt
-START=$(date --date=${20} +"%s") >> /mylogs/text.txt
+
+START=$(date +%s) >> /mylogs/text.txt
 echo Start >> /mylogs/text.txt
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
 apt-get update >> /mylogs/text.txt
