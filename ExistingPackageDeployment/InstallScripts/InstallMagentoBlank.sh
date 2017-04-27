@@ -17,7 +17,7 @@
 #$14- Magento htaccess file
 #$15- VM USERName
 #$16- VM PAssword
-#$17- customername
+#$17- customerID
 #$18- customertier
 #$19- resourcegroup
 
@@ -53,7 +53,7 @@ if [ $# < 19]; then
 		echo "14th parameter is default htaccess file path";
 		echo "15th parameter is VM UserName";
 		echo "16th parameter is VM Password";
-		echo "17th parameter is customerName";
+		echo "17th parameter is customerID";
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
 		
@@ -350,7 +350,7 @@ TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
 rewriteDomain=gcommerceinc.com
 
 # The full hostname
-hostname=GCCustomerT1VM.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
+hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 #hostname=information-prod@gcommerceinc.com
 # Are users allowed to set their own From: address?
 # YES - Allow the user to specify their own From: address
@@ -374,7 +374,7 @@ DIFFMin=$(((( $END - $START )/60)))
 DIFFSec=$(((( $END - $START )%60)))
 
 MailBody="
-Magento Installation Complete. Details given below<BR>
+AutoSoEz Client Deployment Complete. Details given below<BR>
 <BR>
 FrontEnd:http://$1.$6/<BR>
 AdminEnd:http://$1.$6/zpanel<BR>
@@ -387,13 +387,13 @@ Customer Name:  ${17}<BR>
 Customer Tier:  ${18}<BR>
 MySQL Password:   $5<BR>
 VM Admin User:  ${15}<BR>
-VM Admin Pass:  ${16}!"
+VM Admin Pass:  ${16}"
 echo $MailBody >> /mylogs/text.txt
 
 {
     echo "To: azuredeployments@gcommerceinc.com"
-    echo "From: noreply <information-prod@gcommerceinc>"
-    echo "Subject: Magento Installation complete for customer $3"
+    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
@@ -403,5 +403,8 @@ echo $MailBody >> /mylogs/text.txt
 
 
 sudo  echo "Install successfull">> /mylogs/text.txt
+mkdir /var/www/app
+mkdir /var/www/app/etc
+echo ${17} >>/var/www/app/etc/customer.txt
 shutdown -r +1 &
 exit 0
