@@ -405,6 +405,7 @@ echo $MailBody >> /mylogs/text.txt
 sudo  echo "Install successfull">> /mylogs/text.txt
 mkdir /var/www/app
 mkdir /var/www/app/etc
-echo ${17} >>/var/www/app/etc/customer.txt
+chmod -R 777 /var/www/app/etc
+echo "${17}" >>/var/www/app/etc/customer.txt
 shutdown -r +1 &
 exit 0
