@@ -364,6 +364,14 @@
     "installedUrlAdmin": {
       "type": "string",
       "value": "[concat('http://',parameters('domainName'),'.',variables('vmHOSTURL'),'/zpanel')]"
+    },
+    "preInstallerString": {
+      "type": "string",
+      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagento.sh"
+    },
+    "commandString": {
+      "type": "string",
+      "value": "[variables('installCommand')]"
     }
   }
 }
