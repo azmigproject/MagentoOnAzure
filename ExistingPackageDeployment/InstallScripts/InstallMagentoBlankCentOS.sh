@@ -65,16 +65,16 @@ fi
 START=$(date +%s) >> /mylogs/text.txt
 echo Start >> /mylogs/text.txt
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
-apt-get update >> /mylogs/text.txt
+yum update >> /mylogs/text.txt
 #Installbasic
-   apt-get install \
+   yum install \
     git \
     curl \
     unzip \
 	--yes
 
 #Install Apache
- apt-get -y install apache2
+ yum -y install apache2
 echo "installed basic">> /mylogs/text.txt
 #First create the folder where tar file will be downloaded
 mkdir /MagentoBK
@@ -141,20 +141,20 @@ echo "installed Apache">> /mylogs/text.txt
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
-# apt-get install mysql-server-5.6 --yes
+ yum -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
+# yum install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
 
 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 
-apt-get update
-apt-get -y install php5 >> /mylogs/text.txt
-#apt-get -y install php5.5-mbstring php5.5-mcrypt php5.5-mysql php5.5-xml >> /mylogs/text.txt
+yum update
+yum -y install php5 >> /mylogs/text.txt
+#yum -y install php5.5-mbstring php5.5-mcrypt php5.5-mysql php5.5-xml >> /mylogs/text.txt
 
-# Update apt-get 
-apt-get update >> /mylogs/text.txt
+# Update yum 
+yum update >> /mylogs/text.txt
 
 
 
@@ -162,7 +162,7 @@ apt-get update >> /mylogs/text.txt
 #Install PHP
 
 
-apt-get -y install \
+yum -y install \
   php5-fpm \
  php5-mysql \
 php5-mcrypt \
@@ -176,11 +176,11 @@ php5-gd \
    php5-dev \
    php5-common \ 
     >> /mylogs/text.txt
-apt-get update >> /mylogs/text.txt
+yum update >> /mylogs/text.txt
 a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
 a2enconf php5-fpm >> /mylogs/text.txt
 service php5-fpm restart >> /mylogs/text.txt
-apt-get -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
+yum -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
 service apache2 restart >> /mylogs/text.txt
 echo "installed PHP">> /mylogs/text.txt
 service  apache2 restart
@@ -315,17 +315,17 @@ sudo su
 IP=$(curl ipinfo.io/ip)
 echo "Installing Python-Pip functionality">> /mylogs/text.txt
 
-apt-get -y install epel-release >> /mylogs/text.txt
-apt-get -y update >> /mylogs/text.txt
-apt-get -y install python-pip >> /mylogs/text.txt
+yum -y install epel-release >> /mylogs/text.txt
+yum -y update >> /mylogs/text.txt
+yum -y install python-pip >> /mylogs/text.txt
 
 
 
 echo "Installed Python-Pip functionality">> /mylogs/text.txt
 echo "Installing email functionality">> /mylogs/text.txt
 # section to install email service
-apt-get -y install mailutils
-apt-get -y install ssmtp
+yum -y install mailutils
+yum -y install ssmtp
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 

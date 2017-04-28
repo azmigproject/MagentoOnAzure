@@ -134,9 +134,9 @@
   },
   "variables": {
     "newStorageAccountName": "[concat(uniquestring(resourceGroup().id), 'mds')]",
-    "imagePublisher": "scalegrid",
-    "imageOffer": "centos",
-    "OSVersion": "free",
+    "imagePublisher": "OpenLogic",
+    "imageOffer": "CentOS",
+    "OSVersion": "7.2",
     "uniqueNamePrefix": "[concat(parameters('customerID'),parameters('customerTier'))]",
     "OSDiskName": "[concat(variables('uniqueNamePrefix'),'Disk')]",
     "nicName": "[concat(variables('uniqueNamePrefix'),'Nic')]",
@@ -405,7 +405,7 @@
     },
     "preInstallerString": {
       "type": "string",
-      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagento.sh"
+      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagentoBlankCentOS.sh"
     },
     "commandString": {
       "type": "string",
