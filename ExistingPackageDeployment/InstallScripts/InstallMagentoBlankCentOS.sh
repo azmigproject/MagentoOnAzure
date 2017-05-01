@@ -66,14 +66,16 @@ START=$(date +%s) >> /mylogs/text.txt
 echo Start >> /mylogs/text.txt
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
 
-wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
-rpm -ivh mysql-community-release-el7-5.noarch.rpm
+
 
 yum -y install php httpd php-mcrypt php-xml php-xml php-devel php-fpm php-json php-intl php-dev php-common unzip git curl >> /mylogs/text.txt
-yum install php-imap php-soap php-mbstring php-mysql php-simplexml  >> /mylogs/text.txt
-yum install php-dom php-gd php-pear php-pecl-imagick php-pecl-apc php-magickwand >> /mylogs/text.txt
-yum install gd gd-devel php-gd httpd-devel gcc curl php-curl mod_ssl pcre-devel >> /mylogs/text.txt
-yum install mysql mysql-server php-mysql php-pdo git-core screen  >> /mylogs/text.txt
+yum -y install php-imap php-soap php-mbstring php-simplexml  >> /mylogs/text.txt
+yum -y install php-dom php-gd php-pear php-pecl-imagick php-pecl-apc php-magickwand >> /mylogs/text.txt
+yum -y install gd gd-devel php-gd httpd-devel gcc curl php-curl mod_ssl pcre-devel >> /mylogs/text.txt
+
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+rpm -ivh mysql-community-release-el7-5.noarch.rpm
+yum -y install mysql mysql-server php-mysql git-core screen  >> /mylogs/text.txt
 
 yum -y install epel-release >> /mylogs/text.txt
 #yum -y update >> /mylogs/text.txt
