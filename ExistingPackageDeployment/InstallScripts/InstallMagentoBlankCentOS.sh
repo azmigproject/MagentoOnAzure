@@ -285,6 +285,18 @@ sudo su
 IP=$(curl ipinfo.io/ip)
 echo "Installing Python-Pip functionality">> /mylogs/text.txt
 
+#MailSendingVariables
+#Demo
+SenderEmail="rupesh.nagar@maarglabs.com"
+SenderPWD="R123@maarglabs"
+RecieverEmail="rupesh.nagar@maarglabs.com"
+SenderDomain="maarglabs.com"
+#Live
+#SenderEmail="information-prod@gcommerceinc.com"
+#SenderPWD="AutoGComm1!"
+#RecieverEmail="azuredeployments@gcommerceinc.com"
+#SenderDomain="gcommerceinc.com"
+
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
 echo  "# Config file for sSMTP sendmail
@@ -292,20 +304,20 @@ echo  "# Config file for sSMTP sendmail
 # The person who gets all mail for userids < 1000
 # Make this empty to disable rewriting.
 #root=postmaster
-root=information-prod@gcommerceinc.com
+root=$SenderEmail
 
 # The place where the mail goes. The actual machine name is required no
 # MX records are consulted. Commonly mailhosts are named mail.domain.com
 # mailhub=mail
 mailhub=smtp.office365.com:587
-AuthUser=information-prod@gcommerceinc.com
-AuthPass=AutoGComm1!
+AuthUser=$SenderEmail
+AuthPass=$SenderPWD
 UseTLS=YES
 UseSTARTTLS=YES
 TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
 # Where will the mail seem to come from?
 #rewriteDomain=
-rewriteDomain=gcommerceinc.com
+rewriteDomain=$SenderDomain
 
 # The full hostname
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
@@ -324,8 +336,8 @@ echo  "
 #
 # Example: root:your_login@your.domain:mailhub.your.domain[:port]
 # where [:port] is an optional port number that defaults to 25.
-root:information-prod@gcommerceinc.com:smtp.office365.com:587
-noreply:information-prod@gcommerceinc.com:smtp.office365.com:587
+root:$SenderEmail:smtp.office365.com:587
+noreply:$SenderEmail:smtp.office365.com:587
 " > /etc/ssmtp/revaliases
 END=$(date +%s)
 DIFFMin=$(((( $END - $START )/60)))
@@ -349,16 +361,16 @@ VM Admin Pass:  ${16}"
 echo $MailBody >> /mylogs/text.txt
 
 {
-    echo "To: azuredeployments@gcommerceinc.com"
-    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "To: $RecieverEmail"
+    echo "From: noreply <$SenderEmail>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3 on CentOS Platform"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo $MailBody
-} | ssmtp azuredeployments@gcommerceinc.com >> /mylogs/text.txt
 
+} | ssmtp $RecieverEmail >> /mylogs/text.txt
 
 sudo  echo "Install successfull">> /mylogs/text.txt
 mkdir /var/www/app
