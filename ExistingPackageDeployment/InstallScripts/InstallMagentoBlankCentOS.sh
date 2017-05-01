@@ -65,16 +65,16 @@ fi
 START=$(date +%s) >> /mylogs/text.txt
 echo Start >> /mylogs/text.txt
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
-yum update >> /mylogs/text.txt
+yum -y update >> /mylogs/text.txt
 #Installbasic
    yum install \
     git \
     curl \
     unzip \
-	--yes
+	--assumeyes
 
 #Install Apache
- yum -y install apache2
+yum -y install httpd
 echo "installed basic">> /mylogs/text.txt
 #First create the folder where tar file will be downloaded
 mkdir /MagentoBK
@@ -141,7 +141,15 @@ echo "installed Apache">> /mylogs/text.txt
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
- yum -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
+
+ wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+ rpm -ivh mysql-community-release-el7-5.noarch.rpm
+yum -y update
+
+ yum -y install mysql-server >> /mylogs/text.txt
+ service mysqld start  >> /mylogs/text.txt
+ mysqladmin -u root password "$5"
+ chkconfig -–level 235 mysqld on
 # yum install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
@@ -149,12 +157,12 @@ mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DA
 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 
-yum update
-yum -y install php5 >> /mylogs/text.txt
+yum -y update
+yum -y install php >> /mylogs/text.txt
 #yum -y install php5.5-mbstring php5.5-mcrypt php5.5-mysql php5.5-xml >> /mylogs/text.txt
 
 # Update yum 
-yum update >> /mylogs/text.txt
+yum -y update >> /mylogs/text.txt
 
 
 
@@ -163,32 +171,31 @@ yum update >> /mylogs/text.txt
 
 
 yum -y install \
-  php5-fpm \
- php5-mysql \
-php5-mcrypt \
-php5-curl \
-php5-cli \
-php5-gd \
- php5-xsl \
-   php5-json \
-   php5-intl \
+  php-fpm \
+ php-mysql \
+php-mcrypt \
+php-curl \
+php-cli \
+php-gd \
+ php-xsl \
+   php-json \
+   php-intl \
   
-   php5-dev \
-   php5-common \ 
+   php-dev \
+   php-common \ 
     >> /mylogs/text.txt
-yum update >> /mylogs/text.txt
+yum -y update >> /mylogs/text.txt
 a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
 a2enconf php5-fpm >> /mylogs/text.txt
 service php5-fpm restart >> /mylogs/text.txt
+systemctl stop httpd
 yum -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
-service apache2 restart >> /mylogs/text.txt
 echo "installed PHP">> /mylogs/text.txt
-service  apache2 restart
-
+service httpd restart
 
 echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
 #Uninstall DB backup
-service  apache2 restart
+
 mkdir /MagentoBK/DB
 tar -xvf /MagentoBK/$MagentoDBBKFile -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
@@ -219,8 +226,8 @@ echo "<VirtualHost *:80>
         ServerAlias  http://$1.$6/
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/$2/2016080806
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-       CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ErrorLog logs/$1.$6-error.log
+       CustomLog logs/$1.$6-access.log combined
 	   <Directory /var/www/$2/2016080806/>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride All
@@ -228,7 +235,7 @@ echo "<VirtualHost *:80>
                 allow from all
         </Directory>
 
-</VirtualHost>" >> /etc/apache2/sites-available/$2.conf
+</VirtualHost>" >> /etc/httpd/conf.d/$2.conf
 
 # Check if .htaccess file is Missing than add it from default location
 
@@ -254,7 +261,9 @@ echo "$3:$4" |  chpasswd
 echo '$4'|sudo -S echo "create user">> /mylogs/text.txt
 sudo echo "create user">> /mylogs/text.txt
 sudo chmod -R 755 /var/www
-sudo  service apache2 restart
+sudo service httpd restart
+
+
 
 #install all files in  magento dir 
 
@@ -264,20 +273,19 @@ sudo chmod -R 777 /var/www/$2
 
 #enable the new site and 
 sudo  a2ensite $2.conf
-sudo  service apache2 reload
+sudo  service httpd reload
 
 #disable the default site
 sudo   a2dissite 000-default
-sudo  service apache2 reload
+sudo  service httpd reload
 #Go to installed php version apache2 php.ini file and update memory_limit to 2GB
 
 #change to add allow url rewite and handle phpencryption in apache
 sudo  a2enmod rewrite
-sudo  service apache2 restart
 sudo  php5enmod  mcrypt
-sudo  service apache2 restart
 sudo  a2enconf php5-fpm
-sudo  service apache2 restart
+sudo service httpd restart
+
 sudo  echo "Install Code">> /mylogs/text.txt
 
 
