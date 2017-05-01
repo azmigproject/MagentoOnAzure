@@ -286,16 +286,11 @@ IP=$(curl ipinfo.io/ip)
 echo "Installing Python-Pip functionality">> /mylogs/text.txt
 
 #MailSendingVariables
-#Demo
-SenderEmail="rupesh.nagar@maarglabs.com"
-SenderPWD="R123@maarglabs"
-RecieverEmail="rupesh.nagar@maarglabs.com"
-SenderDomain="maarglabs.com"
 #Live
-#SenderEmail="information-prod@gcommerceinc.com"
-#SenderPWD="AutoGComm1!"
-#RecieverEmail="azuredeployments@gcommerceinc.com"
-#SenderDomain="gcommerceinc.com"
+SenderEmail="information-prod@gcommerceinc.com"
+SenderPWD="AutoGComm1!"
+RecieverEmail="azuredeployments@gcommerceinc.com"
+SenderDomain="gcommerceinc.com"
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
