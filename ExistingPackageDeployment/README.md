@@ -19,4 +19,4 @@ This will install an existing magento package in a VM.It is required to provide 
 
 
 ### Check your deployment
-Once the deployment succeed,go to the installedUrl given as output when ARM template installed magento successfully
+The installedUrl output provided by the ARM template upon successful deployment can be used to verify the deployment.
