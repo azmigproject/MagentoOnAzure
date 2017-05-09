@@ -21,7 +21,6 @@
 #$18- customertier
 #$19- resourcegroup
 
-
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
@@ -66,8 +65,6 @@ START=$(date +%s) >> /mylogs/text.txt
 echo Start >> /mylogs/text.txt
 echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
 
-
-
 yum -y install php httpd php-mcrypt php-xml php-xml php-devel php-fpm php-json php-intl php-dev php-common unzip git curl >> /mylogs/text.txt
 yum -y install php-imap php-soap php-mbstring php-simplexml  >> /mylogs/text.txt
 yum -y install php-dom php-gd php-pear php-pecl-imagick php-pecl-apc php-magickwand >> /mylogs/text.txt
@@ -86,8 +83,6 @@ echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP
 echo "Installed Python-Pip functionality">> /mylogs/text.txt
 echo "Installing email functionality">> /mylogs/text.txt
 # section to install email service
-
-
 
 #Install Apache
 yum -y install httpd
@@ -140,7 +135,6 @@ tar -xvf /MagentoBK/$MagentoVarBKFile -C /var/www/$2
 rm -rf /MagentoBK/$MagentoVarBKFile >> /mylogs/text.txt
 echo "Unzip magento var folder">> /mylogs/text.txt
 
-
 #download magento DB backup
 echo "Start downloading mangeto db backup files">> /mylogs/text.txt
 wget $9  -P  /MagentoBK >> /mylogs/text.txt
@@ -155,8 +149,6 @@ systemctl enable mysqld.service
 systemctl enable httpd.service
 # yum install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
-
-
 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 
@@ -238,19 +230,12 @@ sudo echo "create user">> /mylogs/text.txt
 sudo chmod -R 755 /var/www
 sudo service httpd restart
 
-
-
 #install all files in  magento dir 
-
 cd /var/www/$2
 sudo chmod -R 777 /var/www/$2
 sudo  service httpd reload
-
 sudo service httpd restart
-
 sudo  echo "Install Code">> /mylogs/text.txt
-
-
 
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
@@ -291,16 +276,13 @@ SenderEmail="information-prod@gcommerceinc.com"
 SenderPWD="AutoGComm1!"
 RecieverEmail="azuredeployments@gcommerceinc.com"
 SenderDomain="gcommerceinc.com"
-
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-
 echo  "# Config file for sSMTP sendmail
 #
 # The person who gets all mail for userids < 1000
 # Make this empty to disable rewriting.
 #root=postmaster
 root=$SenderEmail
-
 # The place where the mail goes. The actual machine name is required no
 # MX records are consulted. Commonly mailhosts are named mail.domain.com
 # mailhub=mail
@@ -313,7 +295,6 @@ TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
 # Where will the mail seem to come from?
 #rewriteDomain=
 rewriteDomain=$SenderDomain
-
 # The full hostname
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 #hostname=information-prod@gcommerceinc.com
@@ -321,9 +302,7 @@ hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 # YES - Allow the user to specify their own From: address
 # NO - Use the system generated From: address
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
-
 mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
-
 echo  "
 # sSMTP aliases
 #
@@ -354,7 +333,6 @@ MySQL Password:   $5<BR>
 VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 echo $MailBody >> /mylogs/text.txt
-
 {
     echo "To: $RecieverEmail"
     echo "From: noreply <$SenderEmail>"
