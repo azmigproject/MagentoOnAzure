@@ -397,7 +397,7 @@
   "outputs": {
     "vmIPAddress": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))).IpAddress]"
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))).dnsSettings.fqdn]"
     },
     "installedUrl": {
       "type": "string",
