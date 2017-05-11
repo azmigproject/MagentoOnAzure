@@ -395,6 +395,10 @@
     }
   ],
   "outputs": {
+    "vmIPAddress": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))).IpAddress]"
+    },
     "installedUrl": {
       "type": "string",
       "value": "[concat('http://',parameters('domainName'),'.',variables('vmHOSTURL'))]"
