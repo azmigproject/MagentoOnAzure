@@ -340,8 +340,8 @@ else
 fi
 tempvar="$1.$6"
 certbot --apache -d $tempvar --no-redirect --agree-tos  --email azuredeployments@gcommerceinc.com  -n  >> /mylogs/text.txt
-certbot renew -n --agree-tos --post-hook "service apache2 restart" >> /mylogs/text.txt
-echo "certbot renew -n --agree-tos --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
+certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook "service apache2 restart" >> /mylogs/text.txt
+echo "certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
 chmod 777 /etc/cron.daily/certbotcron
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
