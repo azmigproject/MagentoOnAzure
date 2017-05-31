@@ -21,6 +21,7 @@
 #$18- customertier
 #$19- resourcegroup
 
+
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
@@ -123,12 +124,17 @@ tar -xvf /MagentoBK/$MagentoVarBKFile -C /var/www/$2
 rm -rf /MagentoBK/$MagentoVarBKFile >> /mylogs/text.txt
 echo "Unzip magento var folder">> /mylogs/text.txt
 
+
 #download magento DB backup
 echo "Start downloading mangeto db backup files">> /mylogs/text.txt
 wget $9  -P  /MagentoBK >> /mylogs/text.txt
 MagentoDBBKFile=${9##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile">> /mylogs/text.txt
+
+
+
+
 
 echo "installed Apache">> /mylogs/text.txt
 
@@ -139,13 +145,23 @@ echo "installed Apache">> /mylogs/text.txt
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
 
+
+
 echo "installed MYSQL and New DB">> /mylogs/text.txt
+
 apt-get update
 apt-get -y install php5 >> /mylogs/text.txt
 #apt-get -y install php5.5-mbstring php5.5-mcrypt php5.5-mysql php5.5-xml >> /mylogs/text.txt
+
 # Update apt-get 
 apt-get update >> /mylogs/text.txt
+
+
+
+
 #Install PHP
+
+
 apt-get -y install \
   php5-fpm \
  php5-mysql \
@@ -168,6 +184,7 @@ apt-get -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
 service apache2 restart >> /mylogs/text.txt
 echo "installed PHP">> /mylogs/text.txt
 service  apache2 restart
+
 
 echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
 #Uninstall DB backup
@@ -198,8 +215,8 @@ echo "updated local.xml file">> /mylogs/text.txt
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
-	ServerName http://$1.$6/
-        ServerAlias  http://$1.$6/
+	ServerName $1.$6
+        ServerAlias  $1.$6
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/$2/2016080806
         ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -244,6 +261,7 @@ sudo  service apache2 restart
 cd /var/www/$2
 sudo chmod -R 777 /var/www/$2
 
+
 #enable the new site and 
 sudo  a2ensite $2.conf
 sudo  service apache2 reload
@@ -261,6 +279,8 @@ sudo  service apache2 restart
 sudo  a2enconf php5-fpm
 sudo  service apache2 restart
 sudo  echo "Install Code">> /mylogs/text.txt
+
+
 
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
@@ -299,11 +319,30 @@ apt-get -y install epel-release >> /mylogs/text.txt
 apt-get -y update >> /mylogs/text.txt
 apt-get -y install python-pip >> /mylogs/text.txt
 
+
+
 echo "Installed Python-Pip functionality">> /mylogs/text.txt
 echo "Installing email functionality">> /mylogs/text.txt
 # section to install email service
 apt-get -y install mailutils
 apt-get -y install ssmtp
+
+#section for installing certbot SSL
+apt-get -y install software-properties-common
+add-apt-repository -y ppa:certbot/certbot
+apt-get -y update
+apt-get -y install python-certbot-apache 
+
+if [ "${6/'azure.com'}" = "$6" ] ; then
+  certbot certonly --webroot -w /var/www/$2/2016080806/ -d $1.$6  --agree-tos  --email azuredeployments@gcommerceinc.com -n >> /mylogs/text.txt
+else
+  certbot certonly --webroot -w /var/www/$2/2016080806/ -d $1.$6  --agree-tos  --email azuredeployments@gcommerceinc.com -n --test-cert >> /mylogs/text.txt
+fi
+
+certbot --apache -d $1.$6 --no-redirect  -n  >> /mylogs/text.txt
+certbot renew -n --agree-tos --post-hook "service apache2 restart" >> /mylogs/text.txt
+echo "certbot renew -n --agree-tos --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
+chmod 777 /etc/cron.daily/certbotcron
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
@@ -367,6 +406,7 @@ MySQL Password:   $5<BR>
 VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 echo $MailBody >> /mylogs/text.txt
+
 {
     echo "To: azuredeployments@gcommerceinc.com"
     echo "From: noreply <information-prod@gcommerceinc.com>"
@@ -377,6 +417,7 @@ echo $MailBody >> /mylogs/text.txt
     echo
     echo $MailBody
 } | ssmtp azuredeployments@gcommerceinc.com >> /mylogs/text.txt
+
 
 sudo  echo "Install successfull">> /mylogs/text.txt
 mkdir /var/www/app
