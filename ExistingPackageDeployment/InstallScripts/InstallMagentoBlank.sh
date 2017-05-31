@@ -339,7 +339,7 @@ else
   certbot certonly --webroot -w /var/www/$2/2016080806/ -d $1.$6  --agree-tos  --email azuredeployments@gcommerceinc.com -n --test-cert >> /mylogs/text.txt
 fi
 tempvar="$1.$6"
-certbot --apache -d $tempvar --no-redirect  -n  >> /mylogs/text.txt
+certbot --apache -d $tempvar --no-redirect --agree-tos  --email azuredeployments@gcommerceinc.com  -n  >> /mylogs/text.txt
 certbot renew -n --agree-tos --post-hook "service apache2 restart" >> /mylogs/text.txt
 echo "certbot renew -n --agree-tos --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
 chmod 777 /etc/cron.daily/certbotcron
