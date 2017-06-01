@@ -65,27 +65,27 @@ fi
 START="$(date +%s)" 
 echo "StartTime=$START |
 domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
-yum -y install php httpd php-mcrypt php-xml php-xml php-devel php-fpm php-json php-intl php-dev php-common unzip git curl 
-yum -y install php-imap php-soap php-mbstring php-simplexml  
-yum -y install php-dom php-gd php-pear php-pecl-imagick php-pecl-apc php-magickwand 
-yum -y install gd gd-devel php-gd httpd-devel gcc curl php-curl mod_ssl pcre-devel 
+yum -y -q install php httpd php-mcrypt php-xml php-xml php-devel php-fpm php-json php-intl php-dev php-common unzip git curl 
+yum -y -q install php-imap php-soap php-mbstring php-simplexml  
+yum -y -q install php-dom php-gd php-pear php-pecl-imagick php-pecl-apc php-magickwand 
+yum -y -q install gd gd-devel php-gd httpd-devel gcc curl php-curl mod_ssl pcre-devel 
 wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
 rpm -ivh mysql-community-release-el7-5.noarch.rpm
-yum -y install mysql mysql-server php-mysql git-core screen  
-yum -y install epel-release 
-yum -y install python-pip 
-yum -y install mailutils
-yum -y install ssmtp
+yum -y -q install mysql mysql-server php-mysql git-core screen  
+yum -y -q install epel-release 
+yum -y -q install python-pip 
+yum -y -q install mailutils
+yum -y -q install ssmtp
 echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP for mails and other required packages
 	  Installed Python-Pip functionality
 	  Installing email functionality	">> /mylogs/text.txt
 #Install Apache
-yum -y install httpd
+yum -y -q install httpd
 #First create the folder where tar file will be downloaded
 mkdir /MagentoBK
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
-wget "${11}" -P /MagentoBK 
+wget "${11}" -P /MagentoBK -q
 MagentoMediaBKFile=${11##*/}
 echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -97,7 +97,7 @@ rm -rf /MagentoBK/"$MagentoMediaBKFile"
 echo "Completed downloaded for magento media folder backup files and remove the backup file
 	  Start downloading magento backup files">> /mylogs/text.txt	
 #download magento file backup
-wget "$8" -P /MagentoBK  
+wget "$8" -P /MagentoBK  -q
 MagentoBKFile=${8##*/}
 echo "Downloaded magento backup files. MagentoBKFile=$MagentoBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -107,7 +107,7 @@ echo "unzip magento backup files
      Start downloading magento init folder backup files">> /mylogs/text.txt
 
 #download magento init folder backup
-wget "${12}" -P /MagentoBK 
+wget "${12}" -P /MagentoBK  -q
 MagentoInitBKFile=${12##*/}
 echo "Downloaded magento init folder backup files. MagentoInitBKFile=$MagentoInitBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -117,7 +117,7 @@ echo "unzip magento init folder
 	  Start downloading magento var folder backup files">> /mylogs/text.txt
 
 #download magento var folder backup
-wget "${13}" -P /MagentoBK  
+wget "${13}" -P /MagentoBK  -q
 MagentoVarBKFile=${13##*/}
 echo "Downloaded magento var folder backup files. MagentoVarBKFile=$MagentoVarBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -126,7 +126,7 @@ rm -rf /MagentoBK/"$MagentoVarBKFile"
 echo "Unzip magento var folder
 	  Start downloading mangeto db backup files">> /mylogs/text.txt
 #download magento DB backup
-wget "$9"  -P  /MagentoBK 
+wget "$9"  -P  /MagentoBK  -q
 MagentoDBBKFile=${9##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile
@@ -141,7 +141,7 @@ echo "installed MYSQL and New DB">> /mylogs/text.txt
 service php-fpm restart 
 systemctl stop httpd
 #yum -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
-yum -y install httpd mod_fcgid php-cli
+yum -y -q install httpd mod_fcgid php-cli
 echo "installed PHP">> /mylogs/text.txt
 service httpd restart
 echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
@@ -192,7 +192,7 @@ if [ ! -f ".htaccess" ]; then
 
  echo "copying htaccess file">> /mylogs/text.txt;
 
- wget "${14}"
+ wget "${14}" -q
 
  fi
  cd / || exit
@@ -247,7 +247,7 @@ sudo su
 IP=$(curl ipinfo.io/ip)
 echo "Installing certbot functionality">> /mylogs/text.txt
 systemctl stop httpd
-yum -y install python-certbot-apache 
+yum -y -q install python-certbot-apache 
 service httpd restart
 echo "Installed certbot functionality">> /mylogs/text.txt
 

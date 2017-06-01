@@ -64,22 +64,22 @@ fi
 
 START=$(date +%s)
 echo "StartTime=$START | domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
-apt-get -y update 
+apt-get -y -qq update 
 #Installbasic
-   apt-get install \
+   apt-get -qq install \
     git \
     curl \
     unzip \
 	--yes
 
 #Install Apache
- apt-get -y install apache2
+ apt-get -y  -qq install apache2
 echo "installed basic">> /mylogs/text.txt
 #First create the folder where tar file will be downloaded
 mkdir /MagentoBK
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
-wget "${11}" -P /MagentoBK  
+wget "${11}" -P /MagentoBK  -q
 MagentoMediaBKFile=${11##*/}
 echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -91,7 +91,7 @@ rm -rf /MagentoBK/"$MagentoMediaBKFile"
 echo "Completed downloaded for magento media folder backup files and remove the backup file
       Start downloading magento backup files">> /mylogs/text.txt	
 #download magento file backup
-wget "$8" -P /MagentoBK
+wget "$8" -P /MagentoBK -q
 MagentoBKFile=${8##*/}
 echo "Downloaded magento backup files. MagentoBKFile=$MagentoBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -100,7 +100,7 @@ rm -rf /MagentoBK/"$MagentoBKFile"
 echo "unzip magento backup files
 	 Start downloading magento init folder backup files">> /mylogs/text.txt
 #download magento init folder backup
-wget "${12}" -P /MagentoBK 
+wget "${12}" -P /MagentoBK -q
 MagentoInitBKFile=${12##*/}
 echo "Downloaded magento init folder backup files. MagentoInitBKFile=$MagentoInitBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -109,7 +109,7 @@ rm -rf /MagentoBK/"$MagentoInitBKFile"
 echo "unzip magento init folder
 	  Start downloading magento var folder backup files">> /mylogs/text.txt
 #download magento var folder backup
-wget "${13}" -P /MagentoBK
+wget "${13}" -P /MagentoBK -q
 MagentoVarBKFile=${13##*/}
 echo "Downloaded magento var folder backup files. MagentoVarBKFile=$MagentoVarBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
@@ -118,22 +118,22 @@ rm -rf /MagentoBK/"$MagentoVarBKFile"
 echo "Unzip magento var folder
 	Start downloading mangeto db backup files">> /mylogs/text.txt
 #download magento DB backup
-wget "$9"  -P  /MagentoBK
+wget "$9"  -P  /MagentoBK -q
 MagentoDBBKFile=${9##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile">> /mylogs/text.txt
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.5 mysql-client-5.5
+ apt-get -y -qq install mysql-server-5.5 mysql-client-5.5
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;"
 echo "installed MYSQL and New DB">> /mylogs/text.txt
-apt-get -y update
-apt-get -y install php5
-apt-get -y update
+apt-get -y -qq update
+apt-get -y -qq install php5
+apt-get -y -qq update
 #Install PHP
-apt-get -y install \
+apt-get -y -qq install \
   php5-fpm \
  php5-mysql \
 php5-mcrypt \
@@ -146,7 +146,7 @@ php5-gd \
      php5-dev \
    php5-common 
       
-apt-get -y update
+apt-get -y -qq update
 a2enmod proxy_fcgi setenvif
 a2enconf php5-fpm
 service php5-fpm restart
@@ -195,7 +195,7 @@ echo "<VirtualHost *:80>
 cd /var/www/"$2"/2016080806 || exit
 if [ ! -f ".htaccess" ]; then
  echo "copying htaccess file" >> /mylogs/text.txt;
- wget "${14}"
+ wget "${14}" -q
  fi
  cd / || exit
  # Create a new user for magento
@@ -257,19 +257,19 @@ echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo su
 IP=$(curl ipinfo.io/ip)
 echo "Installing Python-Pip functionality">> /mylogs/text.txt
-apt-get -y install epel-release 
-apt-get -y update 
-apt-get -y install python-pip
+apt-get -y -qq install epel-release 
+apt-get -y -qq update 
+apt-get -y -qq install python-pip
 echo "Installed Python-Pip functionality
 	  Installing email functionality">> /mylogs/text.txt
 # section to install email service
-apt-get -y install mailutils
-apt-get -y install ssmtp
+apt-get -y -qq install mailutils
+apt-get -y -qq install ssmtp
 #section for installing certbot SSL
-apt-get -y install software-properties-common
-add-apt-repository -y ppa:certbot/certbot
-apt-get -y update
-apt-get -y install python-certbot-apache 
+apt-get -y -qq install software-properties-common
+add-apt-repository -y -qq ppa:certbot/certbot
+apt-get -y -qq update
+apt-get -y -qq install python-certbot-apache 
 
 if [ "${6/'azure.com'}" = "$6" ] ; then
   certbot certonly --webroot -w /var/www/"$2"/2016080806/ -d "$1.$6"  --agree-tos  --email azuredeployments@gcommerceinc.com -n
