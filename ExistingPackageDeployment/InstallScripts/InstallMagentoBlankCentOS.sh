@@ -87,7 +87,7 @@ mkdir /MagentoBK
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
 wget "${11}" -P /MagentoBK 
 MagentoMediaBKFile=${11##*/}
-echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFilee">> /mylogs/text.txt
+echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
 #create directory where code will store
 echo "Created required directory and Start downloading magento media folder backup files">> /mylogs/text.txt
@@ -204,7 +204,7 @@ echo "$4" | passwd --stdin "$3"
  usermod -aG wheel "$3"
   usermod -aG root "$3"
  su -c "$3"
-echo '$4'|sudo -S echo "create user"
+echo "$4"|sudo -S echo "create user"
 echo "create user"| sudo tee -a /mylogs/text.txt > /dev/null
 sudo chmod -R 755 /var/www
 sudo service httpd restart

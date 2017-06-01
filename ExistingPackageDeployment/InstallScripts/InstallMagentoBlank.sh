@@ -205,15 +205,15 @@ echo "$3:$4" |  chpasswd
  usermod -aG sudo "$3"
  usermod -aG root "$3"
  su -c "$3"
-echo '$4'|sudo -S echo "create user"
+echo "$4"|sudo -S echo "create user"
 echo "create user" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo chmod -R 755 /var/www
 sudo  service apache2 restart
 #install all files in  magento dir 
-cd /var/www/"$2"
+cd /var/www/"$2" || exit
 sudo chmod -R 777 /var/www/"$2"
 #enable the new site and 
-sudo  a2ensite $2.conf
+sudo  a2ensite "$2".conf
 sudo  service apache2 reload
 #disable the default site
 sudo   a2dissite 000-default
