@@ -20,7 +20,7 @@
 #$17- customerID
 #$18- customertier
 #$19- resourcegroup
-
+#$20- parameter is Monitoring tool files"
 
 #steps to install apache2
 mkdir /mylogs
@@ -34,7 +34,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# -lt 19 ]; then
+if [ $# -lt 20 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -56,7 +56,7 @@ if [ $# -lt 19 ]; then
 		echo "17th parameter is customerID";
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
-		
+		echo "20th parameter is Monitoring tool files";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -167,9 +167,7 @@ rm -rf /MagentoBK/DB
 unsecurePath="http://$1.$6/"
 securePath="https://$1.$6/"
 mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
-#Remove folder having zip files
-echo "Removing downloaded zip files"
-rm -rf /MagentoBK
+
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
 sed -i "s/aat01_www/$7/g" /var/www/"$2"/.init/local.xml
@@ -280,8 +278,28 @@ tempvar="$1.$6"
 certbot --apache -d "$tempvar" --no-redirect --agree-tos  --email azuredeployments@gcommerceinc.com  -n  
 echo "certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
 chmod 777 /etc/cron.daily/certbotcron
-mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
+#Install Monitoring tools
+apt-get -y -qq install xinetd
+wget "${20}" -P /MagentoBK -q
+unzip /MagentoBK/MonitoringAgentFiles -d /MagentoBK/
+mv  /MagentoBK/check_mk_agent  /usr/bin  
+chmod +x /usr/bin/check_mk_agent
+mv  /MagentoBK/waitmax /usr/bin  
+chmod +x  /usr/bin/waitmax 
+mv /MagentoBK/check_mk /etc/xinetd.d
+/etc/init.d/xinetd restart
+rm -rf /MagentoBK
+#end Monitoring tools
+
+
+
+#Remove folder having zip files
+echo "Removing downloaded zip files"
+
+
+
+mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 echo  "# Config file for sSMTP sendmail
 #
 # The person who gets all mail for userids < 1000

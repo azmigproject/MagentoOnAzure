@@ -20,6 +20,7 @@
 #$17- customerID
 #$18- customertier
 #$19- resourcegroup
+#$20- parameter is Monitoring tool files"
 
 
 #steps to install apache2
@@ -34,7 +35,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# -lt 19 ]; then
+if [ $# -lt 20 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -56,6 +57,7 @@ if [ $# -lt 19 ]; then
 		echo "17th parameter is customerID";
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
+		echo "20th parameter is Monitoring tool files";
 		
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
@@ -263,6 +265,20 @@ echo " #!/bin/sh
 certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
 chmod 777 /etc/cron.daily/certbotcron
 
+
+#Install Monitoring tools
+yum -y -q install xinetd
+mkdir MagentoBK
+wget "${20}" -P /MagentoBK -q
+unzip /MagentoBK/MonitoringAgentFiles -d /MagentoBK/
+mv  /MagentoBK/check_mk_agent  /usr/bin  
+chmod +x /usr/bin/check_mk_agent
+mv  /MagentoBK/waitmax /usr/bin  
+chmod +x  /usr/bin/waitmax 
+mv /MagentoBK/check_mk /etc/xinetd.d
+/etc/init.d/xinetd restart
+rm -rf /MagentoBK 
+#end Monitoring tools
 
 #MailSendingVariables
 #Live
