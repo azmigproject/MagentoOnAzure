@@ -21,6 +21,7 @@
 #$18- customertier
 #$19- resourcegroup
 
+
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
@@ -33,7 +34,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# < 19]; then
+if [ $# -lt 19 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -61,92 +62,78 @@ if [ $# < 19]; then
     exit 1
 fi
 
-START=$(date +%s) >> /mylogs/text.txt
-echo Start >> /mylogs/text.txt
-echo "domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
-apt-get update >> /mylogs/text.txt
+START=$(date +%s)
+echo "StartTime=$START | domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
+apt-get -y -qq update 
 #Installbasic
-   apt-get install \
+   apt-get -qq install \
     git \
     curl \
     unzip \
 	--yes
 
 #Install Apache
- apt-get -y install apache2
+ apt-get -y  -qq install apache2
 echo "installed basic">> /mylogs/text.txt
 #First create the folder where tar file will be downloaded
 mkdir /MagentoBK
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
-wget ${11} -P /MagentoBK  >> /mylogs/text.txt
+wget "${11}" -P /MagentoBK  -q
 MagentoMediaBKFile=${11##*/}
-echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFilee">> /mylogs/text.txt
+echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
-
 #create directory where code will store
 echo "Created required directory and Start downloading magento media folder backup files">> /mylogs/text.txt
-
-mkdir /var/www/$2
-unzip /MagentoBK/$MagentoMediaBKFile -d /var/www/$2
-rm -rf /MagentoBK/$MagentoMediaBKFile >> /mylogs/text.txt
-
-echo "Completed downloaded for magento media folder backup files and remove the backup file">> /mylogs/text.txt	
-
+mkdir /var/www/"$2"
+unzip /MagentoBK/"$MagentoMediaBKFile" -d /var/www/"$2"
+rm -rf /MagentoBK/"$MagentoMediaBKFile" 
+echo "Completed downloaded for magento media folder backup files and remove the backup file
+      Start downloading magento backup files">> /mylogs/text.txt	
 #download magento file backup
-echo "Start downloading magento backup files">> /mylogs/text.txt
-wget $8 -P /MagentoBK  >> /mylogs/text.txt
+wget "$8" -P /MagentoBK -q
 MagentoBKFile=${8##*/}
 echo "Downloaded magento backup files. MagentoBKFile=$MagentoBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/$MagentoBKFile -C /var/www/$2
-rm -rf /MagentoBK/$MagentoBKFile >> /mylogs/text.txt
-echo "unzip magento backup files">> /mylogs/text.txt
-
+tar -xvf /MagentoBK/"$MagentoBKFile" -C /var/www/"$2"
+rm -rf /MagentoBK/"$MagentoBKFile"
+echo "unzip magento backup files
+	 Start downloading magento init folder backup files">> /mylogs/text.txt
 #download magento init folder backup
-echo "Start downloading magento init folder backup files">> /mylogs/text.txt
-wget ${12} -P /MagentoBK  >> /mylogs/text.txt
+wget "${12}" -P /MagentoBK -q
 MagentoInitBKFile=${12##*/}
 echo "Downloaded magento init folder backup files. MagentoInitBKFile=$MagentoInitBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/$MagentoInitBKFile -C /var/www/$2
-rm -rf /MagentoBK/$MagentoInitBKFile >> /mylogs/text.txt
-echo "unzip magento init folder">> /mylogs/text.txt
-
+tar -xvf /MagentoBK/"$MagentoInitBKFile" -C /var/www/"$2"
+rm -rf /MagentoBK/"$MagentoInitBKFile"
+echo "unzip magento init folder
+	  Start downloading magento var folder backup files">> /mylogs/text.txt
 #download magento var folder backup
-echo "Start downloading magento var folder backup files">> /mylogs/text.txt
-wget ${13} -P /MagentoBK  >> /mylogs/text.txt
+wget "${13}" -P /MagentoBK -q
 MagentoVarBKFile=${13##*/}
 echo "Downloaded magento var folder backup files. MagentoVarBKFile=$MagentoVarBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/$MagentoVarBKFile -C /var/www/$2
-rm -rf /MagentoBK/$MagentoVarBKFile >> /mylogs/text.txt
-echo "Unzip magento var folder">> /mylogs/text.txt
-
+tar -xvf /MagentoBK/"$MagentoVarBKFile" -C /var/www/"$2"
+rm -rf /MagentoBK/"$MagentoVarBKFile"
+echo "Unzip magento var folder
+	Start downloading mangeto db backup files">> /mylogs/text.txt
 #download magento DB backup
-echo "Start downloading mangeto db backup files">> /mylogs/text.txt
-wget $9  -P  /MagentoBK >> /mylogs/text.txt
+wget "$9"  -P  /MagentoBK -q
 MagentoDBBKFile=${9##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile">> /mylogs/text.txt
-
-echo "installed Apache">> /mylogs/text.txt
-
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $5"
- apt-get -y install mysql-server-5.5 mysql-client-5.5 >> /mylogs/text.txt
+ apt-get -y -qq install mysql-server-5.5 mysql-client-5.5
 # apt-get install mysql-server-5.6 --yes
-mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" >> /mylogs/text.txt
-
+mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;"
 echo "installed MYSQL and New DB">> /mylogs/text.txt
-apt-get update
-apt-get -y install php5 >> /mylogs/text.txt
-#apt-get -y install php5.5-mbstring php5.5-mcrypt php5.5-mysql php5.5-xml >> /mylogs/text.txt
-# Update apt-get 
-apt-get update >> /mylogs/text.txt
+apt-get -y -qq update
+apt-get -y -qq install php5
+apt-get -y -qq update
 #Install PHP
-apt-get -y install \
+apt-get -y -qq install \
   php5-fpm \
  php5-mysql \
 php5-mcrypt \
@@ -156,50 +143,43 @@ php5-gd \
  php5-xsl \
    php5-json \
    php5-intl \
-  
-   php5-dev \
-   php5-common \ 
-    >> /mylogs/text.txt
-apt-get update >> /mylogs/text.txt
-a2enmod proxy_fcgi setenvif >> /mylogs/text.txt
-a2enconf php5-fpm >> /mylogs/text.txt
-service php5-fpm restart >> /mylogs/text.txt
-apt-get -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
-service apache2 restart >> /mylogs/text.txt
-echo "installed PHP">> /mylogs/text.txt
+     php5-dev \
+   php5-common 
+      
+apt-get -y -qq update
+a2enmod proxy_fcgi setenvif
+a2enconf php5-fpm
+service php5-fpm restart
+apt-get -y install apache2 php5 libapache2-mod-php5
 service  apache2 restart
-
-echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
+echo "installed PHP
+	  End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
 #Uninstall DB backup
 service  apache2 restart
 mkdir /MagentoBK/DB
-tar -xvf /MagentoBK/$MagentoDBBKFile -C /MagentoBK/DB
+tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
 #Replace the template1 name to the name of domain in magento_init.sql file
-sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql >> /mylogs/text.txt
-mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" >> /mylogs/text.txt
+sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql
+mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" 
 rm -rf /MagentoBK/DB
 #update DB with new website root path
 unsecurePath="http://$1.$6/"
 securePath="https://$1.$6/"
-mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';">> /mylogs/text.txt
-
+mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
 #Remove folder having zip files
-echo "Removing downloaded zip files">> /mylogs/text.txt
-rm -rf /MagentoBK >> /mylogs/text.txt
-
+echo "Removing downloaded zip files"
+rm -rf /MagentoBK
 #Replace the database details in local.xml file
-sed -i "s/74.208.174.2/localhost/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
-sed -i "s/aat01_www/$7/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
-sed -i "s/aat01/root/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
-sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/$2/.init/local.xml >> /mylogs/text.txt
-
+sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
+sed -i "s/aat01_www/$7/g" /var/www/"$2"/.init/local.xml
+sed -i "s/aat01/root/g" /var/www/"$2"/.init/local.xml
+sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/"$2"/.init/local.xml
 echo "updated local.xml file">> /mylogs/text.txt
-
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
-	ServerName http://$1.$6/
-        ServerAlias  http://$1.$6/
+	ServerName $1.$6
+        ServerAlias  $1.$6
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/$2/2016080806
         ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -210,49 +190,35 @@ echo "<VirtualHost *:80>
                 Order allow,deny
                 allow from all
         </Directory>
-
-</VirtualHost>" >> /etc/apache2/sites-available/$2.conf
-
+</VirtualHost>" >> /etc/apache2/sites-available/"$2".conf
 # Check if .htaccess file is Missing than add it from default location
-
-cd /var/www/$2/2016080806 
-
+cd /var/www/"$2"/2016080806 || exit
 if [ ! -f ".htaccess" ]; then
-
- echo "copying ht access file";
-
- wget ${14}
-
+ echo "copying htaccess file" >> /mylogs/text.txt;
+ wget "${14}" -q
  fi
- cd /
+ cd / || exit
  # Create a new user for magento
- adduser $3 --gecos "Magento System,0,0,0" --disabled-password
+ adduser "$3" --gecos "Magento System,0,0,0" --disabled-password
 echo "$3:$4" |  chpasswd
- 
- usermod -g www-data $3
- usermod -aG sudo $3
-  usermod -aG root $3
-
- su $3
-echo '$4'|sudo -S echo "create user">> /mylogs/text.txt
-sudo echo "create user">> /mylogs/text.txt
+ usermod -g www-data "$3"
+ usermod -aG sudo "$3"
+ usermod -aG root "$3"
+ su -c "$3"
+echo "$4"|sudo -S echo "create user"
+echo "create user" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo chmod -R 755 /var/www
 sudo  service apache2 restart
-
 #install all files in  magento dir 
-
-cd /var/www/$2
-sudo chmod -R 777 /var/www/$2
-
+cd /var/www/"$2" || exit
+sudo chmod -R 777 /var/www/"$2"
 #enable the new site and 
-sudo  a2ensite $2.conf
+sudo  a2ensite "$2".conf
 sudo  service apache2 reload
-
 #disable the default site
 sudo   a2dissite 000-default
 sudo  service apache2 reload
 #Go to installed php version apache2 php.ini file and update memory_limit to 2GB
-
 #change to add allow url rewite and handle phpencryption in apache
 sudo  a2enmod rewrite
 sudo  service apache2 restart
@@ -260,51 +226,60 @@ sudo  php5enmod  mcrypt
 sudo  service apache2 restart
 sudo  a2enconf php5-fpm
 sudo  service apache2 restart
-sudo  echo "Install Code">> /mylogs/text.txt
-
+echo "Install Code" | sudo tee -a /mylogs/text.txt > /dev/null
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
-cd /var/www/$2/2016080806 
-sudo  echo "start giving permissions">> /mylogs/text.txt 
-find var app/etc -type f -exec sudo  chmod g+w {} \; >> /mylogs/text.txt
-find var app/etc -type d -exec sudo  chmod g+ws {} \; >> /mylogs/text.txt
-sudo  chown -R $3:www-data . >> /mylogs/text.txt
-sudo chmod -R o+w media var >> /mylogs/text.txt
-sudo chmod o+w app/etc >> /mylogs/text.txt
-sudo chmod 550 mage >> /mylogs/text.txt
-sudo  echo "end giving permissions">> /mylogs/text.txt
-
+cd /var/www/"$2"/2016080806 || exit
+echo "start giving permissions" | sudo tee -a /mylogs/text.txt > /dev/null
+find var app/etc -type f -exec sudo  chmod g+w {} \;
+find var app/etc -type d -exec sudo  chmod g+ws {} \;
+sudo  chown -R "$3":www-data .
+sudo chmod -R o+w media var 
+sudo chmod o+w app/etc 
+sudo chmod 550 mage 
+echo "end giving permissions" | sudo tee -a /mylogs/text.txt > /dev/null
 #sudo chmod -R 777 /var/www/$2/2016080806 
-find . -type f -exec sudo chmod 644 {} \; >> /mylogs/text.txt
-find . -type d -exec sudo chmod 755 {} \; >> /mylogs/text.txt
-sudo chmod 550 mage >> /mylogs/text.txt
-sudo chmod -R 777  var >> /mylogs/text.txt
-sudo chmod -R 777 .var >> /mylogs/text.txt
-sudo chmod -R 777 pub/static >> /mylogs/text.txt
-sudo chmod -R 777 pub/media >> /mylogs/text.txt
-sudo chmod -R 777  media >> /mylogs/text.txt
-sudo chmod -R 777 .media >> /mylogs/text.txt
-cd /var/www/$2
-sudo chmod -R 777 .var >> /mylogs/text.txt
-sudo chmod -R 777 .media >> /mylogs/text.txt
-cd /var/www/$2/
-sudo rm -rf .var/cache/*>> /mylogs/text.txt
-sudo  echo "started cron">> /mylogs/text.txt
+find . -type f -exec sudo chmod 644 {} \; 
+find . -type d -exec sudo chmod 755 {} \; 
+sudo chmod 550 mage 
+sudo chmod -R 777  var 
+sudo chmod -R 777 .var 
+sudo chmod -R 777 pub/static 
+sudo chmod -R 777 pub/media 
+sudo chmod -R 777  media 
+sudo chmod -R 777 .media 
+cd /var/www/"$2" || exit
+sudo chmod -R 777 .var 
+sudo chmod -R 777 .media 
+cd /var/www/"$2"/ || exit
+sudo rm -rf .var/cache/*
+echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo su
-
 IP=$(curl ipinfo.io/ip)
 echo "Installing Python-Pip functionality">> /mylogs/text.txt
-
-apt-get -y install epel-release >> /mylogs/text.txt
-apt-get -y update >> /mylogs/text.txt
-apt-get -y install python-pip >> /mylogs/text.txt
-
-echo "Installed Python-Pip functionality">> /mylogs/text.txt
-echo "Installing email functionality">> /mylogs/text.txt
+apt-get -y -qq install epel-release 
+apt-get -y -qq update 
+apt-get -y -qq install python-pip
+echo "Installed Python-Pip functionality
+	  Installing email functionality">> /mylogs/text.txt
 # section to install email service
-apt-get -y install mailutils
-apt-get -y install ssmtp
+apt-get -y -qq install mailutils
+apt-get -y -qq install ssmtp
+#section for installing certbot SSL
+apt-get -y -qq install software-properties-common
+add-apt-repository -y  ppa:certbot/certbot
+apt-get -y -qq update
+apt-get -y -qq install python-certbot-apache 
 
+if [ "${6/'azure.com'}" = "$6" ] ; then
+  certbot certonly --webroot -w /var/www/"$2"/2016080806/ -d "$1.$6"  --agree-tos  --email azuredeployments@gcommerceinc.com -n
+else
+  certbot certonly --webroot -w /var/www/"$2"/2016080806/ -d "$1.$6"  --agree-tos  --email azuredeployments@gcommerceinc.com -n --test-cert 
+fi
+tempvar="$1.$6"
+certbot --apache -d "$tempvar" --no-redirect --agree-tos  --email azuredeployments@gcommerceinc.com  -n  
+echo "certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
+chmod 777 /etc/cron.daily/certbotcron
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
 echo  "# Config file for sSMTP sendmail
@@ -348,8 +323,8 @@ root:information-prod@gcommerceinc.com:smtp.office365.com:587
 noreply:information-prod@gcommerceinc.com:smtp.office365.com:587
 " > /etc/ssmtp/revaliases
 END=$(date +%s)
-DIFFMin=$(((( $END - $START )/60)))
-DIFFSec=$(((( $END - $START )%60)))
+DIFFMin=$((((END - START )/60)))
+DIFFSec=$((((END - START )%60)))
 
 MailBody="
 AutoSoEz Client Deployment Complete. Details given below<BR>
@@ -366,7 +341,7 @@ Customer Tier:  ${18}<BR>
 MySQL Password:   $5<BR>
 VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
-echo $MailBody >> /mylogs/text.txt
+
 {
     echo "To: azuredeployments@gcommerceinc.com"
     echo "From: noreply <information-prod@gcommerceinc.com>"
@@ -375,10 +350,11 @@ echo $MailBody >> /mylogs/text.txt
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
-    echo $MailBody
-} | ssmtp azuredeployments@gcommerceinc.com >> /mylogs/text.txt
+    echo "$MailBody"
+} | ssmtp azuredeployments@gcommerceinc.com 
 
-sudo  echo "Install successfull">> /mylogs/text.txt
+
+echo "Mail Send. Install successfull">> /mylogs/text.txt
 mkdir /var/www/app
 mkdir /var/www/app/etc
 chmod -R 777 /var/www/app/etc
