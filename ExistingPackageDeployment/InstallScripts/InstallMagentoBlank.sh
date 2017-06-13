@@ -292,12 +292,16 @@ mv /MagentoBK/check_mk /etc/xinetd.d
 rm -rf /MagentoBK
 #end Monitoring tools
 
-
-
 #Remove folder having zip files
 echo "Removing downloaded zip files"
 
+#cron Tab Update
+echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
+*/15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
+" >>/etc/crontab
 
+ sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 echo  "# Config file for sSMTP sendmail
@@ -373,9 +377,6 @@ VM Admin Pass:  ${16}"
 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-mkdir /var/www/app
-mkdir /var/www/app/etc
-chmod -R 777 /var/www/app/etc
-echo "${17}" >>/var/www/app/etc/customer.txt
+echo "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 shutdown -r +1 &
 exit 0
