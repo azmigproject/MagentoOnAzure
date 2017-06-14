@@ -163,10 +163,27 @@ chmod -R 777 /MagentoBK/DB
 sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql
 mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" 
 rm -rf /MagentoBK/DB
+
 #update DB with new website root path
-unsecurePath="http://$1.$6/"
+unsecurePath="https://$1.$6/"
 securePath="https://$1.$6/"
 mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+
+# if testing locally please comment below Mysql command
+   mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
+   set value = 'https://autosoez.azureedge.net/$17/' where path = 'web/secure/base_media_url';
+
+   update magento.mage_core_config_data
+   set value = 1
+   where path = 'web/secure/use_in_frontend';
+
+   update magento.mage_core_config_data
+   set value = 1
+   where path = 'web/secure/use_in_adminhtml';
+
+   update magento.mage_core_config_data
+   set value = 'SSL_OFFLOADED'
+   where path = 'web/secure/offloader_header';"
 
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
@@ -377,6 +394,8 @@ VM Admin Pass:  ${16}"
 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
+
 echo "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+
 shutdown -r +1 &
 exit 0

@@ -155,10 +155,28 @@ chmod -R 777 /MagentoBK/DB
 sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql 
 mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" 
 rm -rf /MagentoBK/DB
+
 #update DB with new website root path
-unsecurePath="http://$1.$6/"
+unsecurePath="https://$1.$6/"
 securePath="https://$1.$6/"
 mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+
+ # if testing locally please comment below Mysql command
+   mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
+   set value = 'https://autosoez.azureedge.net/$17/' where path = 'web/secure/base_media_url';
+
+   update magento.mage_core_config_data
+   set value = 1
+   where path = 'web/secure/use_in_frontend';
+
+   update magento.mage_core_config_data
+   set value = 1
+   where path = 'web/secure/use_in_adminhtml';
+
+   update magento.mage_core_config_data
+   set value = 'SSL_OFFLOADED'
+   where path = 'web/secure/offloader_header';"
+
 #Remove folder having zip files
 echo "Removing downloaded zip files">> /mylogs/text.txt
 rm -rf /MagentoBK 
@@ -280,6 +298,16 @@ mv /MagentoBK/check_mk /etc/xinetd.d
 rm -rf /MagentoBK 
 #end Monitoring tools
 
+
+#cron Tab Update
+echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
+*/15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
+" >>/etc/crontab
+
+ sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
+
+
 #MailSendingVariables
 #Live
 SenderEmail="information-prod@gcommerceinc.com"
@@ -362,9 +390,7 @@ VM Admin Pass:  ${16}"
 } | ssmtp "$RecieverEmail" 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-mkdir /var/www/app
-mkdir /var/www/app/etc
-chmod -R 777 /var/www/app/etc
-echo "${17}" >>/var/www/app/etc/customer.txt
+
+eecho "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 shutdown -r +1 &
 exit 0
