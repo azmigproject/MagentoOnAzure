@@ -388,7 +388,7 @@ echo "Mail Send. Install successfull">> /mylogs/text.txt
 
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
 
-echo "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 shutdown -r +1 &
