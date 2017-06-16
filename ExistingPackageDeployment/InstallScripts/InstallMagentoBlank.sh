@@ -165,25 +165,15 @@ mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};"
 rm -rf /MagentoBK/DB
 
 #update DB with new website root path
-unsecurePath="https://$1.$6/"
-securePath="https://$1.$6/"
+unsecurePath="http://$1.$6/"
+securePath="http://$1.$6/"
 mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
 
 # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/$17/' where path = 'web/secure/base_media_url';
+   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"
 
-   update magento.mage_core_config_data
-   set value = 1
-   where path = 'web/secure/use_in_frontend';
-
-   update magento.mage_core_config_data
-   set value = 1
-   where path = 'web/secure/use_in_adminhtml';
-
-   update magento.mage_core_config_data
-   set value = 'SSL_OFFLOADED'
-   where path = 'web/secure/offloader_header';"
+  
 
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
@@ -286,15 +276,6 @@ add-apt-repository -y  ppa:certbot/certbot
 apt-get -y -qq update
 apt-get -y -qq install python-certbot-apache 
 
-if [ "${6/'azure.com'}" = "$6" ] ; then
-  certbot certonly --webroot -w /var/www/"$2"/2016080806/ -d "$1.$6"  --agree-tos  --email azuredeployments@gcommerceinc.com -n
-else
-  certbot certonly --webroot -w /var/www/"$2"/2016080806/ -d "$1.$6"  --agree-tos  --email azuredeployments@gcommerceinc.com -n --test-cert 
-fi
-tempvar="$1.$6"
-certbot --apache -d "$tempvar" --no-redirect --agree-tos  --email azuredeployments@gcommerceinc.com  -n  
-echo "certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
-chmod 777 /etc/cron.daily/certbotcron
 
 #Install Monitoring tools
 apt-get -y -qq install xinetd
@@ -311,7 +292,7 @@ rm -rf /MagentoBK
 
 #Remove folder having zip files
 echo "Removing downloaded zip files"
-
+chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
 #cron Tab Update
 echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
 */15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
@@ -394,7 +375,6 @@ VM Admin Pass:  ${16}"
 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-
 echo "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 
 shutdown -r +1 &
