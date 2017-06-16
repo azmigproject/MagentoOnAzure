@@ -171,9 +171,7 @@ mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set val
 
 # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"
-
-  
+   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"  
 
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
@@ -292,14 +290,20 @@ rm -rf /MagentoBK
 
 #Remove folder having zip files
 echo "Removing downloaded zip files"
-chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
+
+
 #cron Tab Update
 echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
 */15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
 " >>/etc/crontab
 
- sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,
-/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
+sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
+
+ crontab -l > Magentocron
+ echo  "*/10   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log" >> Magentocron
+ echo  "*/15   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log" >> Magentocron
+ crontab  Magentocron
+ rm Magentocron
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 echo  "# Config file for sSMTP sendmail
@@ -375,7 +379,12 @@ VM Admin Pass:  ${16}"
 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
+
+chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
+
 echo "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+
+chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 
 shutdown -r +1 &
 exit 0
