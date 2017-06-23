@@ -83,56 +83,18 @@ echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP
 	  Installing email functionality	">> /mylogs/text.txt
 #Install Apache
 yum -y -q install httpd
-#First create the folder where tar file will be downloaded
-mkdir /MagentoBK
-#download magento media folder backup
-echo "Start downloading magento media folder backup files">> /mylogs/text.txt
-wget "${11}" -P /MagentoBK -q
-MagentoMediaBKFile=${11##*/}
-echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFile">> /mylogs/text.txt
-chmod -R 777 /MagentoBK
+
 #create directory where code will store
-echo "Created required directory and Start downloading magento media folder backup files">> /mylogs/text.txt
-mkdir /var/www/"$2"
-unzip /MagentoBK/"$MagentoMediaBKFile" -d /var/www/"$2"
-rm -rf /MagentoBK/"$MagentoMediaBKFile" 
-echo "Completed downloaded for magento media folder backup files and remove the backup file
-	  Start downloading magento backup files">> /mylogs/text.txt	
+#download magento media folder backup
 #download magento file backup
-wget "$8" -P /MagentoBK  -q
-MagentoBKFile=${8##*/}
-echo "Downloaded magento backup files. MagentoBKFile=$MagentoBKFile">> /mylogs/text.txt
-chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/"$MagentoBKFile" -C /var/www/"$2"
-rm -rf /MagentoBK/"$MagentoBKFile" 
-echo "unzip magento backup files
-     Start downloading magento init folder backup files">> /mylogs/text.txt
-
 #download magento init folder backup
-wget "${12}" -P /MagentoBK  -q
-MagentoInitBKFile=${12##*/}
-echo "Downloaded magento init folder backup files. MagentoInitBKFile=$MagentoInitBKFile">> /mylogs/text.txt
-chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/"$MagentoInitBKFile" -C /var/www/"$2"
-rm -rf /MagentoBK/"$MagentoInitBKFile" 
-echo "unzip magento init folder
-	  Start downloading magento var folder backup files">> /mylogs/text.txt
-
 #download magento var folder backup
-wget "${13}" -P /MagentoBK  -q
-MagentoVarBKFile=${13##*/}
-echo "Downloaded magento var folder backup files. MagentoVarBKFile=$MagentoVarBKFile">> /mylogs/text.txt
-chmod -R 777 /MagentoBK
-tar -xvf /MagentoBK/"$MagentoVarBKFile" -C /var/www/"$2"
-rm -rf /MagentoBK/"$MagentoVarBKFile" 
-echo "Unzip magento var folder
-	  Start downloading mangeto db backup files">> /mylogs/text.txt
 #download magento DB backup
-wget "$9"  -P  /MagentoBK  -q
-MagentoDBBKFile=${9##*/}
-chmod -R 777 /MagentoBK
-echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile
-	 installed Apache">> /mylogs/text.txt
+
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s $2 $8 $9 $11 $12 $13
+#sh ./GcMagentoArtifacts.sh
+
+
 service mysqld start
  mysqladmin -u root password "$5"
 systemctl enable mysqld.service
@@ -159,6 +121,10 @@ rm -rf /MagentoBK/DB
 unsecurePath="http://$1.$6/"
 securePath="https://$1.$6/"
 mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+# if testing locally please comment below Mysql command
+   mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
+   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"   
 #Remove folder having zip files
 echo "Removing downloaded zip files">> /mylogs/text.txt
 rm -rf /MagentoBK 
@@ -250,6 +216,18 @@ sudo su
 #Install Monitoring tools
 curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCertCentOS.sh | bash -s $1 $2 $6 $20
 #sh ./MagentoMonitoringCertCentOS.sh
+#cron Tab Update
+echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
+*/15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
+" >>/etc/crontab
+
+sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
+
+ crontab -l > Magentocron
+ echo  "*/10   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log" >> Magentocron
+ echo  "*/15   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log" >> Magentocron
+ crontab  Magentocron
+ rm Magentocron
 
 #MailSendingVariables
 #Live
@@ -333,9 +311,9 @@ VM Admin Pass:  ${16}"
 } | ssmtp "$RecieverEmail" 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-mkdir /var/www/app
-mkdir /var/www/app/etc
-chmod -R 777 /var/www/app/etc
-echo "${17}" >>/var/www/app/etc/customer.txt
+chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
+echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+
 shutdown -r +1 &
 exit 0
