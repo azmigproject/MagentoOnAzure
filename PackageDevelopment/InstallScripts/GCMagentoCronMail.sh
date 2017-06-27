@@ -40,16 +40,10 @@ sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 #MailSendingVariables
 #Live
-#SenderEmail="information-prod@gcommerceinc.com"
-#SenderPWD="AutoGComm1!"
-#RecieverEmail="azuredeployments@gcommerceinc.com"
-#SenderDomain="gcommerceinc.com"
-
-#Demo
-SenderEmail="akash.jaisawal@maarglabs.com"
-SenderPWD="Hackerakash@90"
-RecieverEmail="rupesh.nagar@maarglabs.com"
-SenderDomain="maarglabs.com"
+SenderEmail="information-prod@gcommerceinc.com"
+SenderPWD="AutoGComm1!"
+RecieverEmail="azuredeployments@gcommerceinc.com"
+SenderDomain="gcommerceinc.com"
 
 mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
