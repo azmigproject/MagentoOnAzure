@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Parms info 
-# $1 -domain name 
+# $1 - Domain name 
 # $2 - Folder name && DatabaseName
 # $3 - magento user name
 # $4 - magento user password
@@ -14,21 +14,21 @@
 # $11 - Magento Media Folder backup
 # $12 - Magento Init Folder backup
 # $13 - Magento Var Folder backup
-# $14- Magento htaccess file
-# $15- VM USERName
-# $16- VM PAssword
-# $17- customerID
-# $18- customertier
-# $19- resourcegroup
-# $20- parameter is Monitoring tool files
+# $14 - Magento htaccess file
+# $15 - VM USERName
+# $16 - VM PAssword
+# $17 - customerID
+# $18 - customertier
+# $19 - resourcegroup
+# $20 - parameter is Monitoring tool files
 
 
-#steps to install apache2
+# Steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
 chmod 777 /mylogs/text.txt
 set -x
-#set -xeuo pipefail to check if root user 
+# Set -xeuo pipefail to check if root user 
 
 if [[ $(id -u) -ne 0 ]] ; then
     echo "Must be run as root"
@@ -84,12 +84,12 @@ echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP
 #Install Apache
 yum -y -q install httpd
 
-#create directory where code will store
-#download magento media folder backup
-#download magento file backup
-#download magento init folder backup
-#download magento var folder backup
-#download magento DB backup
+# Create directory where code will store
+# Download magento media folder backup
+# Download magento file backup
+# Download magento init folder backup
+# Download magento var folder backup
+# Download magento DB backup
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s $2 $8 $9 $11 $12 $13
 #sh ./GcMagentoArtifacts.sh
@@ -99,29 +99,34 @@ service mysqld start
  mysqladmin -u root password "$5"
 systemctl enable mysqld.service
 systemctl enable httpd.service
+
 # yum install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 service php-fpm restart 
 systemctl stop httpd
-#yum -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
+
+# yum -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
 yum -y -q install httpd mod_fcgid php-cli
 echo "installed PHP">> /mylogs/text.txt
 service httpd restart
 echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
-#Uninstall DB backup
+
+# Uninstall DB backup
 mkdir /MagentoBK/DB
 tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
-#Replace the template1 name to the name of domain in magento_init.sql file
+
+# Replace the template1 name to the name of domain in magento_init.sql file
 sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql 
 mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" 
 rm -rf /MagentoBK/DB
-#update DB with new website root path
+
+# Update DB with new website root path
 unsecurePath="http://$1.$6/"
 securePath="https://$1.$6/"
 mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
-update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+update mage_core_config_data set value='$securePath' where path='web/secure/base_url';
 # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
    set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"   
@@ -216,104 +221,12 @@ sudo su
 #Install Monitoring tools
 curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCertCentOS.sh | bash -s $1 $2 $6 $20
 #sh ./MagentoMonitoringCertCentOS.sh
-#cron Tab Update
-echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
-*/15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
-" >>/etc/crontab
 
-sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
+#cron Tab Update 
+# Mail Sending 
 
- crontab -l > Magentocron
- echo  "*/10   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log" >> Magentocron
- echo  "*/15   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log" >> Magentocron
- crontab  Magentocron
- rm Magentocron
-
-#MailSendingVariables
-#Live
-SenderEmail="information-prod@gcommerceinc.com"
-SenderPWD="AutoGComm1!"
-RecieverEmail="azuredeployments@gcommerceinc.com"
-SenderDomain="gcommerceinc.com"
-
-mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-
-echo  "# Config file for sSMTP sendmail
-#
-# The person who gets all mail for userids < 1000
-# Make this empty to disable rewriting.
-#root=postmaster
-root=$SenderEmail
-
-# The place where the mail goes. The actual machine name is required no
-# MX records are consulted. Commonly mailhosts are named mail.domain.com
-# mailhub=mail
-mailhub=smtp.office365.com:587
-AuthUser=$SenderEmail
-AuthPass=$SenderPWD
-UseTLS=YES
-UseSTARTTLS=YES
-TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
-# Where will the mail seem to come from?
-#rewriteDomain=
-rewriteDomain=$SenderDomain
-
-# The full hostname
-hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
-#hostname=information-prod@gcommerceinc.com
-# Are users allowed to set their own From: address?
-# YES - Allow the user to specify their own From: address
-# NO - Use the system generated From: address
-FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
-
-mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
-
-echo  "
-# sSMTP aliases
-#
-# Format:       local_account:outgoing_address:mailhub
-#
-# Example: root:your_login@your.domain:mailhub.your.domain[:port]
-# where [:port] is an optional port number that defaults to 25.
-root:$SenderEmail:smtp.office365.com:587
-noreply:$SenderEmail:smtp.office365.com:587
-" > /etc/ssmtp/revaliases
-END="$(date +%s)"
-DIFFMin="$((((END - START )/60)))"
-DIFFSec="$((((END - START )%60)))"
-
-MailBody="
-AutoSoEz Client Deployment Complete. Details given below<BR>
-<BR>
-FrontEnd:http://$1.$6/<BR>
-AdminEnd:http://$1.$6/zpanel<BR>
-IP for SSH admin: $IP<BR>
-<BR>
-$DIFFMin minutes and $DIFFSec seconds to deploy<BR>
-Resource Group:  ${19}<BR>
-Domain Name:  $1<BR>
-Customer Name:  ${17}<BR>
-Customer Tier:  ${18}<BR>
-MySQL Password:   $5<BR>
-VM Admin User:  ${15}<BR>
-VM Admin Pass:  ${16}"
-
-{
-    echo "To: $RecieverEmail"
-    echo "From: noreply <$SenderEmail>"
-    echo "Subject: AutoSoEz Client Deployment Complete for customer $3 on CentOS Platform"
-	echo "Mime-Version: 1.0;"
-    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
-	echo "Content-Transfer-Encoding: 7bit;"
-    echo
-    echo "$MailBody"
-
-} | ssmtp "$RecieverEmail" 
-
-echo "Mail Send. Install successfull">> /mylogs/text.txt
-chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
-echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
-chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
+#sh ./GCMagentoCronMail.sh
 
 shutdown -r +1 &
 exit 0
