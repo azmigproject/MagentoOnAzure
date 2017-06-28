@@ -6,7 +6,7 @@
 # $3 - magento user name
 # $4 - magento user password
 # $5 - magento SQL Password
-#$6 -HOSTNAME
+#$6 -  HOSTNAME
 #$7 - MYSQL DB NAME
 #$8 - MagentoFileBackup
 #$9 - MagentoDBBackup
@@ -83,21 +83,25 @@ echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP
 	  Installing email functionality	">> /mylogs/text.txt
 #Install Apache
 yum -y -q install httpd
+
 #First create the folder where tar file will be downloaded
 mkdir /MagentoBK
+
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
 wget "${11}" -P /MagentoBK -q
 MagentoMediaBKFile=${11##*/}
 echo "Downloaded magento media folder backup files. MagentoMediaBKFile=$MagentoMediaBKFile">> /mylogs/text.txt
 chmod -R 777 /MagentoBK
+
 #create directory where code will store
 echo "Created required directory and Start downloading magento media folder backup files">> /mylogs/text.txt
 mkdir /var/www/"$2"
 unzip /MagentoBK/"$MagentoMediaBKFile" -d /var/www/"$2"
 rm -rf /MagentoBK/"$MagentoMediaBKFile" 
 echo "Completed downloaded for magento media folder backup files and remove the backup file
-	  Start downloading magento backup files">> /mylogs/text.txt	
+	  Start downloading magento backup files">> /mylogs/text.txt
+	  
 #download magento file backup
 wget "$8" -P /MagentoBK  -q
 MagentoBKFile=${8##*/}
@@ -127,6 +131,7 @@ tar -xvf /MagentoBK/"$MagentoVarBKFile" -C /var/www/"$2"
 rm -rf /MagentoBK/"$MagentoVarBKFile" 
 echo "Unzip magento var folder
 	  Start downloading mangeto db backup files">> /mylogs/text.txt
+
 #download magento DB backup
 wget "$9"  -P  /MagentoBK  -q
 MagentoDBBKFile=${9##*/}
@@ -137,20 +142,24 @@ service mysqld start
  mysqladmin -u root password "$5"
 systemctl enable mysqld.service
 systemctl enable httpd.service
+
 # yum install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" 
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 service php-fpm restart 
 systemctl stop httpd
+
 #yum -y install apache2 php5 libapache2-mod-php5 >> /mylogs/text.txt
 yum -y -q install httpd mod_fcgid php-cli
 echo "installed PHP">> /mylogs/text.txt
 service httpd restart
 echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
+
 #Uninstall DB backup
 mkdir /MagentoBK/DB
 tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
 chmod -R 777 /MagentoBK/DB
+
 #Replace the template1 name to the name of domain in magento_init.sql file
 sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql 
 mysql -u root --password="$5" -e  " use $7; source /MagentoBK/DB/${10};" 
@@ -164,12 +173,12 @@ update mage_core_config_data set value='$securePath' where path='web/secure/base
 
  # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"
-   
+   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"   
 
 #Remove folder having zip files
 echo "Removing downloaded zip files">> /mylogs/text.txt
 rm -rf /MagentoBK 
+
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml 
 sed -i "s/aat01_www/$7/g" /var/www/"$2"/.init/local.xml 
@@ -179,7 +188,7 @@ echo "updated local.xml file">> /mylogs/text.txt
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
-	ServerName http://$1.$6/
+	    ServerName http://$1.$6/
         ServerAlias  http://$1.$6/
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/$2/2016080806
@@ -190,7 +199,7 @@ echo "<VirtualHost *:80>
                 AllowOverride All
                 Order allow,deny
                 allow from all
-        </Directory>
+       </Directory>
 
 </VirtualHost>" >> /etc/httpd/conf.d/"$2".conf
 
@@ -273,7 +282,6 @@ echo " #!/bin/sh
 certbot renew -n --agree-tos --email azuredeployments@gcommerceinc.com --post-hook 'service apache2 restart'"> /etc/cron.daily/certbotcron
 chmod 777 /etc/cron.daily/certbotcron
 
-
 #Install Monitoring tools
 yum -y -q install xinetd
 mkdir MagentoBK
@@ -288,20 +296,39 @@ mv /MagentoBK/check_mk /etc/xinetd.d
 rm -rf /MagentoBK 
 #end Monitoring tools
 
-
 #cron Tab Update
+# New cron job
+
+mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016080806/shell/synchronization/processlock_main.txt
+
+mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
+
+echo " #!/bin/bash
+echo 'starting MAIN script'
+cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log">>/var/www/$2/2016080806/shell/synchronization/start_main.sh
+
+
+echo " #!/bin/bash
+echo 'starting VA script'
+cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller.log" >>/var/www/$2/2016080806/shell/synchronization/start_va.sh
+
+echo "*/10 *  *   *    *       flock -xn /var/www/$2/2016080806/shell/synchronization/processlock_main.txt -c /var/www/$2/2016080806/shell/synchronization/start_main.sh
+*/15 *  *   *    *       flock -xn /var/www/$2/2016080806/shell/synchronization/processlock_va.txt -c /var/www/$2/2016080806/shell/synchronization/start_va.sh
+*/10 *  *   *    *        cd /var/www/$2/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php"
+
 echo "*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log
 */15 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log
+*/10 *  *   *    *      cd /var/www/$2/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php > /var/www/$2/2016080806/var/log/syncOrder.log
 " >>/etc/crontab
 
-sed -i 's,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g' /etc/crontab
+sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/$2/2016080806/shell/synchronization:/usr/bin,g" /etc/crontab
 
  crontab -l > Magentocron
  echo  "*/10   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log" >> Magentocron
  echo  "*/15   *   *    *   *   cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller_cron.log" >> Magentocron
+ echo  "*/10   *   *    *   *      cd /var/www/$2/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php > /var/www/$2/2016080806/var/log/syncOrder.log" >> Magentocron
  crontab  Magentocron
  rm Magentocron
-
 
 #MailSendingVariables
 #Live
@@ -383,13 +410,10 @@ VM Admin Pass:  ${16}"
     echo "$MailBody"
 
 } | ssmtp "$RecieverEmail" 
-
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
-
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
-
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 shutdown -r +1 &
 exit 0
