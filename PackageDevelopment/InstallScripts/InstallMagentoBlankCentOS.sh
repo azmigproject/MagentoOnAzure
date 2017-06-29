@@ -228,8 +228,8 @@ echo "Installed certbot functionality">> /mylogs/text.txt
 
 #Install Monitoring tools
 yum -y -q install xinetd
-curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCertCentOS.sh | bash -s $1 $2 $6 $20
-#sh ./MagentoMonitoringCertCentOS.sh
+curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s $1 $2 $6 $20
+#sh ./MagentoMonitoringCert.sh
 
 #cron Tab Update 
 # Mail Sending 
