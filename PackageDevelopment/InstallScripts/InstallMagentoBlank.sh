@@ -249,7 +249,14 @@ apt-get -y -qq install mailutils
 apt-get -y -qq install ssmtp
 
 # Section for installing certbot SSL
+apt-get -y -qq install software-properties-common
+add-apt-repository -y  ppa:certbot/certbot
+apt-get -y -qq update
+apt-get -y -qq install python-certbot-apache 
+
 # Install Monitoring tools
+apt-get -y -qq install xinetd
+
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s $1 $2 $6 $20
 #sh ./MagentoMonitoringCert.sh
 

@@ -218,7 +218,16 @@ echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo su
 
 #section for installing certbot SSL
+
+IP=$(curl ipinfo.io/ip)
+echo "Installing certbot functionality">> /mylogs/text.txt
+systemctl stop httpd
+yum -y -q install python-certbot-apache 
+service httpd restart
+echo "Installed certbot functionality">> /mylogs/text.txt
+
 #Install Monitoring tools
+yum -y -q install xinetd
 curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCertCentOS.sh | bash -s $1 $2 $6 $20
 #sh ./MagentoMonitoringCertCentOS.sh
 
