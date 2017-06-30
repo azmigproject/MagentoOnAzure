@@ -182,7 +182,7 @@ mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set val
 
 # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"  
+   set value = 'https://autosoez.azureedge.net/${17}/' where path in( 'web/secure/base_media_url','web/unsecure/base_media_url');" 
 
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
@@ -318,6 +318,10 @@ echo "Removing downloaded zip files"
 mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016080806/shell/synchronization/processlock_main.txt
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
+
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
