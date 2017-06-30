@@ -32,7 +32,9 @@ mkdir -p /var/www/"${10}"/2016080806/shell/synchronization/ && touch /var/www/"$
 
 mkdir -p /var/www/"${10}"/2016080806/shell/synchronization/vehicle/ && touch /var/www/"${10}"/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
-chmod +x main.php 
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
