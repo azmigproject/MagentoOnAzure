@@ -140,7 +140,7 @@ mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set val
 
 # If testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"  
+   set value = 'https://autosoez.azureedge.net/${17}/' where path in( 'web/secure/base_media_url','web/unsecure/base_media_url');"    
 
 # Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
