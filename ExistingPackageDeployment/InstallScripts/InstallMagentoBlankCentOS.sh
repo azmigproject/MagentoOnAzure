@@ -173,7 +173,7 @@ update mage_core_config_data set value='$securePath' where path='web/secure/base
 
  # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/${17}/' where path in( 'web/secure/base_media_url','web/unsecure/base_media_url');"   
+   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"   
 
 #Remove folder having zip files
 echo "Removing downloaded zip files">> /mylogs/text.txt
@@ -306,7 +306,7 @@ mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www
 chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
 chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
 chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
-
+chmod +x var/www/"${10}"/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
