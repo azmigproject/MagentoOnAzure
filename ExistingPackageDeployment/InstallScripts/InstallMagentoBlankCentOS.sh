@@ -91,7 +91,7 @@ yum -y -q install httpd
 # Download magento var folder backup
 # Download magento DB backup
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s $2 $8 $9 $11 $12 $13
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/GcMagentoArtifacts.sh | bash -s $2 $8 $9 $11 $12 $13
 #sh ./GcMagentoArtifacts.sh
 
 
@@ -228,13 +228,13 @@ echo "Installed certbot functionality">> /mylogs/text.txt
 
 #Install Monitoring tools
 yum -y -q install xinetd
-curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s $1 $2 $6 $20
+curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/MagentoMonitoringCert.sh | bash -s $1 $2 $6 $20
 #sh ./MagentoMonitoringCert.sh
 
 #cron Tab Update 
 # Mail Sending 
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
 #sh ./GCMagentoCronMail.sh
 
 shutdown -r +1 &

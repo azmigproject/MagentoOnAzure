@@ -84,7 +84,7 @@ echo "installed basic">> /mylogs/text.txt
 # Download magento var folder backup
 # Download magento DB backup
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s $2 $8 $9 $11 $12 $13
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/GcMagentoArtifacts.sh | bash -s $2 $8 $9 $11 $12 $13
 #sh ./GcMagentoArtifacts.sh
 
 # Install MYSQL 
@@ -257,7 +257,7 @@ apt-get -y -qq install python-certbot-apache
 # Install Monitoring tools
 apt-get -y -qq install xinetd
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s $1 $2 $6 $20
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/MagentoMonitoringCert.sh | bash -s $1 $2 $6 $20
 #sh ./MagentoMonitoringCert.sh
 
 # Remove folder having zip files
@@ -266,7 +266,7 @@ echo "Removing downloaded zip files"
 # Cron Tab Update
 # Mail Sending 
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
 #sh ./GCMagentoCronMail.sh
 
 shutdown -r +1 &
