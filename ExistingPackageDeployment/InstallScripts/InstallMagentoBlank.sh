@@ -287,8 +287,8 @@ echo "Installed Python-Pip functionality
 	  Installing email functionality">> /mylogs/text.txt
 
 # section to install email service
-apt-get -y -qq install mailutils
-apt-get -y -qq install ssmtp
+#apt-get -y -qq install mailutils
+#apt-get -y -qq install ssmtp
 
 #section for installing certbot SSL
 apt-get -y -qq install software-properties-common
@@ -346,76 +346,76 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-echo  "# Config file for sSMTP sendmail
-	   #
-	   # The person who gets all mail for userids < 1000
-       # Make this empty to disable rewriting.
-       # root=postmaster
-         root=information-prod@gcommerceinc.com
-       # The place where the mail goes. The actual machine name is required no
-       # MX records are consulted. Commonly mailhosts are named mail.domain.com
-       # mailhub=mail
-         mailhub=smtp.office365.com:587
-         AuthUser=information-prod@gcommerceinc.com
-         AuthPass=AutoGComm1!
-         UseTLS=YES
-         UseSTARTTLS=YES
-         TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
-       # Where will the mail seem to come from?
-       # rewriteDomain=
-         rewriteDomain=gcommerceinc.com
-	   # The full hostname
-         hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
-       # Are users allowed to set their own From: address?
-       # YES - Allow the user to specify their own From: address
-       # NO - Use the system generated From: address
-         FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
-
-mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
-
-echo  "
-		# sSMTP aliases
-		#
-		# Format:       local_account:outgoing_address:mailhub
-		#
-		# Example: root:your_login@your.domain:mailhub.your.domain[:port]
-		# where [:port] is an optional port number that defaults to 25.
-		  root:information-prod@gcommerceinc.com:smtp.office365.com:587
-		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587
-      " > /etc/ssmtp/revaliases
-END=$(date +%s)
-DIFFMin=$((((END - START )/60)))
-DIFFSec=$((((END - START )%60)))
-
-MailBody="
-AutoSoEz Client Deployment Complete. Details given below<BR>
-<BR>
-FrontEnd:http://$1.$6/<BR>
-AdminEnd:http://$1.$6/zpanel<BR>
-IP for SSH admin: $IP<BR>
-<BR>
-$DIFFMin minutes and $DIFFSec seconds to deploy<BR>
-Resource Group:  ${19}<BR>
-Domain Name:  $1<BR>
-Customer Name:  ${17}<BR>
-Customer Tier:  ${18}<BR>
-MySQL Password:   $5<BR>
-VM Admin User:  ${15}<BR>
-VM Admin Pass:  ${16}"
-
-{
-    echo "To: azuredeployments@gcommerceinc.com"
-    echo "From: noreply <information-prod@gcommerceinc.com>"
-    echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
-	echo "Mime-Version: 1.0;"
-    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
-	echo "Content-Transfer-Encoding: 7bit;"
-    echo
-    echo "$MailBody"
-} | ssmtp azuredeployments@gcommerceinc.com 
-
-echo "Mail Send. Install successfull">> /mylogs/text.txt
+#mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
+#echo  "# Config file for sSMTP sendmail
+#	   #
+#	   # The person who gets all mail for userids < 1000
+#       # Make this empty to disable rewriting.
+#       # root=postmaster
+#         root=information-prod@gcommerceinc.com
+#       # The place where the mail goes. The actual machine name is required no
+#       # MX records are consulted. Commonly mailhosts are named mail.domain.com
+#       # mailhub=mail
+#         mailhub=smtp.office365.com:587
+#         AuthUser=information-prod@gcommerceinc.com
+#         AuthPass=AutoGComm1!
+#         UseTLS=YES
+#         UseSTARTTLS=YES
+#         TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
+#       # Where will the mail seem to come from?
+#       # rewriteDomain=
+#         rewriteDomain=gcommerceinc.com
+#	   # The full hostname
+#         hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
+#       # Are users allowed to set their own From: address?
+#       # YES - Allow the user to specify their own From: address
+#       # NO - Use the system generated From: address
+#         FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+#
+#mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
+#
+#echo  "
+#		# sSMTP aliases
+#		#
+#		# Format:       local_account:outgoing_address:mailhub
+#		#
+#		# Example: root:your_login@your.domain:mailhub.your.domain[:port]
+#		# where [:port] is an optional port number that defaults to 25.
+#		  root:information-prod@gcommerceinc.com:smtp.office365.com:587
+#		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587
+#      " > /etc/ssmtp/revaliases
+#END=$(date +%s)
+#DIFFMin=$((((END - START )/60)))
+#DIFFSec=$((((END - START )%60)))
+#
+#MailBody="
+#AutoSoEz Client Deployment Complete. Details given below<BR>
+#<BR>
+#FrontEnd:http://$1.$6/<BR>
+#AdminEnd:http://$1.$6/zpanel<BR>
+#IP for SSH admin: $IP<BR>
+#<BR>
+#$DIFFMin minutes and $DIFFSec seconds to deploy<BR>
+#Resource Group:  ${19}<BR>
+#Domain Name:  $1<BR>
+#Customer Name:  ${17}<BR>
+#Customer Tier:  ${18}<BR>
+#MySQL Password:   $5<BR>
+#VM Admin User:  ${15}<BR>
+#VM Admin Pass:  ${16}"
+#
+#{
+#    echo "To: azuredeployments@gcommerceinc.com"
+#    echo "From: noreply <information-prod@gcommerceinc.com>"
+#    echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
+#	echo "Mime-Version: 1.0;"
+#    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
+#	echo "Content-Transfer-Encoding: 7bit;"
+#    echo
+#    echo "$MailBody"
+#} | ssmtp azuredeployments@gcommerceinc.com 
+#
+#echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
