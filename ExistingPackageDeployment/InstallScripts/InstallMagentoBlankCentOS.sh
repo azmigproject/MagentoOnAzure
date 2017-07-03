@@ -76,8 +76,7 @@ rpm -ivh mysql-community-release-el7-5.noarch.rpm
 yum -y -q install mysql mysql-server php-mysql git-core screen  
 yum -y -q install epel-release 
 yum -y -q install python-pip 
-#yum -y -q install mailutils
-#yum -y -q install ssmtp
+
 echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP for mails and other required packages
 	  Installed Python-Pip functionality
 	  Installing email functionality	">> /mylogs/text.txt
@@ -330,88 +329,70 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
+
+  # section to install email service
+   yum -y -q install mailutils
+   yum -y -q install ssmtp
+
 # MailSendingVariables
 # Live
+#
+SenderEmail="information-prod@gcommerceinc.com"
+SenderPWD="AutoGComm1!"
+RecieverEmail="azuredeployments@gcommerceinc.com"
+SenderDomain="gcommerceinc.com"
 
-#SenderEmail="information-prod@gcommerceinc.com"
-#SenderPWD="AutoGComm1!"
-#RecieverEmail="azuredeployments@gcommerceinc.com"
-#SenderDomain="gcommerceinc.com"
-#
+
 #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-#
-#echo  "# Config file for sSMTP sendmail
-##
-## The person who gets all mail for userids < 1000
-## Make this empty to disable rewriting.
-##root=postmaster
-#root=$SenderEmail
-#
-## The place where the mail goes. The actual machine name is required no
-## MX records are consulted. Commonly mailhosts are named mail.domain.com
-## mailhub=mail
-#mailhub=smtp.office365.com:587
-#AuthUser=$SenderEmail
-#AuthPass=$SenderPWD
-#UseTLS=YES
-#UseSTARTTLS=YES
-#TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
-## Where will the mail seem to come from?
-##rewriteDomain=
-#rewriteDomain=$SenderDomain
-#
-## The full hostname
-#hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
-##hostname=information-prod@gcommerceinc.com
-## Are users allowed to set their own From: address?
-## YES - Allow the user to specify their own From: address
-## NO - Use the system generated From: address
-#FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
-#
+
+echo "root="information-prod@gcommerceinc.com"
+mailhub=smtp.office365.com:587
+rewriteDomain="gcommerceinc.com"
+hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
+UseTLS=YES
+UseSTARTTLS=YES
+AuthUser="information-prod@gcommerceinc.com"
+AuthPass="AutoGComm1!"
+AuthMethod=LOGIN
+FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+
 #mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
-#
-#echo  "
-## sSMTP aliases
-##
-## Format:       local_account:outgoing_address:mailhub
-##
-## Example: root:your_login@your.domain:mailhub.your.domain[:port]
-## where [:port] is an optional port number that defaults to 25.
-#root:$SenderEmail:smtp.office365.com:587
-#noreply:$SenderEmail:smtp.office365.com:587
-#" > /etc/ssmtp/revaliases
-#END="$(date +%s)"
-#DIFFMin="$((((END - START )/60)))"
-#DIFFSec="$((((END - START )%60)))"
-#
-#MailBody="
-#AutoSoEz Client Deployment Complete. Details given below<BR>
-#<BR>
-#FrontEnd:http://$1.$6/<BR>
-#AdminEnd:http://$1.$6/zpanel<BR>
-#IP for SSH admin: $IP<BR>
-#<BR>
-#$DIFFMin minutes and $DIFFSec seconds to deploy<BR>
-#Resource Group:  ${19}<BR>
-#Domain Name:  $1<BR>
-#Customer Name:  ${17}<BR>
-#Customer Tier:  ${18}<BR>
-#MySQL Password:   $5<BR>
-#VM Admin User:  ${15}<BR>
-#VM Admin Pass:  ${16}"
-#
-#{
-#    echo "To: $RecieverEmail"
-#    echo "From: noreply <$SenderEmail>"
-#    echo "Subject: AutoSoEz Client Deployment Complete for customer $3 on CentOS Platform"
-#	echo "Mime-Version: 1.0;"
-#    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
-#	echo "Content-Transfer-Encoding: 7bit;"
-#    echo
-#    echo "$MailBody"
-#
-#} | ssmtp "$RecieverEmail" 
-#echo "Mail Send. Install successfull">> /mylogs/text.txt
+
+echo "root:information-prod@gcommerceinc.com:smtp.office365.com:587
+		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
+
+END="$(date +%s)"
+DIFFMin="$((((END - START )/60)))"
+DIFFSec="$((((END - START )%60)))"
+
+MailBody="
+AutoSoEz Client Deployment Complete. Details given below<BR>
+<BR>
+FrontEnd:http://$1.$6/<BR>
+AdminEnd:http://$1.$6/zpanel<BR>
+IP for SSH admin: $IP<BR>
+<BR>
+$DIFFMin minutes and $DIFFSec seconds to deploy<BR>
+Resource Group:  ${19}<BR>
+Domain Name:  $1<BR>
+Customer Name:  ${17}<BR>
+Customer Tier:  ${18}<BR>
+MySQL Password:   $5<BR>
+VM Admin User:  ${15}<BR>
+VM Admin Pass:  ${16}"
+
+{
+    echo "To: akash.jaisawal@maarglabs.com"
+    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
+	echo "Mime-Version: 1.0;"
+    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
+	echo "Content-Transfer-Encoding: 7bit;"
+    echo
+    echo "$MailBody"
+} | ssmtp akash.jaisawal@maarglabs.com 
+
+echo "Mail Send. Install successfull">> /mylogs/text.txt 
 
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
