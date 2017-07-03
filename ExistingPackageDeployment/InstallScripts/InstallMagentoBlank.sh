@@ -343,33 +343,34 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-
+sudo su
+cd /
  # section to install email service
  apt-get -y -qq install mailutils
  apt-get -y -qq install ssmtp
 
- SenderEmail="information-prod@gcommerceinc.com"
- SenderPWD="AutoGComm1!"
- RecieverEmail="azuredeployments@gcommerceinc.com"
- SenderDomain="gcommerceinc.com"
+ #SenderEmail="information-prod@gcommerceinc.com"
+ #SenderPWD="AutoGComm1!"
+ #RecieverEmail="azuredeployments@gcommerceinc.com"
+ #SenderDomain="gcommerceinc.com"
 
  #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
-echo "root="information-prod@gcommerceinc.com"
+echo "root="akash.jaisawal@maarglabs.com"
 mailhub=smtp.office365.com:587
-rewriteDomain="gcommerceinc.com"
+rewriteDomain="maarglabs.com"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 UseTLS=YES
 UseSTARTTLS=YES
-AuthUser="information-prod@gcommerceinc.com"
-AuthPass="AutoGComm1!"
+AuthUser="akash.jaisawal@maarglabs.com"
+AuthPass="Hackerakash@90"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 #mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
-echo "root:information-prod@gcommerceinc.com:smtp.office365.com:587
-		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
+echo "root:akash.jaisawal@maarglabs.com:smtp.office365.com:587
+		  noreply:akash.jaisawal@maarglabs.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
 
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
@@ -392,15 +393,15 @@ VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
 {
-    echo "To: akash.jaisawal@maarglabs.com"
-    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "To: rupesh.nagar@maarglabs.com"
+    echo "From: noreply <akash.jaisawal@maarglabs.com>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp akash.jaisawal@maarglabs.com 
+} | ssmtp rupesh.nagar@maarglabs.com 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
