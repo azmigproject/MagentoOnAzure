@@ -329,7 +329,8 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-
+sudo su
+cd /
   # section to install email service
    yum -y -q install mailutils
    yum -y -q install ssmtp
@@ -382,7 +383,7 @@ VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
 {
-    echo "To: akash.jaisawal@maarglabs.com"
+    echo "To: azuredeployments@gcommerceinc.com"
     echo "From: noreply <information-prod@gcommerceinc.com>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
@@ -390,7 +391,7 @@ VM Admin Pass:  ${16}"
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp akash.jaisawal@maarglabs.com 
+} | ssmtp azuredeployments@gcommerceinc.com
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt 
 

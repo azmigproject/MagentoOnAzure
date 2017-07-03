@@ -356,21 +356,21 @@ cd /
 
  #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
-echo "root="akash.jaisawal@maarglabs.com"
+echo "root="information-prod@gcommerceinc.com"
 mailhub=smtp.office365.com:587
-rewriteDomain="maarglabs.com"
+rewriteDomain="gcommerceinc.com"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 UseTLS=YES
 UseSTARTTLS=YES
-AuthUser="akash.jaisawal@maarglabs.com"
-AuthPass="Hackerakash@90"
+AuthUser="information-prod@gcommerceinc.com"
+AuthPass="AutoGComm1!"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 #mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
-echo "root:akash.jaisawal@maarglabs.com:smtp.office365.com:587
-		  noreply:akash.jaisawal@maarglabs.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
+echo "root:information-prod@gcommerceinc.com:smtp.office365.com:587
+		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
 
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
@@ -393,15 +393,15 @@ VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
 {
-    echo "To: rupesh.nagar@maarglabs.com"
-    echo "From: noreply <akash.jaisawal@maarglabs.com>"
+    echo "To: azuredeployments@gcommerceinc.com"
+    echo "From: noreply <information-prod@gcommerceinc.com>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp rupesh.nagar@maarglabs.com 
+} | ssmtp azuredeployments@gcommerceinc.com 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
