@@ -34,7 +34,8 @@ mkdir -p /var/www/"${10}"/2016080806/shell/synchronization/vehicle/ && touch /va
 
 chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
 chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
-chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh 
+chmod +x var/www/"${10}"/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
@@ -44,20 +45,16 @@ echo " #!/bin/bash
 echo 'starting VA script'
 cd /var/www/"${10}"/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/"${10}"/2016080806/var/log/va_controller.log" >>/var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
 
-echo "*/10 *  *   *    *       flock -xn /var/www/"${10}"/2016080806/shell/synchronization/processlock_main.txt -c /var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
-*/15 *  *   *    *       flock -xn /var/www/"${10}"/2016080806/shell/synchronization/processlock_va.txt -c /var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
-*/10 *  *   *    *        cd /var/www/"${10}"/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php"
-
-echo "*/10 *  *   *    *      cd /var/www/"${10}"/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/"${10}"/2016080806/var/log/main_cron.log
-*/15 *  *   *    *      cd /var/www/"${10}"/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/"${10}"/2016080806/var/log/va_controller_cron.log
+echo "*/10 *  *   *    *      flock -xn /var/www/"${10}"/2016080806/shell/synchronization/processlock_main.txt -c /var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
+*/15 *  *   *    *      flock -xn /var/www/"${10}"/2016080806/shell/synchronization/processlock_va.txt -c /var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
 */10 *  *   *    *      cd /var/www/"${10}"/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php > /var/www/"${10}"/2016080806/var/log/syncOrder.log
 " >>/etc/crontab
 
 sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/var/www/"${10}"/2016080806/shell/synchronization:/usr/bin,g" /etc/crontab
 
  crontab -l > Magentocron
- echo  "*/10   *   *    *   *   cd /var/www/"${10}"/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/"${10}"/2016080806/var/log/main_cron.log" >> Magentocron
- echo  "*/15   *   *    *   *   cd /var/www/"${10}"/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/"${10}"/2016080806/var/log/va_controller_cron.log" >> Magentocron
+ echo  "*/10   *   *    *   *   flock -xn /var/www/"${10}"/2016080806/shell/synchronization/processlock_main.txt -c /var/www/"${10}"/2016080806/shell/synchronization/start_main.sh" >> Magentocron
+ echo  "*/15   *   *    *   *   flock -xn /var/www/"${10}"/2016080806/shell/synchronization/processlock_va.txt -c /var/www/"${10}"/2016080806/shell/synchronization/start_va.sh" >> Magentocron
  echo  "*/10   *   *    *   *      cd /var/www/"${10}"/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php > /var/www/"${10}"/2016080806/var/log/syncOrder.log" >> Magentocron
  crontab  Magentocron
  rm Magentocron
@@ -65,56 +62,25 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 # MailSendingVariables
 # Live
 
-SenderEmail="information-prod@gcommerceinc.com"
-SenderPWD="AutoGComm1!"
-RecieverEmail="azuredeployments@gcommerceinc.com"
-SenderDomain="gcommerceinc.com"
-
-mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-
-echo  "# Config file for sSMTP sendmail
-#
-# The person who gets all mail for userids < 1000
-# Make this empty to disable rewriting.
-#root=postmaster
-root=$SenderEmail
-
-# The place where the mail goes. The actual machine name is required no
-# MX records are consulted. Commonly mailhosts are named mail.domain.com
-# mailhub=mail
+echo "root="information-prod@gcommerceinc.com"
 mailhub=smtp.office365.com:587
-AuthUser=$SenderEmail
-AuthPass=$SenderPWD
+rewriteDomain="gcommerceinc.com"
+hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 UseTLS=YES
 UseSTARTTLS=YES
-TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
-# Where will the mail seem to come from?
-#rewriteDomain=
-rewriteDomain=$SenderDomain
-
-# The full hostname
-hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
-#hostname=information-prod@gcommerceinc.com
-# Are users allowed to set their own From: address?
-# YES - Allow the user to specify their own From: address
-# NO - Use the system generated From: address
+AuthUser="information-prod@gcommerceinc.com"
+AuthPass="AutoGComm1!"
+AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
-mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
+#mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
-echo  "
-# sSMTP aliases
-#
-# Format:       local_account:outgoing_address:mailhub
-#
-# Example: root:your_login@your.domain:mailhub.your.domain[:port]
-# where [:port] is an optional port number that defaults to 25.
-root:$SenderEmail:smtp.office365.com:587
-noreply:$SenderEmail:smtp.office365.com:587
-" > /etc/ssmtp/revaliases
-END="$(date +%s)"
-DIFFMin="$((((END - START )/60)))"
-DIFFSec="$((((END - START )%60)))"
+echo "root:information-prod@gcommerceinc.com:smtp.office365.com:587
+		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
+
+END=$(date +%s)
+DIFFMin=$((((END - START )/60)))
+DIFFSec=$((((END - START )%60)))
 
 MailBody="
 AutoSoEz Client Deployment Complete. Details given below<BR>
@@ -124,28 +90,27 @@ AdminEnd:http://$1.$4/zpanel<BR>
 IP for SSH admin: $IP<BR>
 <BR>
 $DIFFMin minutes and $DIFFSec seconds to deploy<BR>
-Resource Group:  ${9}<BR>
+Resource Group:  $9<BR>
 Domain Name:  $1<BR>
-Customer Name:  ${7}<BR>
-Customer Tier:  ${8}<BR>
+Customer Name:  $7<BR>
+Customer Tier:  $8<BR>
 MySQL Password:   $3<BR>
-VM Admin User:  ${5}<BR>
-VM Admin Pass:  ${6}"
+VM Admin User:  $5<BR>
+VM Admin Pass:  $6"
 
 {
-    echo "To: $RecieverEmail"
-    echo "From: noreply <$SenderEmail>"
-    echo "Subject: AutoSoEz Client Deployment Complete for customer $2 on CentOS Platform"
+    echo "To: azuredeployments@gcommerceinc.com"
+    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "Subject: AutoSoEz Client Deployment Complete for customer $2"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-
-} | ssmtp "$RecieverEmail" 
+} | ssmtp azuredeployments@gcommerceinc.com 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-
 chmod -R 777 var/www/"${10}"/2016080806/shell/synchronization
-echo -n "user_id=${7};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"${10}"/2016080806/app/etc/cfg/client_info.conf
+echo -n "user_id=$7;pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"${10}"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"${10}"/2016080806/app/etc/cfg/client_info.conf
+

@@ -218,7 +218,6 @@ echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo su
 
 #section for installing certbot SSL
-
 IP=$(curl ipinfo.io/ip)
 echo "Installing certbot functionality">> /mylogs/text.txt
 systemctl stop httpd
@@ -233,6 +232,12 @@ curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/Packag
 
 #cron Tab Update 
 # Mail Sending 
+
+sudo su
+cd /
+# Section to install email service
+yum -y -q install mailutils
+yum -y -q install ssmtp
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
 #sh ./GCMagentoCronMail.sh

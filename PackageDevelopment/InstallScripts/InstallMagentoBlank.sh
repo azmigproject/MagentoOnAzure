@@ -244,9 +244,6 @@ apt-get -y -qq install python-pip
 echo "Installed Python-Pip functionality
 	  Installing email functionality">> /mylogs/text.txt
 
-# Section to install email service
-apt-get -y -qq install mailutils
-apt-get -y -qq install ssmtp
 
 # Section for installing certbot SSL
 apt-get -y -qq install software-properties-common
@@ -265,6 +262,12 @@ echo "Removing downloaded zip files"
 
 # Cron Tab Update
 # Mail Sending 
+
+sudo su
+cd /
+# Section to install email service
+apt-get -y -qq install mailutils
+apt-get -y -qq install ssmtp
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
 #sh ./GCMagentoCronMail.sh
