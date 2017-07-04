@@ -302,10 +302,10 @@ mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
-chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
-chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
-chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh
-chmod +x var/www/"${10}"/2016080806/shell/reindex.php
+chmod +x var/www/$2/2016080806/shell/synchronization/main.php 
+chmod +x var/www/$2/2016080806/shell/synchronization/start_main.sh
+chmod +x var/www/$2/2016080806/shell/synchronization/start_va.sh
+chmod +x var/www/$2/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
