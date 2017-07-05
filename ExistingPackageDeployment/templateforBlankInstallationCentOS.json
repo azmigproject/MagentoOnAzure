@@ -38,6 +38,37 @@
         "description": "Password for the Virtual Machine administrator."
       }
     },
+    "SenderEmail": {
+      "type": "string",
+      "defaultValue": "information-prod@gcommerceinc.com",
+
+      "metadata": {
+        "description": "Input the Sender email ID to sending Email for deployment report."
+      }
+    },
+    "SenderPWD": {
+      "type": "securestring",
+
+      "metadata": {
+        "description": "Input the Sender email Password to sending Email for deployment report."
+      }
+    },
+    "RecieverEmail": {
+      "type": "string",
+      "defaultValue": "azuredeployments@gcommerceinc.com",
+
+      "metadata": {
+        "description": "Input the Reciever email ID to sending Email for deployment report."
+      }
+    },
+    "SenderDomain": {
+      "type": "string",
+      "defaultValue": "gcommerceinc.com",
+
+      "metadata": {
+        "description": "Domain Name for Email Sending."
+      }
+    },
 
     "magentoFileBackup": {
       "type": "string",

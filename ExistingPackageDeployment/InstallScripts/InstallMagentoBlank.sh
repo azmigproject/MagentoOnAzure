@@ -61,6 +61,10 @@ if [ $# -lt 20 ]; then
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
 		echo "20th parameter is Monitoring tool files";
+		echo "21st parameter is SenderEmail";
+		echo "22nd parameter is SenderPWD";
+		echo "23rd parameter is RecieverEmail";
+		echo "24th parameter is SenderDomain";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -352,11 +356,6 @@ cd /
  # section to install email service
  apt-get -y -qq install mailutils
  apt-get -y -qq install ssmtp
-
- #SenderEmail="information-prod@gcommerceinc.com"
- #SenderPWD="AutoGComm1!"
- #RecieverEmail="azuredeployments@gcommerceinc.com"
- #SenderDomain="gcommerceinc.com"
 
  #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
