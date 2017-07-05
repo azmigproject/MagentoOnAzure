@@ -21,6 +21,10 @@
 # $18 - customertier
 # $19 - resourcegroup
 # $20 - parameter is Monitoring tool files
+# $21 - SenderEmail
+# $22 - SenderPWD
+# $23 - RecieverEmail
+# $24 - SenderDomain
 
 # Steps to install apache2
 mkdir /mylogs
@@ -34,7 +38,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# -lt 20 ]; then
+if [ $# -lt 24 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -57,6 +61,11 @@ if [ $# -lt 20 ]; then
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
 		echo "20th parameter is Monitoring tool files";
+		echo "21st parameter is SenderEmail";
+		echo "22nd parameter is SenderPWD";
+		echo "23rd parameter is RecieverEmail";
+		echo "24th parameter is SenderDomain";
+
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -269,7 +278,7 @@ cd /
 apt-get -y -qq install mailutils
 apt-get -y -qq install ssmtp
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s $1 $2 $3 $5 $6 $15 $16 $17 $18 $19 $21 $22 $23 $24
 #sh ./GCMagentoCronMail.sh
 
 shutdown -r +1 &

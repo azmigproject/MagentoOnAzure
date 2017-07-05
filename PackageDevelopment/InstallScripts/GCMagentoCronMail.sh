@@ -12,6 +12,10 @@
 # $17 - CustomerID
 # $18 - Customertier
 # $19 - Resourcegroup
+# $21 - SenderEmail
+# $22 - SenderPWD
+# $23 - RecieverEmail
+# $24 - SenderDomain
 
 # Param used in these file
 # $1 - Domain name
@@ -24,6 +28,10 @@
 # $8 - Customertier
 # $9 - Resourcegroup
 # $10 - Folder name && DatabaseName
+# $11 - SenderEmail
+# $12 - SenderPWD
+# $13 - RecieverEmail
+# $14 - SenderDomain
 #
 # Cron Tab Update
 # New update in cron 
@@ -62,21 +70,21 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 # MailSendingVariables
 # Live
 
-echo "root="information-prod@gcommerceinc.com"
+echo "root="${11}"
 mailhub=smtp.office365.com:587
-rewriteDomain="gcommerceinc.com"
+rewriteDomain="${14}"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 UseTLS=YES
 UseSTARTTLS=YES
-AuthUser="information-prod@gcommerceinc.com"
-AuthPass="AutoGComm1!"
+AuthUser="${11}"
+AuthPass="${12}"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 #mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
-echo "root:information-prod@gcommerceinc.com:smtp.office365.com:587
-		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
+echo "root:${11}:smtp.office365.com:587
+		  noreply:${11}:smtp.office365.com:587" > /etc/ssmtp/revaliases
 
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
@@ -99,8 +107,8 @@ VM Admin User:  $5<BR>
 VM Admin Pass:  $6"
 
 {
-    echo "To: azuredeployments@gcommerceinc.com"
-    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "To: ${13}"
+    echo "From: noreply <${11}>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $2"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""

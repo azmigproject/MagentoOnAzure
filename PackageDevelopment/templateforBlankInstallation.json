@@ -38,7 +38,38 @@
         "description": "Password for the Virtual Machine administrator."
       }
     },
+     "SenderEmail": {
+      "type": "string",
+      "defaultValue": "akash.jaisawal@maarglabs.com",
 
+      "metadata": {
+        "description": "Input the Sender email ID to sending Email for deployment report."
+      }
+    },
+    "SenderPWD": {
+      "type": "securestring",
+      "defaultValue": "Hackerakash@90",
+
+      "metadata": {
+        "description": "Input the Sender email Password to sending Email for deployment report."
+      }
+    },
+    "RecieverEmail": {
+      "type": "string",
+      "defaultValue": "akash.jaisawal@maarglabs.com",
+
+      "metadata": {
+        "description": "Input the Reciever email ID to sending Email for deployment report."
+      }
+    },
+    "SenderDomain": {
+      "type": "string",
+      "defaultValue": "maarglabs.com",
+
+      "metadata": {
+        "description": "Domain Name for Email Sending."
+      }
+    },
     "magentoFileBackup": {
       "type": "string",
       "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_vamap_va_selector_04-21-2017.tar",
@@ -161,7 +192,7 @@
     "monitoringFiles": "https://github.com/azmigproject/MagentoOnAzure/raw/master/PackageDevelopment/MoniteringFiles/MonitoringAgentFiles.zip",
     "installScriptName": "InstallMagentoBlank.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/', variables('installScriptName'))]",
-    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'),' ', parameters('vmadminUsername'),' ', parameters('vmadminPassword'),' ',parameters('customerID'),' ',parameters('customerTier'),' ',resourceGroup().name,' ',variables('monitoringFiles'))]",
+    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),'  ', parameters('magentoMediaBackup'),'  ', parameters('magentoInitBackup'),'  ', parameters('magentoVarBackup') ,'  ', parameters('magentoDefaultHTaccess'),' ', parameters('vmadminUsername'),' ', parameters('vmadminPassword'),' ',parameters('customerID'),' ',parameters('customerTier'),' ',resourceGroup().name,' ',variables('monitoringFiles'),' ',parameters('SenderEmail'),' ',parameters('SenderPWD'),' ',parameters('RecieverEmail'),' ',parameters('SenderDomain'))]",
     "apiVersion": "2015-06-15",
     "accountid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/',resourceGroup().name, '/providers/','Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
     "wadlogs": "<WadCfg> <DiagnosticMonitorConfiguration overallQuotaInMB=\"4096\" xmlns=\"http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration\"> <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter=\"Error\"/> <WindowsEventLog scheduledTransferPeriod=\"PT1M\" > <DataSource name=\"Application!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"Security!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"System!*[System[(Level = 1 or Level = 2)]]\" /></WindowsEventLog>",
