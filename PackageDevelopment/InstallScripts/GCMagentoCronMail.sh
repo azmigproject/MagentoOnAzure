@@ -69,7 +69,7 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 # MailSendingVariables
 # Live
-
+echo 
 echo "root="${11}"
 mailhub=smtp.office365.com:587
 rewriteDomain="${14}"
@@ -115,7 +115,7 @@ VM Admin Pass:  $6"
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp azuredeployments@gcommerceinc.com 
+} | ssmtp ${13}
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"${10}"/2016080806/shell/synchronization
