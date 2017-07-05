@@ -21,6 +21,10 @@
 #$18- customertier
 #$19- resourcegroup
 #$20- parameter is Monitoring tool files
+# $21 - SenderEmail
+# $22 - SenderPWD
+# $23 - RecieverEmail
+# $24 - SenderDomain
 
 #steps to install apache2
 mkdir /mylogs
@@ -356,21 +360,21 @@ cd /
 
  #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
-echo "root="information-prod@gcommerceinc.com"
+echo "root="${21}"
 mailhub=smtp.office365.com:587
-rewriteDomain="gcommerceinc.com"
+rewriteDomain="${24}"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 UseTLS=YES
 UseSTARTTLS=YES
-AuthUser="information-prod@gcommerceinc.com"
-AuthPass="AutoGComm1!"
+AuthUser="${21}"
+AuthPass="${22}"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 #mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
-echo "root:information-prod@gcommerceinc.com:smtp.office365.com:587
-		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
+echo "root:${21}:smtp.office365.com:587
+		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
 
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
@@ -393,15 +397,15 @@ VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
 {
-    echo "To: azuredeployments@gcommerceinc.com"
-    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "To: ${23}"
+    echo "From: noreply <${21}>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp azuredeployments@gcommerceinc.com 
+} | ssmtp ${23} 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
