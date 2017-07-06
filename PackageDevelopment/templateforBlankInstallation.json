@@ -48,8 +48,7 @@
     },
     "SenderPWD": {
       "type": "securestring",
-      "defaultValue": "Hackerakash@90",
-
+     
       "metadata": {
         "description": "Input the Sender email Password to sending Email for deployment report."
       }
