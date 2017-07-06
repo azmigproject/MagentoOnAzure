@@ -469,7 +469,7 @@
     },
     "preInstallerString": {
       "type": "string",
-      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagentoBlank.sh"
+      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagento.sh"
     },
     "commandString": {
       "type": "string",
