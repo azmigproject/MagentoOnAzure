@@ -124,7 +124,7 @@
 
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_L4s",
+      "defaultValue": "Standard_D2",
       "allowedValues": [
         "Standard_D2",
         "Standard_D3",
