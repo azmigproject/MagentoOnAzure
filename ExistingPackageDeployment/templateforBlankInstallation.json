@@ -40,7 +40,7 @@
     },
     "SenderEmail": {
       "type": "string",
-      "defaultValue": "information-prod@gcommerceinc.com",
+      "defaultValue": "akash.jaisawal@maarglabs.com",
 
       "metadata": {
         "description": "Input the Sender email ID to sending Email for deployment report."
@@ -55,7 +55,7 @@
     },
     "RecieverEmail": {
       "type": "string",
-      "defaultValue": "azuredeployments@gcommerceinc.com",
+      "defaultValue": "akash.jaisawal@maarglabs.com",
 
       "metadata": {
         "description": "Input the Reciever email ID to sending Email for deployment report."
@@ -63,7 +63,7 @@
     },
     "SenderDomain": {
       "type": "string",
-      "defaultValue": "gcommerceinc.com",
+      "defaultValue": "maarglabs.com",
 
       "metadata": {
         "description": "Domain Name for Email Sending."
@@ -469,7 +469,7 @@
     },
     "preInstallerString": {
       "type": "string",
-      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagento.sh"
+      "value": "wget https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallMagentoBlank.sh"
     },
     "commandString": {
       "type": "string",
