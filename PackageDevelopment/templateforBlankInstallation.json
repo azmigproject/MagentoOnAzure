@@ -40,7 +40,7 @@
     },
      "SenderEmail": {
       "type": "string",
-      "defaultValue": "akash.jaisawal@maarglabs.com",
+      "defaultValue": "information-prod@gcommerceinc.com",
 
       "metadata": {
         "description": "Input the Sender email ID to sending Email for deployment report."
@@ -55,7 +55,7 @@
     },
     "RecieverEmail": {
       "type": "string",
-      "defaultValue": "akash.jaisawal@maarglabs.com",
+      "defaultValue": "azuredeployments@gcommerceinc.com",
 
       "metadata": {
         "description": "Input the Reciever email ID to sending Email for deployment report."
@@ -63,7 +63,7 @@
     },
     "SenderDomain": {
       "type": "string",
-      "defaultValue": "maarglabs.com",
+      "defaultValue": "gcommerceinc.com",
 
       "metadata": {
         "description": "Domain Name for Email Sending."
