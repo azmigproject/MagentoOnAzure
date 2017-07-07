@@ -150,7 +150,8 @@ systemctl enable mysqld.service
 systemctl enable httpd.service
 
 # yum install mysql-server-5.6 --yes
-mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;" 
+mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;"
+mysql -u root --password="$5" -e " Grant ALL on *.* To 'root'@'localhost'; FLUSH PRIVILEGES;"
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 service php-fpm restart 
 systemctl stop httpd
@@ -265,7 +266,7 @@ cd /var/www/"$2" || exit
 sudo chmod -R 777 .var 
 sudo chmod -R 777 .media 
 cd /var/www/"$2"/ || exit
-sudo rm -rf .var/cache/*
+
 echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
 sudo su
 
@@ -399,5 +400,6 @@ echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
+rm -rf var/www/"$2"/2016080806/var/cache/*
 shutdown -r +1 &
 exit 0
