@@ -21,10 +21,6 @@
 #$18- customertier
 #$19- resourcegroup
 #$20- parameter is Monitoring tool files
-# $21 - SenderEmail
-# $22 - SenderPWD
-# $23 - RecieverEmail
-# $24 - SenderDomain
 
 #steps to install apache2
 mkdir /mylogs
@@ -61,10 +57,6 @@ if [ $# -lt 20 ]; then
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
 		echo "20th parameter is Monitoring tool files";
-		echo "21st parameter is SenderEmail";
-		echo "22nd parameter is SenderPWD";
-		echo "23rd parameter is RecieverEmail";
-		echo "24th parameter is SenderDomain";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -294,6 +286,9 @@ apt-get -y -qq install python-pip
 echo "Installed Python-Pip functionality
 	  Installing email functionality">> /mylogs/text.txt
 
+# section to install email service
+apt-get -y -qq install mailutils
+apt-get -y -qq install ssmtp
 
 #section for installing certbot SSL
 apt-get -y -qq install software-properties-common
@@ -324,10 +319,10 @@ mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
-chmod +x var/www/$2/2016080806/shell/synchronization/main.php 
-chmod +x var/www/$2/2016080806/shell/synchronization/start_main.sh
-chmod +x var/www/$2/2016080806/shell/synchronization/start_va.sh 
-chmod +x var/www/$2/2016080806/shell/reindex.php
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_main.sh
+chmod +x var/www/"${10}"/2016080806/shell/synchronization/start_va.sh 
+chmod +x var/www/"${10}"/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
@@ -350,7 +345,7 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  echo  "*/10   *   *    *   *      cd /var/www/$2/2016080806/shell/synchronization/order/; /usr/bin/php syncOrder.php > /var/www/$2/2016080806/var/log/syncOrder.log" >> Magentocron
  crontab  Magentocron
  rm Magentocron
-
+ 
 sudo su
 cd /
  # section to install email service
@@ -359,21 +354,21 @@ cd /
 
  #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
-echo "root="${21}"
+echo "root="akash.jaisawal@maarglabs.com"
 mailhub=smtp.office365.com:587
-rewriteDomain="${24}"
+rewriteDomain="maarglabs.com"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
 UseTLS=YES
 UseSTARTTLS=YES
-AuthUser="${21}"
-AuthPass="${22}"
+AuthUser="akash.jaisawal@maarglabs.com"
+AuthPass="Hackerakash@90"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 #mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
-echo "root:${21}:smtp.office365.com:587
-		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
+echo "root:akash.jaisawal@maarglabs.com:smtp.office365.com:587
+		  noreply:akash.jaisawal@maarglabs.com:smtp.office365.com:587" > /etc/ssmtp/revaliases
 
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
@@ -396,15 +391,15 @@ VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
 {
-    echo "To: ${23}"
-    echo "From: noreply <${21}>"
+    echo "To: akash.jaisawal@maarglabs.com"
+    echo "From: noreply <akash.jaisawal@maarglabs.com>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp ${23} 
+} | ssmtp akash.jaisawal@maarglabs.com 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
