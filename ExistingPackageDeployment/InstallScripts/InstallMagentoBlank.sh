@@ -21,6 +21,10 @@
 #$18- customertier
 #$19- resourcegroup
 #$20- parameter is Monitoring tool files
+# $21 - SenderEmail
+# $22 - SenderPWD
+# $23 - RecieverEmail
+# $24 - SenderDomain
 
 #steps to install apache2
 mkdir /mylogs
@@ -34,7 +38,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# -lt 20 ]; then
+if [ $# -lt 24 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -57,6 +61,10 @@ if [ $# -lt 20 ]; then
 		echo "18th parameter is customerTier";
 		echo "19th parameter is resourcegroup name";
 		echo "20th parameter is Monitoring tool files";
+		echo "21st parameter is SenderEmail";
+		echo "22nd parameter is SenderPWD";
+		echo "23rd parameter is RecieverEmail";
+		echo "24th parameter is SenderDomain";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -182,7 +190,7 @@ mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set val
 
 # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
-   set value = 'https://autosoez.azureedge.net/${17}/' where path = 'web/secure/base_media_url';"  
+   set value = 'https://autosoez.azureedge.net/${17}/' where path in( 'web/secure/base_media_url','web/unsecure/base_media_url');"  
 
 #Replace the database details in local.xml file
 sed -i "s/74.208.174.2/localhost/g" /var/www/"$2"/.init/local.xml
@@ -286,9 +294,6 @@ apt-get -y -qq install python-pip
 echo "Installed Python-Pip functionality
 	  Installing email functionality">> /mylogs/text.txt
 
-# section to install email service
-apt-get -y -qq install mailutils
-apt-get -y -qq install ssmtp
 
 #section for installing certbot SSL
 apt-get -y -qq install software-properties-common
@@ -319,6 +324,11 @@ mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
+chmod +x var/www/$2/2016080806/shell/synchronization/main.php 
+chmod +x var/www/$2/2016080806/shell/synchronization/start_main.sh
+chmod +x var/www/$2/2016080806/shell/synchronization/start_va.sh 
+chmod +x var/www/$2/2016080806/shell/reindex.php
+
 echo " #!/bin/bash
 echo 'starting MAIN script'
 cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log">>/var/www/$2/2016080806/shell/synchronization/start_main.sh
@@ -341,44 +351,30 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-echo  "# Config file for sSMTP sendmail
-	   #
-	   # The person who gets all mail for userids < 1000
-       # Make this empty to disable rewriting.
-       # root=postmaster
-         root=information-prod@gcommerceinc.com
-       # The place where the mail goes. The actual machine name is required no
-       # MX records are consulted. Commonly mailhosts are named mail.domain.com
-       # mailhub=mail
-         mailhub=smtp.office365.com:587
-         AuthUser=information-prod@gcommerceinc.com
-         AuthPass=AutoGComm1!
-         UseTLS=YES
-         UseSTARTTLS=YES
-         TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
-       # Where will the mail seem to come from?
-       # rewriteDomain=
-         rewriteDomain=gcommerceinc.com
-	   # The full hostname
-         hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
-       # Are users allowed to set their own From: address?
-       # YES - Allow the user to specify their own From: address
-       # NO - Use the system generated From: address
-         FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+sudo su
+cd /
+ # section to install email service
+ apt-get -y -qq install mailutils
+ apt-get -y -qq install ssmtp
 
-mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
+ #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
-echo  "
-		# sSMTP aliases
-		#
-		# Format:       local_account:outgoing_address:mailhub
-		#
-		# Example: root:your_login@your.domain:mailhub.your.domain[:port]
-		# where [:port] is an optional port number that defaults to 25.
-		  root:information-prod@gcommerceinc.com:smtp.office365.com:587
-		  noreply:information-prod@gcommerceinc.com:smtp.office365.com:587
-      " > /etc/ssmtp/revaliases
+echo "root="${21}"
+mailhub=smtp.office365.com:587
+rewriteDomain="${24}"
+hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
+UseTLS=YES
+UseSTARTTLS=YES
+AuthUser="${21}"
+AuthPass="${22}"
+AuthMethod=LOGIN
+FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+
+#mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
+
+echo "root:${21}:smtp.office365.com:587
+		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
+
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
 DIFFSec=$((((END - START )%60)))
@@ -400,15 +396,15 @@ VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
 {
-    echo "To: azuredeployments@gcommerceinc.com"
-    echo "From: noreply <information-prod@gcommerceinc.com>"
+    echo "To: ${23}"
+    echo "From: noreply <${21}>"
     echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
 	echo "Mime-Version: 1.0;"
     echo "Content-Type: text/html; charset=\"ISO-8859-1\""
 	echo "Content-Transfer-Encoding: 7bit;"
     echo
     echo "$MailBody"
-} | ssmtp azuredeployments@gcommerceinc.com 
+} | ssmtp ${23} 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
