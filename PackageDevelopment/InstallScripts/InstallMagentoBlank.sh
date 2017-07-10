@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #Parms info 
-# $1 - Domain name 
+# $1 - domain name 
 # $2 - Folder name && DatabaseName
 # $3 - magento user name
 # $4 - magento user password
@@ -86,8 +86,11 @@ apt-get -y -qq update
  apt-get -y  -qq install apache2
 echo "installed basic">> /mylogs/text.txt
 
-# Create directory where code will store
+#First create the folder where tar file will be downloaded
+mkdir /MagentoBK
+
 # Download magento media folder backup
+# Create directory where code will store
 # Download magento file backup
 # Download magento init folder backup
 # Download magento var folder backup
@@ -103,6 +106,7 @@ curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/Packa
 
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;"
+mysql -u root --password="$5" -e " Grant ALL on *.* To 'root'@'localhost'; FLUSH PRIVILEGES;"
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 apt-get -y -qq update
 apt-get -y -qq install php5
@@ -263,7 +267,7 @@ apt-get -y -qq install python-certbot-apache
 # Install Monitoring tools
 apt-get -y -qq install xinetd
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s "${1}" "${2}" "${6}" "${20}"
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s "${20}"
 #sh ./MagentoMonitoringCert.sh
 
 # Remove folder having zip files
@@ -272,8 +276,7 @@ echo "Removing downloaded zip files"
 # Cron Tab Update
 # Mail Sending 
 
-sudo su
-cd /
+
 # Section to install email service
 apt-get -y -qq install mailutils
 apt-get -y -qq install ssmtp

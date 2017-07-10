@@ -37,7 +37,6 @@
 # New update in cron 
 
 mkdir -p /var/www/"${10}"/2016080806/shell/synchronization/ && touch /var/www/"${10}"/2016080806/shell/synchronization/processlock_main.txt
-
 mkdir -p /var/www/"${10}"/2016080806/shell/synchronization/vehicle/ && touch /var/www/"${10}"/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
 chmod +x var/www/"${10}"/2016080806/shell/synchronization/main.php 
@@ -69,6 +68,10 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 # MailSendingVariables
 # Live
+
+sudo su
+cd /
+
 echo 
 echo "root="${11}"
 mailhub=smtp.office365.com:587
@@ -121,4 +124,5 @@ echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 var/www/"${10}"/2016080806/shell/synchronization
 echo -n "user_id=$7;pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"${10}"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"${10}"/2016080806/app/etc/cfg/client_info.conf
+rm -rf var/www/"${10}"/2016080806/var/cache/*
 

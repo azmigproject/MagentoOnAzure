@@ -17,8 +17,7 @@
 # $5 - Magento Init Folder backup
 # $6 - Magento Var Folder backup
 
-#First create the folder where tar file will be downloaded
-mkdir /MagentoBK
+
 
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
