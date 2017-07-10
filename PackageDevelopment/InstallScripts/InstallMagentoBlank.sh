@@ -96,7 +96,7 @@ mkdir /MagentoBK
 # Download magento var folder backup
 # Download magento DB backup
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s "${2}" "${8}" "${9}" "${11}" "${12}" "${13}"
+curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s "${2}" "${8}" "${9}" "${11}" "${12}" "${13}"
 #sh ./GcMagentoArtifacts.sh
 
 # Install MYSQL 
