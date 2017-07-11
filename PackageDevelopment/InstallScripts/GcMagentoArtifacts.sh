@@ -18,6 +18,9 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
+#First create the folder where tar file will be downloaded
+mkdir /MagentoBK
+
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
 wget "${11}" -P /MagentoBK  -q

@@ -85,7 +85,7 @@ apt-get -y -qq update
 echo "installed basic">> /mylogs/text.txt
 
 #First create the folder where tar file will be downloaded
-mkdir MagentoBK
+mkdir /MagentoBK
 
 # Download magento media folder backup
 # Create directory where code will store
