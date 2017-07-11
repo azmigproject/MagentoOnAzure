@@ -30,13 +30,7 @@
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
 chmod 777 /mylogs/text.txt
-set -x
-# Set -xeuo pipefail to check if root user 
 
-if [[ $(id -u) -ne 0 ]] ; then
-    echo "Must be run as root"
-    exit 1
-fi
 
 if [ $# -lt 24 ]; then
      echo ""
@@ -83,8 +77,7 @@ rpm -ivh mysql-community-release-el7-5.noarch.rpm
 yum -y -q install mysql mysql-server php-mysql git-core screen  
 yum -y -q install epel-release 
 yum -y -q install python-pip 
-yum -y -q install mailutils
-yum -y -q install ssmtp
+
 echo "installed basic and required softwares like php  httpd(apache) mysql sSMTP for mails and other required packages
 	  Installed Python-Pip functionality
 	  Installing email functionality	">> /mylogs/text.txt
@@ -120,9 +113,9 @@ service httpd restart
 echo "End unziping magento files and removed corresponding tar files">> /mylogs/text.txt
 
 # Uninstall DB backup
-mkdir /MagentoBK/DB
-tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
-chmod -R 777 /MagentoBK/DB
+#mkdir /MagentoBK/DB
+#tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
+#chmod -R 777 /MagentoBK/DB
 
 # Replace the template1 name to the name of domain in magento_init.sql file
 sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql 
@@ -234,17 +227,26 @@ echo "Installed certbot functionality">> /mylogs/text.txt
 
 #Install Monitoring tools
 yum -y -q install xinetd
-curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/MagentoMonitoringCert.sh | bash -s "${1}" "${2}" "${6}" "${20}"
-#sh ./MagentoMonitoringCert.sh
+mkdir MagentoBK
+wget "${20}" -P /MagentoBK -q
+unzip /MagentoBK/MonitoringAgentFiles -d /MagentoBK/
+mv  /MagentoBK/check_mk_agent  /usr/bin  
+chmod +x /usr/bin/check_mk_agent
+mv  /MagentoBK/waitmax /usr/bin  
+chmod +x  /usr/bin/waitmax 
+mv /MagentoBK/check_mk /etc/xinetd.d
+/etc/init.d/xinetd restart
+rm -rf /MagentoBK 
+# End Monitoring tools
+
 
 #cron Tab Update 
 # Mail Sending 
-
+# Section to install email service
 sudo su
 cd /
-# Section to install email service
-yum -y -q install mailutils
 yum -y -q install ssmtp
+yum -y -q install mailutils
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh
