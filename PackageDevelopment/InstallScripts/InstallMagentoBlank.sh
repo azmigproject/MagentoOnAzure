@@ -270,6 +270,11 @@ echo "Removing downloaded zip files"
 
 # Cron Tab Update
 # New cron job
+ # section to install email service
+ sudo su
+ cd /
+ apt-get -y -qq install ssmtp
+ apt-get -y -qq install mailutils
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh

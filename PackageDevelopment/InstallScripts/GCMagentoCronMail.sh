@@ -33,6 +33,14 @@
 # $13 - RecieverEmail
 # $14 - SenderDomain
 
+set -x
+#set -xeuo pipefail to check if root user 
+
+if [[ $(id -u) -ne 0 ]] ; then
+    echo "Must be run as root"
+    exit 1
+fi
+
 mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016080806/shell/synchronization/processlock_main.txt
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
@@ -72,11 +80,8 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 sudo su
 cd /
- # section to install email service
- apt-get -y -qq install mailutils
- apt-get -y -qq install ssmtp
 
- #mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
+#mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
 
 echo "root="${11}"
 mailhub=smtp.office365.com:587
