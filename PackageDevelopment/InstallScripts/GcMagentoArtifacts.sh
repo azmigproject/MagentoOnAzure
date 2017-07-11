@@ -9,6 +9,15 @@
 # $12 - Magento Init Folder backup
 # $13 - Magento Var Folder backup
 
+
+set -x
+#set -xeuo pipefail to check if root user 
+
+if [[ $(id -u) -ne 0 ]] ; then
+    echo "Must be run as root"
+    exit 1
+fi
+
 #download magento media folder backup
 echo "Start downloading magento media folder backup files">> /mylogs/text.txt
 wget "${11}" -P /MagentoBK  -q
