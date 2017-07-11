@@ -30,13 +30,6 @@
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
 chmod 777 /mylogs/text.txt
-set -x
-#set -xeuo pipefail to check if root user 
-
-if [[ $(id -u) -ne 0 ]] ; then
-    echo "Must be run as root"
-    exit 1
-fi
 
 if [ $# -lt 24 ]; then
      echo ""
@@ -84,8 +77,6 @@ apt-get -y -qq update
  apt-get -y  -qq install apache2
 echo "installed basic">> /mylogs/text.txt
 
-#First create the folder where tar file will be downloaded
-mkdir /MagentoBK
 
 # Download magento media folder backup
 # Create directory where code will store
