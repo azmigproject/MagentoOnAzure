@@ -125,9 +125,9 @@ echo "installed PHP
 
 #Uninstall DB backup
 service  apache2 restart
-mkdir /MagentoBK/DB
-tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
-chmod -R 777 /MagentoBK/DB
+#mkdir /MagentoBK/DB
+#tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
+#chmod -R 777 /MagentoBK/DB
 
 #Replace the template1 name to the name of domain in magento_init.sql file
 sed -i "s/template1.westus.cloudapp.azure.com/$1.$6/g" /MagentoBK/DB/magento_init.sql

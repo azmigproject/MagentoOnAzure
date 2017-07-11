@@ -78,3 +78,8 @@ wget "$3"  -P  /MagentoBK -q
 MagentoDBBKFile=${3##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile">> /mylogs/text.txt
+
+#Uninstall DB backup
+mkdir /MagentoBK/DB
+tar -xvf /MagentoBK/"$MagentoDBBKFile" -C /MagentoBK/DB
+chmod -R 777 /MagentoBK/DB
