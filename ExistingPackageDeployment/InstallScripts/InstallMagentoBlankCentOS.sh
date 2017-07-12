@@ -175,8 +175,14 @@ rm -rf /MagentoBK/DB
 #update DB with new website root path
 unsecurePath="http://$1.$6/"
 securePath="http://$1.$6/"
-mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url';
-update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+mysql -u root --password="$5" -e   "use $7; update mage_core_config_data set value='$unsecurePath' where path='web/unsecure/base_url'; update mage_core_config_data set value='$securePath' where path='web/secure/base_url';"
+update `mage_core_config_data` SET value = 'smtp' where path ='smtppro/general/option';
+update `mage_core_config_data` SET value = 'login' where path ='smtppro/general/smtp_authentication';
+update `mage_core_config_data` SET value = 'AKIAIRWZ2JASC4R4CSWA' where path ='smtppro/general/smtp_username';
+update `mage_core_config_data` SET value = 'FgzGggO6TWWF8QJHCtpjKZiM7uiiKXMrc4SSQp8mmcBmQOHI2F7EHvDaxVepQbNM' where path ='smtppro/general/smtp_password';
+update `mage_core_config_data` SET value = 'email-smtp.us-west-2.amazonaws.com' where path ='smtppro/general/smtp_host';
+update `mage_core_config_data` SET value = '587' where path ='smtppro/general/smtp_port';
+update `mage_core_config_data` SET value = 'tls' where path ='smtppro/general/smtp_ssl';
 
  # if testing locally please comment below Mysql command
    mysql -u root --password="$5" -e   "use $7; update magento.mage_core_config_data
