@@ -286,5 +286,6 @@ echo "Removing downloaded zip files"
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh
 
+sudo apt-get install htop
 shutdown -r +1 &
 exit 0
