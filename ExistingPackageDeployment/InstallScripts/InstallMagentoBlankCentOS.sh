@@ -71,6 +71,7 @@ if [ $# -lt 20 ]; then
     exit 1
 fi
 
+sed -i 's/Defaults   requiretty/Defaults   !requiretty/g' /etc/sudoers
 START="$(date +%s)" 
 echo "StartTime=$START |
 domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
@@ -352,8 +353,9 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 
   # section to install email service
-   yum -y -q install mailutils
    yum -y -q install ssmtp
+   yum -y -q install mailutils
+   
 
 # MailSendingVariables
 # Live
