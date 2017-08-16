@@ -175,7 +175,7 @@
     "subnetPrefix": "10.0.0.0/24",
     "magentoUsername": "[concat(variables('uniqueNamePrefix'),'Usr')]",
     "magentoUserPassword": "[concat(variables('uniqueNamePrefix'),'@123')]",
-    "magentoFolder": "[concat('MagentoFor',variables('uniqueNamePrefix'))]",
+    "magentoFolder": "magento",
     "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "[concat(variables('uniqueNamePrefix'),'IP')]",
     "publicIPAddressType": "Dynamic",
