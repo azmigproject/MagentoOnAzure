@@ -42,9 +42,9 @@ mkdir myagent && cd myagent
 su -c  "sudo tar zxvf /home/$3/vsts-agent-ubuntu.14.04-x64-2.120.1.tar.gz
         ./config.sh --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" " "$3"
 
-echo "*  *  *   *    *      /myagent/bin/Agent.Listener run \$\* & > /myagent/log.txt " >>/etc/crontab
+echo "*  *  *   *    *      /myagent/bin/Agent.Listener run \$* & > /myagent/log.txt " >>/etc/crontab
 crontab -l > Magentocron
-echo "*  *  *   *    *      /myagent/bin/Agent.Listener run \$\* & > /myagent/log.txt " >>Magentocron
+echo "*  *  *   *    *      /myagent/bin/Agent.Listener run \$* & > /myagent/log.txt " >>Magentocron
 crontab  Magentocron
 rm Magentocron
 
