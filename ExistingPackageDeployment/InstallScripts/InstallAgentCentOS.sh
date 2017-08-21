@@ -41,7 +41,7 @@ MgDir=$( find /var/www/ -type d -name "2016080806")
 
 mkdir "/mgbackup"
 mkdir myagent && cd myagent
-su -c  "sudo tar zxvf /home/$3/vsts-agent-ubuntu.14.04-x64-2.120.1.tar.gz
+su -c  "sudo tar zxvf /home/$3/vsts-agent-rhel.7.2-x64-2.120.2.tar.gz
         ./config.sh --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" " "$3"
 
 echo "*  *  *   *    *      /myagent/bin/Agent.Listener run \$* & > /myagent/log.txt " >>/etc/crontab
