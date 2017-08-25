@@ -22,13 +22,10 @@ if [ $# -lt 6 ]; then
 fi
 apt-get  -y install libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip
 apt-get update
-jvstatus=$(java -version)
-substring="version"
-if [ "$jvstatus" = "${jvstatus%$substring*}" ]; then
  
- apt-get install default-jre
+ apt-get -y install default-jre
 
-fi
+
 # apt-get install -y python-software-properties debconf-utils
 # add-apt-repository -y ppa:webupd8team/java
 # apt-get update
