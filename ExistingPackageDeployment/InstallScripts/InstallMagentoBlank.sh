@@ -434,8 +434,9 @@ chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 rm -rf var/www/"$2"/2016080806/var/cache/*
 sudo apt-get install htop
 wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
-chmod +x InstallAgent.sh
+chmod 777 InstallAgent.sh
 mkdir /var/tfsworkfolder
-./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com
-shutdown -r +1 &
-exit 0
+echo '/InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
+./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
+#shutdown -r +1 &
+#exit 0
