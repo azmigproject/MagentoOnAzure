@@ -21,15 +21,15 @@ if [ $# -lt 6 ]; then
     exit 1
 fi
 
-sudo yum -y install libunwind.x86_64 icu deltarpm epel-release unzip libunwind gettext libcurl-devel openssl-devel zlib libicu-devel
+yum -y install libunwind.x86_64 icu deltarpm epel-release unzip libunwind gettext libcurl-devel openssl-devel zlib libicu-devel
 
 yum -y update
 
-wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
-"http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm"
+#wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+#"http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm"
 
-sudo yum -y localinstall jre-8u144-linux-x64.rpm
-
+#sudo yum -y localinstall jre-8u144-linux-x64.rpm
+yum -y install default-jre
 wget "https://github.com/Microsoft/vsts-agent/releases/download/v2.120.2/vsts-agent-rhel.7.2-x64-2.120.2.tar.gz" -P /home/$3  -q
 
 MgDir=$( find /var/www/ -type d -name "2016080806") 
@@ -41,7 +41,7 @@ MgDir=$( find /var/www/ -type d -name "2016080806")
 
 mkdir "/mgbackup"
 mkdir myagent && cd myagent
-sudo tar zxvf /home/$3/vsts-agent-rhel.7.2-x64-2.120.2.tar.gz
+tar zxvf /home/$3/vsts-agent-rhel.7.2-x64-2.120.2.tar.gz
 chmod 777 /myagent
 su -c  "./config.sh --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" " "$3"
 
