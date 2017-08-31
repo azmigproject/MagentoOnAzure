@@ -422,7 +422,7 @@ chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 rm -rf var/www/"$2"/2016080806/var/cache/*
 yum -y install htop
 wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh"
-chmod 777 InstallAgent.sh
+chmod 777 InstallAgentCentOS.sh
 mkdir /var/tfsworkfolder
 echo '/InstallAgentCentOS.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
 ./InstallAgentCentOS.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
