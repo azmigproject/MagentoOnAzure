@@ -41,7 +41,7 @@ MgDir=$( find /var/www/ -type d -name "2016080806")
  chmod 755 -R  "$MgDir/skin"
 
 mkdir "/mgbackup"
-mkdir myagent && cd myagent
+mkdir "/myagent" && cd "/myagent"
 tar zxvf /home/$3/vsts-agent-rhel.7.2-x64-2.120.2.tar.gz
 chmod 777 /myagent
 su -c  "./config.sh --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" " "$3"
