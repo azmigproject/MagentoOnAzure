@@ -49,7 +49,7 @@
       "metadata": {
         "description": "TFS Agent Pool Name in which agent will be listed after installation."
       }
-    },s
+    },
     "SenderEmail": {
       "type": "string",
       "defaultValue": "information-prod@gcommerceinc.com",
