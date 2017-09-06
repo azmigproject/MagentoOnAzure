@@ -25,13 +25,15 @@
 # $22 - SenderPWD
 # $23 - RecieverEmail
 # $24 - SenderDomain
+# $25 - tfsAccessToken
+# $26 - tfsAgentPool
 
 #steps to install apache2
 mkdir /mylogs
 echo "testing">> /mylogs/text.txt
 chmod 777 /mylogs/text.txt
 
-if [ $# -lt 24 ]; then
+if [ $# -lt 26 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -58,6 +60,8 @@ if [ $# -lt 24 ]; then
 		echo "22nd parameter is SenderPWD";
 		echo "23rd parameter is RecieverEmail";
 		echo "24th parameter is SenderDomain";
+		echo "25th parameter is TFS Access Token for setting Agent in remote machine";
+		echo "26th parameter is TFS Agent Pool Name for listing agent in the pool in TFS";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -287,5 +291,10 @@ curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/Packa
 #sh ./GCMagentoCronMail.sh
 
 sudo apt-get install htop
-shutdown -r +1 &
-exit 0
+wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
+chmod 777 InstallAgent.sh
+mkdir /var/tfsworkfolder
+echo '/InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
+./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
+#shutdown -r +1 &
+#exit 0

@@ -25,6 +25,9 @@
 # $22 - SenderPWD
 # $23 - RecieverEmail
 # $24 - SenderDomain
+# $25 - tfsAccessToken
+# $26 - tfsAgentPool
+
 
 # Steps to install apache2
 mkdir /mylogs
@@ -32,7 +35,7 @@ echo "testing">> /mylogs/text.txt
 chmod 777 /mylogs/text.txt
 
 
-if [ $# -lt 24 ]; then
+if [ $# -lt 26  ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -59,7 +62,8 @@ if [ $# -lt 24 ]; then
 		echo "22nd parameter is SenderPWD";
 		echo "23rd parameter is RecieverEmail";
 		echo "24th parameter is SenderDomain";
-		
+		echo "25th parameter is TFS Access Token for setting Agent in remote machine";
+		echo "26th parameter is TFS Agent Pool Name for listing agent in the pool in TFS";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -256,7 +260,8 @@ yum -y -q install mailutils
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh
-
 yum install htop
-shutdown -r +1 &
-exit 0
+mkdir /var/tfsworkfolder
+curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
+#shutdown -r +1 &
+#exit 0
