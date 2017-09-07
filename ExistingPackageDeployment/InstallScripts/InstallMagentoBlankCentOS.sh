@@ -233,16 +233,7 @@ if [ ! -f ".htaccess" ]; then
 
  fi
  cd / || exit
-# Create a new user for magento
-# adduser "$3" 
-##echo "$3:$4" |  chpasswd
-#echo "$4" | passwd --stdin "$3" 
-# usermod -g apache "$3"
- #usermod -aG wheel "$3"
-# usermod -aG root "$3"
-#su -c "$3"
-#echo "$4"|sudo -S echo "create user"
-#echo "create user"| sudo tee -a /mylogs/text.txt > /dev/null
+
  chmod -R 755 /var/www
  service httpd restart
 #install all files in  magento dir 
@@ -255,17 +246,16 @@ echo "Install Code"|  tee -a /mylogs/text.txt > /dev/null
 # go to magento installation directory
 cd /var/www/"$2"/2016080806  || exit
 echo "start giving permissions"|  tee -a /mylogs/text.txt > /dev/null
-find var app/etc -type f -exec sudo chmod g+w {} \; 
-find var app/etc -type d -exec sudo chmod g+ws {} \; 
+find var app/etc -type f -exec chmod g+w {} \; 
+find var app/etc -type d -exec chmod g+ws {} \; 
   chown -R "$3":www-data . 
  chmod -R o+w media var 
  chmod o+w app/etc 
  chmod 550 mage 
 echo "end giving permissions" |  tee -a /mylogs/text.txt > /dev/null
 
-#sudo chmod -R 777 /var/www/$2/2016080806 
-find . -type f -exec sudo chmod 644 {} \; 
-find . -type d -exec sudo chmod 755 {} \; 
+find . -type f -exec chmod 644 {} \; 
+find . -type d -exec chmod 755 {} \; 
  chmod 550 mage 
  chmod -R 777  var 
  chmod -R 777 .var 
@@ -279,7 +269,6 @@ cd /var/www/"$2" || exit
 cd /var/www/"$2"/ || exit
 
 echo "started cron" |  tee -a /mylogs/text.txt > /dev/null
-sudo su
 
 IP=$(curl ipinfo.io/ip)
 echo "Installing certbot functionality">> /mylogs/text.txt
@@ -365,7 +354,7 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 # Live
 #
 
-#mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
+
 
 echo "root="${21}"
 mailhub=smtp.office365.com:587
@@ -378,7 +367,6 @@ AuthPass="${22}"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
-#mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
 
 echo "root:${21}:smtp.office365.com:587
 		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
@@ -421,12 +409,7 @@ echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 rm -rf var/www/"$2"/2016080806/var/cache/*
 yum -y install htop
-#wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh"
-#chmod 777 InstallAgentCentOS.sh
-mkdir /var/tfsworkfolder
-#echo '/InstallAgentCentOS.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
-#./InstallAgentCentOS.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
-curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
 
-#shutdown -r +1 &
-#exit 0
+mkdir /var/tfsworkfolder
+
+curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
