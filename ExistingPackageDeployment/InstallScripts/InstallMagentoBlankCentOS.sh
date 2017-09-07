@@ -233,7 +233,7 @@ if [ ! -f ".htaccess" ]; then
 
  fi
  cd / || exit
- # Create a new user for magento
+# Create a new user for magento
 # adduser "$3" 
 ##echo "$3:$4" |  chpasswd
 #echo "$4" | passwd --stdin "$3" 
@@ -243,42 +243,42 @@ if [ ! -f ".htaccess" ]; then
 #su -c "$3"
 #echo "$4"|sudo -S echo "create user"
 #echo "create user"| sudo tee -a /mylogs/text.txt > /dev/null
-sudo chmod -R 755 /var/www
-sudo service httpd restart
+ chmod -R 755 /var/www
+ service httpd restart
 #install all files in  magento dir 
 cd /var/www/"$2" || exit
-sudo chmod -R 777 /var/www/"$2"
-sudo  service httpd reload
-sudo service httpd restart
-echo "Install Code"| sudo tee -a /mylogs/text.txt > /dev/null
+ chmod -R 777 /var/www/"$2"
+  service httpd reload
+ service httpd restart
+echo "Install Code"|  tee -a /mylogs/text.txt > /dev/null
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
 cd /var/www/"$2"/2016080806  || exit
-echo "start giving permissions"| sudo tee -a /mylogs/text.txt > /dev/null
+echo "start giving permissions"|  tee -a /mylogs/text.txt > /dev/null
 find var app/etc -type f -exec sudo chmod g+w {} \; 
 find var app/etc -type d -exec sudo chmod g+ws {} \; 
-sudo  chown -R "$3":www-data . 
-sudo chmod -R o+w media var 
-sudo chmod o+w app/etc 
-sudo chmod 550 mage 
-echo "end giving permissions" | sudo tee -a /mylogs/text.txt > /dev/null
+  chown -R "$3":www-data . 
+ chmod -R o+w media var 
+ chmod o+w app/etc 
+ chmod 550 mage 
+echo "end giving permissions" |  tee -a /mylogs/text.txt > /dev/null
 
 #sudo chmod -R 777 /var/www/$2/2016080806 
 find . -type f -exec sudo chmod 644 {} \; 
 find . -type d -exec sudo chmod 755 {} \; 
-sudo chmod 550 mage 
-sudo chmod -R 777  var 
-sudo chmod -R 777 .var 
-sudo chmod -R 777 pub/static 
-sudo chmod -R 777 pub/media 
-sudo chmod -R 777  media 
-sudo chmod -R 777 .media 
+ chmod 550 mage 
+ chmod -R 777  var 
+ chmod -R 777 .var 
+ chmod -R 777 pub/static 
+ chmod -R 777 pub/media 
+ chmod -R 777  media 
+ chmod -R 777 .media 
 cd /var/www/"$2" || exit
-sudo chmod -R 777 .var 
-sudo chmod -R 777 .media 
+ chmod -R 777 .var 
+ chmod -R 777 .media 
 cd /var/www/"$2"/ || exit
 
-echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
+echo "started cron" |  tee -a /mylogs/text.txt > /dev/null
 sudo su
 
 IP=$(curl ipinfo.io/ip)
