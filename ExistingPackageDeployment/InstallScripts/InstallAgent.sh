@@ -26,12 +26,6 @@ apt-get update
  apt-get -y install default-jre
 
 
-# apt-get install -y python-software-properties debconf-utils
-# add-apt-repository -y ppa:webupd8team/java
-# apt-get update
-#echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" |  debconf-set-selections
-#apt-get install -y oracle-java8-installer
-
 wget "https://github.com/Microsoft/vsts-agent/releases/download/v2.120.1/vsts-agent-ubuntu.14.04-x64-2.120.1.tar.gz" -P /home/$3  -q
 
 MgDir=$( find /var/www/ -type d -name "2016080806") 
@@ -41,9 +35,9 @@ MgDir=$( find /var/www/ -type d -name "2016080806")
  chmod 755 -R  "$MgDir/shell"
  chmod 755 -R  "$MgDir/skin"
 
-mkdir "mgbackup"
-mkdir myagent && cd myagent
-sudo tar zxvf /home/$3/vsts-agent-ubuntu.14.04-x64-2.120.1.tar.gz
+mkdir "/mgbackup"
+mkdir /myagent && cd /myagent
+tar zxvf /home/$3/vsts-agent-ubuntu.14.04-x64-2.120.1.tar.gz
 chmod 777 /myagent
 su -c  "./config.sh --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" " "$3"
 

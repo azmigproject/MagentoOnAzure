@@ -236,17 +236,8 @@ if [ ! -f ".htaccess" ]; then
  fi
  cd / || exit
 
- # Create a new user for magento
- # adduser "$3" --gecos "Magento System,0,0,0" --disabled-password
-# echo "$3:$4" |  chpasswd
- # usermod -g www-data "$3"
- # usermod -aG sudo "$3"
- # usermod -aG root "$3"
- # su -c "$3"
-# echo "$4"|sudo -S echo "create user"
-# echo "create user" | sudo tee -a /mylogs/text.txt > /dev/null
-# sudo chmod -R 755 /var/www
-# sudo  service apache2 restart
+ chmod -R 755 /var/www
+ service apache2 restart
 
 #install all files in  magento dir 
 cd /var/www/"$2" || exit
@@ -282,7 +273,6 @@ find var app/etc -type d -exec chmod g+ws {} \;
  chmod 550 mage 
 echo "end giving permissions" | tee -a /mylogs/text.txt > /dev/null
 
-#sudo chmod -R 777 /var/www/$2/2016080806 
 find . -type f -exec chmod 644 {} \; 
 find . -type d -exec chmod 755 {} \; 
  chmod 550 mage 
