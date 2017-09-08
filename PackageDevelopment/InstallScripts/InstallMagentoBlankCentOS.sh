@@ -179,45 +179,53 @@ if [ ! -f ".htaccess" ]; then
 
  fi
  cd / || exit
- 
-
- chmod -R 755 /var/www
- service httpd restart
+ # Create a new user for magento
+ adduser "$3" 
+ #echo "$3:$4" |  chpasswd
+ echo "$4" | passwd --stdin "$3" 
+ usermod -g apache "$3"
+ usermod -aG wheel "$3"
+ usermod -aG root "$3"
+ su -c "$3"
+echo "$4"|sudo -S echo "create user"
+echo "create user"| sudo tee -a /mylogs/text.txt > /dev/null
+sudo chmod -R 755 /var/www
+sudo service httpd restart
 #install all files in  magento dir 
 cd /var/www/"$2" || exit
- chmod -R 777 /var/www/"$2"
-  service httpd reload
- service httpd restart
-echo "Install Code"| tee -a /mylogs/text.txt > /dev/null
+sudo chmod -R 777 /var/www/"$2"
+sudo  service httpd reload
+sudo service httpd restart
+echo "Install Code"| sudo tee -a /mylogs/text.txt > /dev/null
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
 cd /var/www/"$2"/2016080806  || exit
-echo "start giving permissions"| tee -a /mylogs/text.txt > /dev/null
-find var app/etc -type f -exec chmod g+w {} \; 
-find var app/etc -type d -exec chmod g+ws {} \; 
- chown -R "$3":www-data . 
- chmod -R o+w media var 
- chmod o+w app/etc 
- chmod 550 mage 
-echo "end giving permissions" | tee -a /mylogs/text.txt > /dev/null
+echo "start giving permissions"| sudo tee -a /mylogs/text.txt > /dev/null
+find var app/etc -type f -exec sudo  chmod g+w {} \; 
+find var app/etc -type d -exec sudo  chmod g+ws {} \; 
+sudo  chown -R "$3":www-data . 
+sudo chmod -R o+w media var 
+sudo chmod o+w app/etc 
+sudo chmod 550 mage 
+echo "end giving permissions" | sudo tee -a /mylogs/text.txt > /dev/null
 
-
-find . -type f -exec chmod 644 {} \; 
-find . -type d -exec chmod 755 {} \; 
- chmod 550 mage 
- chmod -R 777  var 
- chmod -R 777 .var 
- chmod -R 777 pub/static 
- chmod -R 777 pub/media 
- chmod -R 777  media 
- chmod -R 777 .media 
+#sudo chmod -R 777 /var/www/$2/2016080806 
+find . -type f -exec sudo chmod 644 {} \; 
+find . -type d -exec sudo chmod 755 {} \; 
+sudo chmod 550 mage 
+sudo chmod -R 777  var 
+sudo chmod -R 777 .var 
+sudo chmod -R 777 pub/static 
+sudo chmod -R 777 pub/media 
+sudo chmod -R 777  media 
+sudo chmod -R 777 .media 
 cd /var/www/"$2" || exit
- chmod -R 777 .var 
- chmod -R 777 .media 
+sudo chmod -R 777 .var 
+sudo chmod -R 777 .media 
 cd /var/www/"$2"/ || exit
- rm -rf .var/cache/*
-echo "started cron" | tee -a /mylogs/text.txt > /dev/null
-
+sudo rm -rf .var/cache/*
+echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
+sudo su
 
 #section for installing certbot SSL
 IP=$(curl ipinfo.io/ip)
@@ -245,14 +253,15 @@ rm -rf /MagentoBK
 #cron Tab Update 
 # Mail Sending 
 # Section to install email service
-
+sudo su
+cd /
 yum -y -q install ssmtp
 yum -y -q install mailutils
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh
-rm -rf var/www/"$2"/2016080806/var/cache/*
 yum install htop
 mkdir /var/tfsworkfolder
 curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
-
+#shutdown -r +1 &
+#exit 0
