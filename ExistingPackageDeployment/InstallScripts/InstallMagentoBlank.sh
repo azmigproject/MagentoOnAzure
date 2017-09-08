@@ -150,6 +150,7 @@ echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile"
 # apt-get install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;"
 mysql -u root --password="$5" -e " Grant ALL on *.* To 'root'@'localhost'; FLUSH PRIVILEGES;"
+mysql -u root --password="$5" -e " GRANT ALL PRIVILEGES ON *.* TO 'root' IDENTIFIED BY '$5' WITH GRANT OPTION;FLUSH PRIVILEGES;"
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 apt-get -y -qq update
 apt-get -y -qq install php5
