@@ -328,10 +328,10 @@ mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
-chmod +x var/www/$2/2016080806/shell/synchronization/main.php 
-chmod +x var/www/$2/2016080806/shell/synchronization/start_main.sh
-chmod +x var/www/$2/2016080806/shell/synchronization/start_va.sh 
-chmod +x var/www/$2/2016080806/shell/reindex.php
+chmod +x /var/www/$2/2016080806/shell/synchronization/main.php 
+chmod +x /var/www/$2/2016080806/shell/synchronization/start_main.sh
+chmod +x /var/www/$2/2016080806/shell/synchronization/start_va.sh 
+chmod +x /var/www/$2/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
@@ -416,10 +416,10 @@ VM Admin Pass:  ${16}"
 } | ssmtp ${23} 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
+chmod -R 777 /var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
-rm -rf var/www/"$2"/2016080806/var/cache/*
+rm -rf /var/www/"$2"/2016080806/var/cache/*
  apt-get install htop
 wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
 chmod 777 InstallAgent.sh
