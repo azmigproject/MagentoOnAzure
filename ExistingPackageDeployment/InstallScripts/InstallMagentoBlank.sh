@@ -237,68 +237,68 @@ if [ ! -f ".htaccess" ]; then
  cd / || exit
 
  # Create a new user for magento
- adduser "$3" --gecos "Magento System,0,0,0" --disabled-password
-echo "$3:$4" |  chpasswd
- usermod -g www-data "$3"
- usermod -aG sudo "$3"
- usermod -aG root "$3"
- su -c "$3"
-echo "$4"|sudo -S echo "create user"
-echo "create user" | sudo tee -a /mylogs/text.txt > /dev/null
-sudo chmod -R 755 /var/www
-sudo  service apache2 restart
+ # adduser "$3" --gecos "Magento System,0,0,0" --disabled-password
+# echo "$3:$4" |  chpasswd
+ # usermod -g www-data "$3"
+ # usermod -aG sudo "$3"
+ # usermod -aG root "$3"
+ # su -c "$3"
+# echo "$4"|sudo -S echo "create user"
+# echo "create user" | sudo tee -a /mylogs/text.txt > /dev/null
+# sudo chmod -R 755 /var/www
+# sudo  service apache2 restart
 
 #install all files in  magento dir 
 cd /var/www/"$2" || exit
-sudo chmod -R 777 /var/www/"$2"
+ chmod -R 777 /var/www/"$2"
 
 #enable the new site and 
-sudo  a2ensite "$2".conf
-sudo  service apache2 reload
+ a2ensite "$2".conf
+  service apache2 reload
 
 #disable the default site
-sudo   a2dissite 000-default
-sudo  service apache2 reload
+  a2dissite 000-default
+ service apache2 reload
 
 #Go to installed php version apache2 php.ini file and update memory_limit to 2GB
 #change to add allow url rewrite and handle phpencryption in apache
-sudo  a2enmod rewrite
-sudo  service apache2 restart
-sudo  php5enmod  mcrypt
-sudo  service apache2 restart
-sudo  a2enconf php5-fpm
-sudo  service apache2 restart
-echo "Install Code" | sudo tee -a /mylogs/text.txt > /dev/null
+ a2enmod rewrite
+ service apache2 restart
+ php5enmod  mcrypt
+  service apache2 restart
+ a2enconf php5-fpm
+ service apache2 restart
+echo "Install Code" | tee -a /mylogs/text.txt > /dev/null
 
 # give permission to web user  in apache2 www-data
 # go to magento installation directory
 cd /var/www/"$2"/2016080806 || exit
-echo "start giving permissions" | sudo tee -a /mylogs/text.txt > /dev/null
-find var app/etc -type f -exec sudo  chmod g+w {} \;
-find var app/etc -type d -exec sudo  chmod g+ws {} \;
-sudo  chown -R "$3":www-data .
-sudo chmod -R o+w media var 
-sudo chmod o+w app/etc 
-sudo chmod 550 mage 
-echo "end giving permissions" | sudo tee -a /mylogs/text.txt > /dev/null
+echo "start giving permissions" | tee -a /mylogs/text.txt > /dev/null
+find var app/etc -type f -exec chmod g+w {} \;
+find var app/etc -type d -exec chmod g+ws {} \;
+ chown -R "$3":www-data .
+ chmod -R o+w media var 
+ chmod o+w app/etc 
+ chmod 550 mage 
+echo "end giving permissions" | tee -a /mylogs/text.txt > /dev/null
 
 #sudo chmod -R 777 /var/www/$2/2016080806 
-find . -type f -exec sudo chmod 644 {} \; 
-find . -type d -exec sudo chmod 755 {} \; 
-sudo chmod 550 mage 
-sudo chmod -R 777  var 
-sudo chmod -R 777 .var 
-sudo chmod -R 777 pub/static 
-sudo chmod -R 777 pub/media 
-sudo chmod -R 777  media 
-sudo chmod -R 777 .media 
+find . -type f -exec chmod 644 {} \; 
+find . -type d -exec chmod 755 {} \; 
+ chmod 550 mage 
+ chmod -R 777  var 
+ chmod -R 777 .var 
+ chmod -R 777 pub/static 
+ chmod -R 777 pub/media 
+ chmod -R 777  media 
+ chmod -R 777 .media 
 cd /var/www/"$2" || exit
-sudo chmod -R 777 .var 
-sudo chmod -R 777 .media 
+ chmod -R 777 .var 
+ chmod -R 777 .media 
 cd /var/www/"$2"/ || exit
-sudo rm -rf .var/cache/*
-echo "started cron" | sudo tee -a /mylogs/text.txt > /dev/null
-sudo su
+ rm -rf .var/cache/*
+echo "started cron" | tee -a /mylogs/text.txt > /dev/null
+
 IP=$(curl ipinfo.io/ip)
 echo "Installing Python-Pip functionality">> /mylogs/text.txt
 apt-get -y -qq install epel-release 
@@ -371,14 +371,11 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-sudo su
-cd /
- # section to install email service
  apt-get -y -qq install mailutils
  apt-get -y -qq install ssmtp
 
 
-#mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
+
 
 echo "root="${21}"
 mailhub=smtp.office365.com:587
@@ -391,7 +388,7 @@ AuthPass="${22}"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
-#mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
+
 
 echo "root:${21}:smtp.office365.com:587
 		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
@@ -432,11 +429,9 @@ chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 rm -rf var/www/"$2"/2016080806/var/cache/*
-sudo apt-get install htop
+ apt-get install htop
 wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
 chmod 777 InstallAgent.sh
 mkdir /var/tfsworkfolder
 echo '/InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
 ./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
-#shutdown -r +1 &
-#exit 0
