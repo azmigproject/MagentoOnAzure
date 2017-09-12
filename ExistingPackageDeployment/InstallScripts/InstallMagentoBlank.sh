@@ -278,16 +278,16 @@ find . -type f -exec chmod 644 {} \;
 find . -type d -exec chmod 755 {} \; 
  chmod 550 mage 
  chmod -R 777  var 
- chmod -R 777 .var 
+ #chmod -R 777 .var 
  chmod -R 777 pub/static 
  chmod -R 777 pub/media 
  chmod -R 777  media 
- chmod -R 777 .media 
+# chmod -R 777 .media 
 cd /var/www/"$2" || exit
- chmod -R 777 .var 
- chmod -R 777 .media 
-cd /var/www/"$2"/ || exit
- rm -rf .var/cache/*
+ #chmod -R 777 .var 
+# chmod -R 777 .media 
+#cd /var/www/"$2"/ || exit
+# rm -rf .var/cache/*
 echo "started cron" | tee -a /mylogs/text.txt > /dev/null
 
 IP=$(curl ipinfo.io/ip)
