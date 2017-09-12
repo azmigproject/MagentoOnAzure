@@ -30,7 +30,8 @@ yum update -y --exclude=WALinuxAgent
 #"http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.rpm"
 
 #sudo yum -y localinstall jre-8u144-linux-x64.rpm
-yum -y install default-jre
+#yum -y install default-jre
+yum -y install java-1.7.0-openjdk
 wget "https://github.com/Microsoft/vsts-agent/releases/download/v2.120.2/vsts-agent-rhel.7.2-x64-2.120.2.tar.gz" -P /home/$3  -q
 
 MgDir=$( find /var/www/ -type d -name "2016080806") 
