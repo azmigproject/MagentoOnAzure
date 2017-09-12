@@ -157,6 +157,7 @@ systemctl enable httpd.service
 # yum install mysql-server-5.6 --yes
 mysql -u root --password="$5" -e "DELETE FROM mysql.user WHERE User=' '; DROP DATABASE IF EXISTS test; CREATE DATABASE IF NOT EXISTS $7; FLUSH PRIVILEGES; SHOW DATABASES;"
 mysql -u root --password="$5" -e " Grant ALL on *.* To 'root'@'localhost'; FLUSH PRIVILEGES;"
+mysql -u root --password="$5" -e " GRANT ALL PRIVILEGES ON *.* TO 'root' IDENTIFIED BY '$5' WITH GRANT OPTION;FLUSH PRIVILEGES;"
 echo "installed MYSQL and New DB">> /mylogs/text.txt
 service php-fpm restart 
 systemctl stop httpd
@@ -258,15 +259,10 @@ find . -type f -exec chmod 644 {} \;
 find . -type d -exec chmod 755 {} \; 
  chmod 550 mage 
  chmod -R 777  var 
- chmod -R 777 .var 
  chmod -R 777 pub/static 
  chmod -R 777 pub/media 
  chmod -R 777  media 
- chmod -R 777 .media 
 cd /var/www/"$2" || exit
- chmod -R 777 .var 
- chmod -R 777 .media 
-cd /var/www/"$2"/ || exit
 
 echo "started cron" |  tee -a /mylogs/text.txt > /dev/null
 
@@ -307,13 +303,11 @@ rm -rf /MagentoBK
 # New cron job
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016080806/shell/synchronization/processlock_main.txt
-
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
-
-chmod +x var/www/$2/2016080806/shell/synchronization/main.php 
-chmod +x var/www/$2/2016080806/shell/synchronization/start_main.sh
-chmod +x var/www/$2/2016080806/shell/synchronization/start_va.sh
-chmod +x var/www/$2/2016080806/shell/reindex.php
+chmod +x /var/www/$2/2016080806/shell/synchronization/main.php 
+chmod +x /var/www/$2/2016080806/shell/synchronization/start_main.sh
+chmod +x /var/www/$2/2016080806/shell/synchronization/start_va.sh
+chmod +x /var/www/$2/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
@@ -344,17 +338,12 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-
-  # section to install email service
-   yum -y -q install ssmtp
-   yum -y -q install mailutils
-   
+# section to install email service
+ yum -y -q install ssmtp
+ yum -y -q install mailutils
 
 # MailSendingVariables
 # Live
-#
-
-
 
 echo "root="${21}"
 mailhub=smtp.office365.com:587
@@ -366,8 +355,6 @@ AuthUser="${21}"
 AuthPass="${22}"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
-
-
 echo "root:${21}:smtp.office365.com:587
 		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
 
@@ -390,7 +377,6 @@ Customer Tier:  ${18}<BR>
 MySQL Password:   $5<BR>
 VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
-
 {
     echo "To: ${23}"
     echo "From: noreply <${21}>"
@@ -403,13 +389,10 @@ VM Admin Pass:  ${16}"
 } | ssmtp ${23}
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt 
-
-chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
+chmod -R 777 /var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
-rm -rf var/www/"$2"/2016080806/var/cache/*
+rm -rf /var/www/"$2"/2016080806/var/cache/*
 yum -y install htop
-
 mkdir /var/tfsworkfolder
-
 curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
