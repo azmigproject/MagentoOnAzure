@@ -340,12 +340,13 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 # section to install email service
  yum -y -q install ssmtp
- yum -y -q install mailutils
+ yum -y -q mailx
 
 # MailSendingVariables
 # Live
 
 echo "root="${21}"
+TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
 mailhub=smtp.office365.com:587
 rewriteDomain="${24}"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
@@ -357,6 +358,10 @@ AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 echo "root:${21}:smtp.office365.com:587
 		  noreply:${21}:smtp.office365.com:587" > /etc/ssmtp/revaliases
+systemctl stop postfix
+systemctl disable postfix
+		  
+alternatives --set mta "/usr/sbin/sendmail.ssmtp"
 
 END="$(date +%s)"
 DIFFMin="$((((END - START )/60)))"
