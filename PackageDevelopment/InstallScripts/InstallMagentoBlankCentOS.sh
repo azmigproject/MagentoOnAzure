@@ -249,7 +249,7 @@ rm -rf /MagentoBK
 
 
 yum -y -q install ssmtp
-yum -y -q install mailutils
+yum -y -q install mailx
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh

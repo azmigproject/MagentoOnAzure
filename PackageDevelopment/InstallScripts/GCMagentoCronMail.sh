@@ -45,10 +45,10 @@ mkdir -p /var/www/$2/2016080806/shell/synchronization/ && touch /var/www/$2/2016
 
 mkdir -p /var/www/$2/2016080806/shell/synchronization/vehicle/ && touch /var/www/$2/2016080806/shell/synchronization/vehicle/ processlock_va.txt
 
-chmod +x var/www/$2/2016080806/shell/synchronization/main.php 
-chmod +x var/www/$2/2016080806/shell/synchronization/start_main.sh
-chmod +x var/www/$2/2016080806/shell/synchronization/start_va.sh 
-chmod +x var/www/$2/2016080806/shell/reindex.php
+chmod +x /var/www/$2/2016080806/shell/synchronization/main.php 
+chmod +x /var/www/$2/2016080806/shell/synchronization/start_main.sh
+chmod +x /var/www/$2/2016080806/shell/synchronization/start_va.sh 
+chmod +x /var/www/$2/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
@@ -78,9 +78,8 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
  crontab  Magentocron
  rm Magentocron
 
-#mv /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.sample
-
 echo "root="${11}"
+TLS_CA_File=/etc/pki/tls/certs/ca-bundle.crt
 mailhub=smtp.office365.com:587
 rewriteDomain="${14}"
 hostname=$1.wdnmczgigfhudmf4p1sa3we05e.dx.internal.cloudapp.net
@@ -91,11 +90,12 @@ AuthPass="${12}"
 AuthMethod=LOGIN
 FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
-#mv /etc/ssmtp/revaliases /etc/ssmtp/revaliases.sample
-
 echo "root:${11}:smtp.office365.com:587
 		  noreply:${11}:smtp.office365.com:587" > /etc/ssmtp/revaliases
-
+systemctl stop postfix
+systemctl disable postfix
+		  
+alternatives --set mta "/usr/sbin/sendmail.ssmtp"
 END=$(date +%s)
 DIFFMin=$((((END - START )/60)))
 DIFFSec=$((((END - START )%60)))
@@ -128,7 +128,7 @@ VM Admin Pass:  ${7}"
 } | ssmtp ${13} 
 
 echo "Mail Send. Install successfull">> /mylogs/text.txt
-chmod -R 777 var/www/"$2"/2016080806/shell/synchronization
+chmod -R 777 /var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${8};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
-rm -rf var/www/"$2"/2016080806/var/cache/*
+rm -rf /var/www/"$2"/2016080806/var/cache/*

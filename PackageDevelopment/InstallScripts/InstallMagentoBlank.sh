@@ -225,16 +225,16 @@ find . -type f -exec chmod 644 {} \;
 find . -type d -exec chmod 755 {} \; 
  chmod 550 mage 
  chmod -R 777  var 
- chmod -R 777 .var 
+# chmod -R 777 .var 
  chmod -R 777 pub/static 
  chmod -R 777 pub/media 
  chmod -R 777  media 
- chmod -R 777 .media 
+# chmod -R 777 .media 
 cd /var/www/"$2" || exit
- chmod -R 777 .var 
- chmod -R 777 .media 
-cd /var/www/"$2"/ || exit
- rm -rf .var/cache/*
+ #chmod -R 777 .var 
+ #chmod -R 777 .media 
+#cd /var/www/"$2"/ || exit
+ #rm -rf .var/cache/*
 echo "started cron" | tee -a /mylogs/text.txt > /dev/null
 
 IP=$(curl ipinfo.io/ip)
@@ -272,8 +272,9 @@ echo "Removing downloaded zip files"
 # New cron job
 # section to install email service
 
- apt-get -y -qq install ssmtp
- apt-get -y -qq install mailutils
+apt-get -y -qq install mailutils 
+apt-get -y -qq install ssmtp
+
 
 curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GCMagentoCronMail.sh | bash -s "${1}" "${2}" "${3}" "${5}" "${6}" "${15}" "${16}" "${17}" "${18}" "${19}" "${21}" "${22}" "${23}" "${24}"
 #sh ./GCMagentoCronMail.sh
