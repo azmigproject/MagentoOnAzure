@@ -340,7 +340,7 @@ sed -i "s,/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin,/usr/loca
 
 # section to install email service
  yum -y -q install ssmtp
- yum -y -q mailx
+ yum -y -q install mailx
 
 # MailSendingVariables
 # Live
