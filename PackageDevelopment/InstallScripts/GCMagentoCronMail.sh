@@ -52,11 +52,11 @@ chmod +x /var/www/$2/2016080806/shell/reindex.php
 
 echo " #!/bin/bash
 echo 'starting MAIN script'
-cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log">>/var/www/$2/2016080806/shell/synchronization/start_main.sh
+cd /var/www/$2/2016080806/shell/synchronization/; /usr/bin/php main.php > /var/www/$2/2016080806/var/log/main_cron.log">/var/www/$2/2016080806/shell/synchronization/start_main.sh
 
 echo " #!/bin/bash
 echo 'starting VA script'
-cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller.log" >>/var/www/$2/2016080806/shell/synchronization/start_va.sh
+cd /var/www/$2/2016080806/shell/synchronization/vehicle/; python va_controller.py > /var/www/$2/2016080806/var/log/va_controller.log" >/var/www/$2/2016080806/shell/synchronization/start_va.sh
 
 echo "*/10 *  *   *    *      flock -xn /var/www/$2/2016080806/shell/synchronization/processlock_main.txt -c /var/www/$2/2016080806/shell/synchronization/start_main.sh
 */15 *  *   *    *      flock -xn /var/www/$2/2016080806/shell/synchronization/processlock_va.txt -c /var/www/$2/2016080806/shell/synchronization/start_va.sh
