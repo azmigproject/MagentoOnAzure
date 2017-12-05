@@ -1,0 +1,82 @@
+{
+
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+
+    "domainName": {
+
+      "value": "testdemo"
+
+    },
+    "customerID": {
+      "value": "GCCustomer"
+    },
+    "customerTier": {
+      "value": "T1"
+    },
+
+    "vmadminUsername": {
+
+      "value": "serveradmin"
+
+    },
+
+    "vmadminPassword": {
+
+      "value": "testAdmin@2016"
+
+    },
+
+    "mySqlPassword": {
+
+      "value": "testAdminroot@2016"
+
+    },
+
+    "magentoFileBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_vamap_va_selector_04-21-2017.tar"
+
+    },
+
+    "magentoMediaBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.media.zip"
+
+    },
+
+    "magentoInitBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.init.tar"
+
+    },
+
+    "magentoVarBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/var.tar"
+
+    },
+    "magentoDefaultHTaccess": {
+
+      "value": "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/.htaccess"
+
+    },
+
+
+    "magentoDBBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.tar"
+
+    },
+
+
+    "vmSize": {
+
+      "value": "Standard_L4s"
+    }
+  }
+
+}
