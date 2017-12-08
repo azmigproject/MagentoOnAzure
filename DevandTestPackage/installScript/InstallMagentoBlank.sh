@@ -156,7 +156,7 @@ echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile"
 
 #remove the folders from magento installation and copy the new folder their
 
-cp -ar /var/www/"$2"/"2016080806/app/etc" /mytemp
+cp -ar /var/www/"$2"/2016080806/app/etc/local.xml /mytemp
 
 rm -rf /var/www/"$2"/"2016080806/app"
 rm -rf /var/www/"$2"/"2016080806/js"
@@ -169,8 +169,8 @@ mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
-rm -rf /var/www/"$2"/2016080806/app/etc
-cp -ar /mytemp /var/www/magento/"$2"/app/etc
+
+cp -ar /mytemp/local.xml /var/www/magento/"$2"/app/etc
 rm -rf /mytemp
 
 #install MYSQL 
