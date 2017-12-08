@@ -124,26 +124,8 @@ echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">
 chmod -R 777 /MagentoBK
 mkdir /MagentoBK/NewFolder
 tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
-rm -rf /MagentoBK/"$MGNewFolderFile" 
 echo "unzip magento backup files
-	 Start downloading magento init folder backup files">> /mylogs/text.txt
-
-#remove the folders from magento installation and copy the new folder their
-
-rm -rf /var/www/"$2"/"2016080806/app"
-rm -rf /var/www/"$2"/"2016080806/js"
-rm -rf /var/www/"$2"/"2016080806/shell"
-rm -rf /var/www/"$2"/"2016080806/skin"
-rm -rf /var/www/"$2"/"2016080806/var"
-
-mv  /MagentoBK/NewFolder/2016080806/app  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
-	 
-
-	 
+	Start downloading magento init folder backup files">> /mylogs/text.txt
 
 #download magento init folder backup
 wget "${12}" -P /MagentoBK -q
@@ -170,6 +152,26 @@ wget "$9"  -P  /MagentoBK -q
 MagentoDBBKFile=${9##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile">> /mylogs/text.txt
+
+
+#remove the folders from magento installation and copy the new folder their
+
+cp -ar /var/www/"$2"/"2016080806/app/etc" /mytemp
+
+rm -rf /var/www/"$2"/"2016080806/app"
+rm -rf /var/www/"$2"/"2016080806/js"
+rm -rf /var/www/"$2"/"2016080806/shell"
+rm -rf /var/www/"$2"/"2016080806/skin"
+rm -rf /var/www/"$2"/"2016080806/var"
+
+mv  /MagentoBK/NewFolder/2016080806/app  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
+rm -rf /var/www/"$2"/2016080806/app/etc
+cp -ar /mytemp /var/www/magento/"$2"/app/etc
+rm -rf /mytemp
 
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
@@ -241,6 +243,8 @@ sed -i "s/aat01_www/$7/g" /var/www/"$2"/.init/local.xml
 sed -i "s/aat01/root/g" /var/www/"$2"/.init/local.xml
 sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/"$2"/.init/local.xml
 echo "updated local.xml file">> /mylogs/text.txt
+
+
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
