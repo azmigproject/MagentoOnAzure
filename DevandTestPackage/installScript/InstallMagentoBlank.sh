@@ -168,8 +168,7 @@ mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
 
-cp -ar /var/www/"$2"/.init/local.xml /var/www/"$2"/"2016080806"/app/etc
-cp  -ar /var/www/"$2"/.init/config.xml /var/www/"$2"/"2016080806"/app/etc
+
 
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
@@ -242,6 +241,8 @@ sed -i "s/aat01/root/g" /var/www/"$2"/.init/local.xml
 sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/"$2"/.init/local.xml
 echo "updated local.xml file">> /mylogs/text.txt
 
+cp -ar /var/www/"$2"/.init/local.xml /var/www/"$2"/"2016080806"/app/etc
+cp  -ar /var/www/"$2"/.init/config.xml /var/www/"$2"/"2016080806"/app/etc
 
 
 # Create a new site configuration and add in apache for magento
