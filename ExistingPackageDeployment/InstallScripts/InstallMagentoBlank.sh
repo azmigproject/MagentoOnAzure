@@ -170,8 +170,8 @@ mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
 mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
 
-cp  /var/www/magento/.init/local.xml /var/www/magento/"$2"/app/etc
-cp  /var/www/magento/.init/config.xml /var/www/magento/"$2"/app/etc
+cp  /var/www/"$2"/.init/local.xml  /var/www/"$2"/"2016080806"/app/etc
+cp  /var/www/"$2"/.init/config.xml  /var/www/"$2"/"2016080806"/app/etc
 
 
 #install MYSQL 
