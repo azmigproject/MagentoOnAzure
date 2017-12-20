@@ -90,6 +90,15 @@
         "description": "File backup for Magento Code"
       }
     },
+  "magentoScriptFoldersBackup": {
+      "type": "string",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_scripts_folders.tar",
+
+
+      "metadata": {
+        "description": "Folders backup for Magento Code which need to be replaced"
+      }
+    },
     "magentoMediaBackup": {
       "type": "string",
       "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.media.zip",
