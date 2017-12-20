@@ -41,7 +41,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# -lt 26 ]; then
+if [ $# -lt 27 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
