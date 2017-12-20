@@ -100,6 +100,15 @@
         "description": "Media folder backup for Magento Code"
       }
     },
+	"magentoScriptFoldersBackup": {
+      "type": "string",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_scripts_folders.tar",
+
+
+      "metadata": {
+        "description": "Folders backup for Magento Code which need to be replaced"
+      }
+    },
     "magentoInitBackup": {
       "type": "string",
       "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/.init.tar",
@@ -129,7 +138,7 @@
     },
     "magentoDBBackup": {
       "type": "string",
-      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.tar",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.tar",
       "metadata": {
         "description": "Magento DB backup"
       }
@@ -204,7 +213,7 @@
     "monitoringFiles": "https://github.com/azmigproject/MagentoOnAzure/raw/master/ExistingPackageDeployment/MoniteringFiles/MonitoringAgentFiles.zip",
     "installScriptName": "InstallMagentoBlankCentOS.sh",
     "installScriptUri": "[concat('https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/', variables('installScriptName'))]",
-    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),' ', parameters('magentoMediaBackup'),' ', parameters('magentoInitBackup'),' ', parameters('magentoVarBackup') ,' ', parameters('magentoDefaultHTaccess'),' ', parameters('vmadminUsername'),' ', parameters('vmadminPassword'),' ',parameters('customerID'),' ',parameters('customerTier'),' ',resourceGroup().name,' ',variables('monitoringFiles'),' ',parameters('SenderEmail'),' ',parameters('SenderPWD'),' ',parameters('RecieverEmail'),' ',parameters('SenderDomain'),' ',parameters('tfsAccessToken'),' ',parameters('tfsAgentPool'))]",
+    "installCommand": "[concat('bash  ', variables('installScriptName'), '  ', parameters('domainName'), '  ', variables('magentoFolder'), '  ', variables('magentoUsername'), '  ',  variables('magentoUserPassword'), '  ', parameters('mySqlPassword'), '  ', variables('vmHOSTURL'),'  ', variables('mysqlDBName'),'  ', parameters('magentoFileBackup'),'  ', parameters('magentoDBBackup'),' ',variables('magentoDBToRestore'),' ', parameters('magentoMediaBackup'),' ', parameters('magentoInitBackup'),' ', parameters('magentoVarBackup') ,' ', parameters('magentoDefaultHTaccess'),' ', parameters('vmadminUsername'),' ', parameters('vmadminPassword'),' ',parameters('customerID'),' ',parameters('customerTier'),' ',resourceGroup().name,' ',variables('monitoringFiles'),' ',parameters('SenderEmail'),' ',parameters('SenderPWD'),' ',parameters('RecieverEmail'),' ',parameters('SenderDomain'),' ',parameters('tfsAccessToken'),' ',parameters('tfsAgentPool'),' ',parameters('magentoScriptFoldersBackup'))]",
     "apiVersion": "2015-06-15",
     "accountid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/',resourceGroup().name, '/providers/','Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
     "wadlogs": "<WadCfg> <DiagnosticMonitorConfiguration overallQuotaInMB=\"4096\" xmlns=\"http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration\"> <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter=\"Error\"/> <WindowsEventLog scheduledTransferPeriod=\"PT1M\" > <DataSource name=\"Application!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"Security!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"System!*[System[(Level = 1 or Level = 2)]]\" /></WindowsEventLog>",
