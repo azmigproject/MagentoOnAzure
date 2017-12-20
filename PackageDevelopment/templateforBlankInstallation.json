@@ -92,7 +92,7 @@
     },
 	"magentoScriptFoldersBackup": {
       "type": "string",
-      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_script_folders.tar",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_scripts_folders.tar",
 
 
       "metadata": {
