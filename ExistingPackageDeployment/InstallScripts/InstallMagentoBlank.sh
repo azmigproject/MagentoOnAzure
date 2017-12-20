@@ -27,6 +27,7 @@
 # $24 - SenderDomain
 # $25 - tfsAccessToken
 # $26 - tfsAgentPool
+# $27 - magentoScriptFoldersBackup
 
 #steps to install apache2
 mkdir /mylogs
@@ -69,6 +70,7 @@ if [ $# -lt 26 ]; then
 		echo "24th parameter is SenderDomain";
 		echo "25th parameter is TFS Access Token for setting Agent in remote machine";
 		echo "26th parameter is TFS Agent Pool Name for listing agent in the pool in TFS";
+		echo "27th parameter is magento New Folders Backup file name for listing new folders that need to be replaced";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -116,6 +118,16 @@ rm -rf /MagentoBK/"$MagentoBKFile"
 echo "unzip magento backup files
 	 Start downloading magento init folder backup files">> /mylogs/text.txt
 
+#download magento latest folders
+wget "${27}" -P /MagentoBK -q
+MGNewFolderFile=${27##*/}
+echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
+chmod -R 777 /MagentoBK
+mkdir /MagentoBK/NewFolder
+tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
+echo "unzip magento backup files
+	Start downloading magento init folder backup files">> /mylogs/text.txt
+
 #download magento init folder backup
 wget "${12}" -P /MagentoBK -q
 MagentoInitBKFile=${12##*/}
@@ -141,6 +153,20 @@ wget "$9"  -P  /MagentoBK -q
 MagentoDBBKFile=${9##*/}
 chmod -R 777 /MagentoBK
 echo "End downloading mangeto db backup files. MagentoDBBKFile=$MagentoDBBKFile">> /mylogs/text.txt
+
+#remove the folders from magento installation and copy the new folder their
+
+rm -rf /var/www/"$2"/"2016080806/app"
+rm -rf /var/www/"$2"/"2016080806/js"
+rm -rf /var/www/"$2"/"2016080806/shell"
+rm -rf /var/www/"$2"/"2016080806/skin"
+rm -rf /var/www/"$2"/"2016080806/var"
+
+mv  /MagentoBK/NewFolder/2016080806/app  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
 
 #install MYSQL 
  debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password password $5"
@@ -212,6 +238,9 @@ sed -i "s/aat01_www/$7/g" /var/www/"$2"/.init/local.xml
 sed -i "s/aat01/root/g" /var/www/"$2"/.init/local.xml
 sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/"$2"/.init/local.xml
 echo "updated local.xml file">> /mylogs/text.txt
+
+cp -ar /var/www/"$2"/.init/local.xml /var/www/"$2"/"2016080806"/app/etc
+cp  -ar /var/www/"$2"/.init/config.xml /var/www/"$2"/"2016080806"/app/etc
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
