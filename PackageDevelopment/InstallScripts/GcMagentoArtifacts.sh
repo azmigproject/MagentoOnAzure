@@ -8,6 +8,7 @@
 # $11 - Magento Media Folder backup
 # $12 - Magento Init Folder backup
 # $13 - Magento Var Folder backup
+# $27th parameter is magento New Folders Backup file name for listing new folders that need to be replaced";
 
 # Param info in Artifacts 
 # $1 - Folder name && DatabaseName
@@ -16,6 +17,7 @@
 # $4 - Magento Media Folder backup
 # $5 - Magento Init Folder backup
 # $6 - Magento Var Folder backup
+# $7 - magento New Folders Backup file name for listing new folders that need to be replaced
 
 set -x
 #set -xeuo pipefail to check if root user 
@@ -52,6 +54,30 @@ tar -xvf /MagentoBK/"$MagentoBKFile" -C /var/www/"$1"
 rm -rf /MagentoBK/"$MagentoBKFile"
 echo "unzip magento backup files
 	 Start downloading magento init folder backup files">> /mylogs/text.txt
+
+#download magento latest folders
+wget "${7}" -P /MagentoBK -q
+MGNewFolderFile=${7##*/}
+echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
+chmod -R 777 /MagentoBK
+mkdir /MagentoBK/NewFolder
+tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
+echo "unzip magento backup files
+	Start downloading magento init folder backup files">> /mylogs/text.txt
+
+#remove the folders from magento installation and copy the new folder their
+
+rm -rf /var/www/"$1"/"2016080806/app"
+rm -rf /var/www/"$1"/"2016080806/js"
+rm -rf /var/www/"$1"/"2016080806/shell"
+rm -rf /var/www/"$1"/"2016080806/skin"
+rm -rf /var/www/"$1"/"2016080806/var"
+
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app  /var/www/"$1"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/js  /var/www/"$1"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/shell  /var/www/"$1"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/skin  /var/www/"$1"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/var  /var/www/"$1"/"2016080806"/
 
 #download magento init folder backup
 wget "${5}" -P /MagentoBK -q
