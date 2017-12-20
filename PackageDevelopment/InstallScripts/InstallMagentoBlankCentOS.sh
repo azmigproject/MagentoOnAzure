@@ -27,7 +27,7 @@
 # $24 - SenderDomain
 # $25 - tfsAccessToken
 # $26 - tfsAgentPool
-
+# $27 - magentoScriptFoldersBackup
 
 # Steps to install apache2
 mkdir /mylogs
@@ -35,7 +35,7 @@ echo "testing">> /mylogs/text.txt
 chmod 777 /mylogs/text.txt
 
 
-if [ $# -lt 26  ]; then
+if [ $# -lt 27  ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -64,6 +64,7 @@ if [ $# -lt 26  ]; then
 		echo "24th parameter is SenderDomain";
 		echo "25th parameter is TFS Access Token for setting Agent in remote machine";
 		echo "26th parameter is TFS Agent Pool Name for listing agent in the pool in TFS";
+		echo "27th parameter is magento New Folders Backup file name for listing new folders that need to be replaced";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -95,7 +96,7 @@ yum -y -q install httpd
 # Download magento var folder backup
 # Download magento DB backup
 
-curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s "${2}" "${8}" "${9}" "${11}" "${12}" "${13}"
+curl  https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/PackageDevelopment/InstallScripts/GcMagentoArtifacts.sh | bash -s "${2}" "${8}" "${9}" "${11}" "${12}" "${13}" "${27}"
 #sh ./GcMagentoArtifacts.sh
 
 
@@ -151,6 +152,9 @@ sed -i "s/aat01_www/$7/g" /var/www/"$2"/.init/local.xml
 sed -i "s/aat01/root/g" /var/www/"$2"/.init/local.xml 
 sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/"$2"/.init/local.xml 
 echo "updated local.xml file">> /mylogs/text.txt
+
+cp -ar /var/www/"$2"/.init/local.xml /var/www/"$2"/"2016080806"/app/etc
+cp  -ar /var/www/"$2"/.init/config.xml /var/www/"$2"/"2016080806"/app/etc
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
