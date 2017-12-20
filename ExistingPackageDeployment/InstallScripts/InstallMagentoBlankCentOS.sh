@@ -153,11 +153,11 @@ rm -rf /var/www/"$2"/"2016080806/shell"
 rm -rf /var/www/"$2"/"2016080806/skin"
 rm -rf /var/www/"$2"/"2016080806/var"
 
-mv  /MagentoBK/NewFolder/2016080806/app  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/js  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/shell  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/skin  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/var  /var/www/"$2"/"2016080806"/
 
 #download magento var folder backup
 wget "${13}" -P /MagentoBK  -q
