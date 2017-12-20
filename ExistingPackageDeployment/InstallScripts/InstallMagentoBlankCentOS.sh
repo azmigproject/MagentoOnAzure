@@ -125,19 +125,14 @@ rm -rf /MagentoBK/"$MagentoBKFile"
 echo "unzip magento backup files
      Start downloading magento init folder backup files">> /mylogs/text.txt
 	 
-#remove the folders from magento installation and copy the new folder their
-
-rm -rf /var/www/"$2"/"2016080806/app"
-rm -rf /var/www/"$2"/"2016080806/js"
-rm -rf /var/www/"$2"/"2016080806/shell"
-rm -rf /var/www/"$2"/"2016080806/skin"
-rm -rf /var/www/"$2"/"2016080806/var"
-
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/js  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/shell  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/skin  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/var  /var/www/"$2"/"2016080806"/
+#download magento latest folders
+wget "${27}" -P /MagentoBK -q
+MGNewFolderFile=${27##*/}
+echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
+chmod -R 777 /MagentoBK
+mkdir /MagentoBK/NewFolder
+tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
+	 
 
 #download magento init folder backup
 wget "${12}" -P /MagentoBK  -q
@@ -149,6 +144,21 @@ rm -rf /MagentoBK/"$MagentoInitBKFile"
 echo "unzip magento init folder
 	  Start downloading magento var folder backup files">> /mylogs/text.txt
 
+#remove the folders from magento installation and copy the new folder their
+
+
+rm -rf /var/www/"$2"/"2016080806/app"
+rm -rf /var/www/"$2"/"2016080806/js"
+rm -rf /var/www/"$2"/"2016080806/shell"
+rm -rf /var/www/"$2"/"2016080806/skin"
+rm -rf /var/www/"$2"/"2016080806/var"
+
+mv  /MagentoBK/NewFolder/2016080806/app  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
+mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
+
 #download magento var folder backup
 wget "${13}" -P /MagentoBK  -q
 MagentoVarBKFile=${13##*/}
@@ -158,6 +168,9 @@ tar -xvf /MagentoBK/"$MagentoVarBKFile" -C /var/www/"$2"
 rm -rf /MagentoBK/"$MagentoVarBKFile" 
 echo "Unzip magento var folder
 	  Start downloading mangeto db backup files">> /mylogs/text.txt
+
+
+
 
 #download magento DB backup
 wget "$9"  -P  /MagentoBK  -q
