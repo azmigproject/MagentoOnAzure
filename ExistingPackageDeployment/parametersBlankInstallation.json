@@ -41,6 +41,11 @@
       "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_vamap_va_selector_04-21-2017.tar"
 
     },
+	"magentoScriptFoldersBackup": {
+
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_scripts_folders.tar"
+
+    },
 
     "magentoMediaBackup": {
 
@@ -68,7 +73,7 @@
 
     "magentoDBBackup": {
 
-      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.tar"
+      "value": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.tar"
 
     },
 
