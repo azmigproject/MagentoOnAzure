@@ -137,7 +137,7 @@
     },
     "magentoDBBackup": {
       "type": "string",
-      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.sql.tar",
+      "defaultValue": "https://gdc.blob.core.windows.net/autosoez/DeploymentPackages/magento_init.tar",
       "metadata": {
         "description": "Magento DB backup"
       }
