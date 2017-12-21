@@ -126,12 +126,12 @@ echo "unzip magento backup files
      Start downloading magento init folder backup files">> /mylogs/text.txt
 	 
 # #download magento latest folders
-# wget "${27}" -P /MagentoBK -q
-# MGNewFolderFile=${27##*/}
-# echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
-# chmod -R 777 /MagentoBK
-# mkdir /MagentoBK/NewFolder
-# tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
+wget "${27}" -P /MagentoBK -q
+MGNewFolderFile=${27##*/}
+echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
+chmod -R 777 /MagentoBK
+mkdir /MagentoBK/NewFolder
+tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
 	 
 
 #download magento init folder backup
