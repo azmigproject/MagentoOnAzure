@@ -125,13 +125,13 @@ rm -rf /MagentoBK/"$MagentoBKFile"
 echo "unzip magento backup files
      Start downloading magento init folder backup files">> /mylogs/text.txt
 	 
-#download magento latest folders
-wget "${27}" -P /MagentoBK -q
-MGNewFolderFile=${27##*/}
-echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
-chmod -R 777 /MagentoBK
-mkdir /MagentoBK/NewFolder
-tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
+# #download magento latest folders
+# wget "${27}" -P /MagentoBK -q
+# MGNewFolderFile=${27##*/}
+# echo "Downloaded magento folder backup files. MGNewFolderFile=$MGNewFolderFile">> /mylogs/text.txt
+# chmod -R 777 /MagentoBK
+# mkdir /MagentoBK/NewFolder
+# tar -xvf /MagentoBK/"$MGNewFolderFile" -C /MagentoBK/NewFolder
 	 
 
 #download magento init folder backup
@@ -147,17 +147,17 @@ echo "unzip magento init folder
 #remove the folders from magento installation and copy the new folder their
 
 
-rm -rf /var/www/"$2"/"2016080806/app"
-rm -rf /var/www/"$2"/"2016080806/js"
-rm -rf /var/www/"$2"/"2016080806/shell"
-rm -rf /var/www/"$2"/"2016080806/skin"
-rm -rf /var/www/"$2"/"2016080806/var"
+# rm -rf /var/www/"$2"/"2016080806/app"
+# rm -rf /var/www/"$2"/"2016080806/js"
+# rm -rf /var/www/"$2"/"2016080806/shell"
+# rm -rf /var/www/"$2"/"2016080806/skin"
+# rm -rf /var/www/"$2"/"2016080806/var"
 
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/js  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/shell  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/skin  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/var  /var/www/"$2"/"2016080806"/
+# mv  /MagentoBK/NewFolder/2016080806/app  /var/www/"$2"/"2016080806"/
+# mv  /MagentoBK/NewFolder/2016080806/js  /var/www/"$2"/"2016080806"/
+# mv  /MagentoBK/NewFolder/2016080806/shell  /var/www/"$2"/"2016080806"/
+# mv  /MagentoBK/NewFolder/2016080806/skin  /var/www/"$2"/"2016080806"/
+# mv  /MagentoBK/NewFolder/2016080806/var  /var/www/"$2"/"2016080806"/
 
 #download magento var folder backup
 wget "${13}" -P /MagentoBK  -q
@@ -234,8 +234,8 @@ sed -i "s/aat01/root/g" /var/www/"$2"/.init/local.xml
 sed -i "s/DiplVYtpSM0XeuKU/$5/g" /var/www/"$2"/.init/local.xml 
 echo "updated local.xml file">> /mylogs/text.txt
 
-cp -ar /var/www/"$2"/.init/local.xml /var/www/"$2"/"2016080806"/app/etc
-cp  -ar /var/www/"$2"/.init/config.xml /var/www/"$2"/"2016080806"/app/etc
+#cp -ar /var/www/"$2"/.init/local.xml /var/www/"$2"/"2016080806"/app/etc
+#cp  -ar /var/www/"$2"/.init/config.xml /var/www/"$2"/"2016080806"/app/etc
 
 # Create a new site configuration and add in apache for magento
 echo "<VirtualHost *:80>
