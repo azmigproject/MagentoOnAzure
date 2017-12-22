@@ -147,26 +147,26 @@ echo "unzip magento init folder
 #remove the folders from magento installation and copy the new folder their
 
 
-rm -rf /var/www/"$2"/"2016080806/app/code"
-rm -rf /var/www/"$2"/"2016080806/app/design"
-rm -rf /var/www/"$2"/"2016080806/app/locale"
-rm -rf /var/www/"$2"/"2016080806/app/Mage.php"
-rm -rf /var/www/"$2"/"2016080806/app/Mage.php.orig"
-rm -rf /var/www/"$2"/"2016080806/js"
-rm -rf /var/www/"$2"/"2016080806/shell"
-rm -rf /var/www/"$2"/"2016080806/skin"
-rm -rf /var/www/"$2"/"2016080806/var"
+#rm -rf /var/www/"$2"/"2016080806/app/code"
+#rm -rf /var/www/"$2"/"2016080806/app/design"
+#rm -rf /var/www/"$2"/"2016080806/app/locale"
+#rm -rf /var/www/"$2"/"2016080806/app/Mage.php"
+#rm -rf /var/www/"$2"/"2016080806/app/Mage.php.orig"
+#rm -rf /var/www/"$2"/"2016080806/js"
+#rm -rf /var/www/"$2"/"2016080806/shell"
+#rm -rf /var/www/"$2"/"2016080806/skin"
+#rm -rf /var/www/"$2"/"2016080806/var"
 
 
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/code  /var/www/"$2"/"2016080806"/app/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/design  /var/www/"$2"/"2016080806"/app/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/locale  /var/www/"$2"/"2016080806"/app/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/Mage.php  /var/www/"$2"/"2016080806"/app/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/Mage.php.orig  /var/www/"$2"/"2016080806"/app/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/js  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/shell  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/skin  /var/www/"$2"/"2016080806"/
-mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/var  /var/www/"$2"/"2016080806"/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/code  /var/www/"$2"/"2016080806"/app/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/design  /var/www/"$2"/"2016080806"/app/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/locale  /var/www/"$2"/"2016080806"/app/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/Mage.php  /var/www/"$2"/"2016080806"/app/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/app/Mage.php.orig  /var/www/"$2"/"2016080806"/app/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/js  /var/www/"$2"/"2016080806"/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/shell  /var/www/"$2"/"2016080806"/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/skin  /var/www/"$2"/"2016080806"/
+#mv  /MagentoBK/NewFolder/magento_scripts_folders/2016080806/var  /var/www/"$2"/"2016080806"/
 
 #download magento var folder backup
 wget "${13}" -P /MagentoBK  -q
