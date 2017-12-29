@@ -446,10 +446,9 @@ echo '/InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfo
 ./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
 echo "Installing script processing done" >> /mylogs/text.txt
 echo "Mail Send. Install successfull">> /mylogs/text.txt
+MailBody+="<BR>Below is the overall status of steps performed in installation script</br>"
 while read line; do    
-    $MailBody+="<BR>"
-    $MailBody+=$line 
-     $MailBody+="<BR>"
+     MailBody+="$line <BR>"
 done < /mylogs/text.txt
 {
     echo "To: ${23}"
