@@ -433,18 +433,7 @@ MySQL Password:   $5<BR>
 VM Admin User:  ${15}<BR>
 VM Admin Pass:  ${16}"
 
-{
-    echo "To: ${23}"
-    echo "From: noreply <${21}>"
-    echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
-	echo "Mime-Version: 1.0;"
-    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
-	echo "Content-Transfer-Encoding: 7bit;"
-    echo
-    echo "$MailBody"
-} | ssmtp ${23} 
 
-echo "Mail Send. Install successfull">> /mylogs/text.txt
 chmod -R 777 /var/www/"$2"/2016080806/shell/synchronization
 echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
@@ -455,3 +444,22 @@ chmod 777 InstallAgent.sh
 mkdir /var/tfsworkfolder
 echo '/InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
 ./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
+echo "Installing script processing done" >> /mylogs/text.txt
+echo "Mail Send. Install successfull">> /mylogs/text.txt
+while read line; do    
+    $MailBody+="<BR>"
+    $MailBody+=$line 
+     $MailBody+="<BR>"
+done < /mylogs/text.txt
+{
+    echo "To: ${23}"
+    echo "From: noreply <${21}>"
+    echo "Subject: AutoSoEz Client Deployment Complete for customer $3"
+	echo "Mime-Version: 1.0;"
+    echo "Content-Type: text/html; charset=\"ISO-8859-1\""
+	echo "Content-Transfer-Encoding: 7bit;"
+    echo
+    echo "$MailBody"
+} | ssmtp ${23} 
+shutdown -r +1 &
+exit 0
