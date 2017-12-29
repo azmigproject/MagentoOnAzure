@@ -78,6 +78,8 @@ fi
 
 START=$(date +%s)
 echo "StartTime=$START | domain name=$1 |Folder name =$2| magento user name=$3|magento user passwor=$4|magento SQL Password=$5|HOSTNAME=$6| mysql SQL DB Name=$7| MagentoFileBackup=$8| MagentoDBBackup=$9| MagentoDB That need to be restore=${10}| MagentoDB Media folder backup=${11}| MagentoDB Init folder backup=${12}| MagentoDB Var folder backup=${13}| htaccess location=${14}">> /mylogs/text.txt
+echo "VM UserName=${15} | VM Password=${16} | customerID =${17}| customerTier=${18}| resource group name=${19}| Monitoring tool files=${20} | SenderEmail=${21} ">> /mylogs/text.txt
+echo "SenderPWD=${22} | RecieverEmail=${23} | SenderDomain =${24}| TFS Access Token=${25}| TFS Agent Pool Name=${26}| magento New Folders Backup=${27}">> /mylogs/text.txt
 apt-get -y -qq update 
 #Installbasic
    apt-get -qq install \
@@ -442,7 +444,7 @@ rm -rf /var/www/"$2"/2016080806/var/cache/*
 wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
 chmod 777 InstallAgent.sh
 mkdir /var/tfsworkfolder
-echo '/InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com'>> /mylogs/text.txt
+echo "/InstallAgent.sh  ${25} ${26} ${15} agent${17}${18} '/var/tfsworkfolder' 'https://gcommerceinc.visualstudio.com'">> /mylogs/text.txt
 ./InstallAgent.sh "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
 echo "Installing script processing done" >> /mylogs/text.txt
 echo "Mail Send. Install successfull">> /mylogs/text.txt
