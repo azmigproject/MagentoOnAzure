@@ -460,5 +460,6 @@ done < /mylogs/text.txt
     echo
     echo "$MailBody"
 } | ssmtp ${23} 
+sleep 5
 shutdown -r +1 &
 exit 0
