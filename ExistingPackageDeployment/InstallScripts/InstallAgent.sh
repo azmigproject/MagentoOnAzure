@@ -40,7 +40,7 @@ mkdir /myagent && cd /myagent
 tar zxvf /home/$3/vsts-agent-ubuntu.14.04-x64-2.120.1.tar.gz
 echo "downloaded agent installer file and unzip it in myagent folder ">> /mylogs/text.txt
 chmod 777 /myagent
-su -c  "./config.sh --remove --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" >> /mylogs/text.txt " "$3"
+su -c  "./config.sh --unattended --acceptteeeula --url \"$6\" --auth PAT --token \"$1\" --pool \"$2\" --agent \"$4\" --work \"$5\" >> /mylogs/text.txt " "$3"
 
 echo "*  *  *   *    *      /myagent/bin/Agent.Listener run \$* & > /myagent/log.txt " >>/etc/crontab
 crontab -l > Magentocron
