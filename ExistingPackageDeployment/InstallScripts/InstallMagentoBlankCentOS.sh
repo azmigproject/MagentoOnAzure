@@ -439,4 +439,4 @@ chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 rm -rf /var/www/"$2"/2016080806/var/cache/*
 yum -y install htop
 mkdir /var/tfsworkfolder
-curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "agent${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
+curl https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgentCentOS.sh | bash -s "${25}" "${26}" "${15}" "${17}${18}" "/var/tfsworkfolder" 'https://gcommerceinc.visualstudio.com'
