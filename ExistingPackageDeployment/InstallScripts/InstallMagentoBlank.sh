@@ -441,11 +441,11 @@ echo -n "user_id=${17};pmp2_url=http://gcommercepmp2.cloudapp.net/" >/var/www/"$
 chmod 777 /var/www/"$2"/2016080806/app/etc/cfg/client_info.conf
 rm -rf /var/www/"$2"/2016080806/var/cache/*
  apt-get install htop
-wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/master/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
+wget "https://raw.githubusercontent.com/azmigproject/MagentoOnAzure/magentodevops/ExistingPackageDeployment/InstallScripts/InstallAgent.sh"
 chmod 777 InstallAgent.sh
 mkdir /var/tfsworkfolder
-echo "/InstallAgent.sh  ${25} ${26} ${15} ${17}${18} '/var/tfsworkfolder' 'https://gcommerceinc.visualstudio.com'">> /mylogs/text.txt
-./InstallAgent.sh "${25}" "${26}" "${15}" "${17}${18}" "/var/tfsworkfolder" https://gcommerceinc.visualstudio.com >> /mylogs/text.txt
+echo "/InstallAgent.sh  ${25} ${26} ${15} ${17}${18} '/var/tfsworkfolder' 'https://aegdev.visualstudio.com'">> /mylogs/text.txt
+./InstallAgent.sh "${25}" "${26}" "${15}" "${17}${18}" "/var/tfsworkfolder" https://aegdev.visualstudio.com >> /mylogs/text.txt
 echo "Installing script processing done" >> /mylogs/text.txt
 echo "Mail Send. Install successfull">> /mylogs/text.txt
 MailBody+="<BR>Below is the overall status of steps performed in installation script</br>"
