@@ -321,6 +321,20 @@
               "priority": 1030,
               "direction": "Inbound"
             }
+          },
+		
+	 {
+            "name": "MonitorURL",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "6556",
+              "sourceAddressPrefix": "216.81.217.219",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1031,
+              "direction": "Inbound"
+            }
           }
         ]
       }
