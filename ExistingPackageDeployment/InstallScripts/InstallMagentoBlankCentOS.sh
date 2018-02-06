@@ -28,7 +28,7 @@
 # $25 - tfsAccessToken
 # $26 - tfsAgentPool
 # $27 - magentoScriptFoldersBackup
-
+# $28 - new monitoring file backup
 
 #steps to install apache2
 mkdir /mylogs
@@ -42,7 +42,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# -lt 27 ]; then
+if [ $# -lt 28 ]; then
      echo ""
         echo "Missing parameters.";
         echo "1st parameter is domain name";
@@ -72,6 +72,7 @@ if [ $# -lt 27 ]; then
 		echo "25th parameter is TFS Access Token for setting Agent in remote machine";
 		echo "26th parameter is TFS Agent Pool Name for listing agent in the pool in TFS";
 		echo "27th parameter is magento New Folders Backup file name for listing new folders that need to be replaced";
+		echo "28th parameter is for new monitoring files  need to be installed";
         #echo "Try this: magento-prepare.sh 2.0.7 mywebshop.com magento magento";
         echo "";
     exit 1
@@ -335,7 +336,12 @@ mv  /MagentoBK/waitmax /usr/bin
 chmod +x  /usr/bin/waitmax 
 mv /MagentoBK/check_mk /etc/xinetd.d
 /etc/init.d/xinetd restart
-rm -rf /MagentoBK 
+wget "${28}" -P /MagentoBK -q
+unzip /MagentoBK/MonitoringAgentFiles -d /MagentoBK/
+yum -y -q install /MagentoBK/check-mk-agent-1.2.8p20-1.noarch.rpm
+/etc/init.d/xinetd restart
+service httpd restart
+rm -rf /MagentoBK  
 # End Monitoring tools
 
 # Cron Tab Update
